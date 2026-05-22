@@ -1134,54 +1134,41 @@ def update_player(
 @app.get("/matches")
 def get_matches():
 
-    with engine.connect() as connection:
+    with engine.connect() as conn:
 
-        result = connection.execute(
-            text(
-                """
-                SELECT
-                    matches.id,
-
-                    player_a.full_name AS player_a_name,
-                    player_b.full_name AS player_b_name,
-
-                    matches.score_a,
-                    matches.score_b,
-
-                    matches.race_to,
-                    matches.game_type,
-
-                    matches.played_at
-
-                FROM matches
-
-                JOIN players AS player_a
-                    ON matches.player_a_id = player_a.id
-
-                JOIN players AS player_b
-                    ON matches.player_b_id = player_b.id
-
-                ORDER BY matches.played_at DESC
-                """
-            )
-        )
+        result = conn.execute(text("""
+            SELECT *
+            FROM matches
+            ORDER BY played_at DESC
+        """))
 
         matches = []
 
         for row in result:
 
+            player_a = conn.execute(
+                text("SELECT full_name FROM players WHERE id = :id"),
+                {"id": row.player_a_id}
+            ).fetchone()
+
+            player_b = conn.execute(
+                text("SELECT full_name FROM players WHERE id = :id"),
+                {"id": row.player_b_id}
+            ).fetchone()
+
+            winner = conn.execute(
+                text("SELECT full_name FROM players WHERE id = :id"),
+                {"id": row.winner_id}
+            ).fetchone()
+
             matches.append({
                 "id": row.id,
-
-                "player_a_name": row.player_a_name,
-                "player_b_name": row.player_b_name,
-
+                "player_a_name": player_a.full_name,
+                "player_b_name": player_b.full_name,
                 "score_a": row.score_a,
                 "score_b": row.score_b,
-
-                "race_to": row.race_to,
+                "winner_name": winner.full_name,
                 "game_type": row.game_type,
-
                 "played_at": str(row.played_at)
             })
 
