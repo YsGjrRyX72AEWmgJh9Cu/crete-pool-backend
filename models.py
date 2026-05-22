@@ -10,5 +10,10 @@ class Player(Base):
     full_name = Column(String)
     city = Column(String)
     category = Column(String)
+
     current_rating = Column(Integer, default=500)
+
+    wins = Column(Integer, default=0)
+    losses = Column(Integer, default=0)
+
     matches_played = Column(Integer, default=0)
