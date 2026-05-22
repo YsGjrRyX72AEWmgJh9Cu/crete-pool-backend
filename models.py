@@ -56,3 +56,5 @@ class RatingHistory(Base):
 
     category_before = Column(String)
     category_after = Column(String)
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
