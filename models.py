@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.orm import declarative_base
 from datetime import datetime
 
 Base = declarative_base()
+
 
 class Player(Base):
     __tablename__ = "players"
@@ -17,6 +19,7 @@ class Player(Base):
     losses = Column(Integer, default=0)
 
     matches_played = Column(Integer, default=0)
+
 
 class Match(Base):
     __tablename__ = "matches"
@@ -36,6 +39,7 @@ class Match(Base):
     winner_id = Column(Integer)
 
     played_at = Column(DateTime, default=datetime.utcnow)
+
 
 class RatingHistory(Base):
     __tablename__ = "rating_history"
