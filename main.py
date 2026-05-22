@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy import text
 
 from database import engine
-from models import Base
+from models import Base, Player
 
 Base.metadata.create_all(bind=engine)
 
