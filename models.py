@@ -7,6 +7,8 @@ class Player(Base):
     __tablename__ = "players"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
-    current_rating = Column(Integer, default=1000)
+    full_name = Column(String)
+    city = Column(String)
+    category = Column(String)
+    current_rating = Column(Integer, default=500)
     matches_played = Column(Integer, default=0)
