@@ -52,6 +52,11 @@ class TournamentCreate(BaseModel):
     game_type: str
     race_to: int
 
+class TournamentPlayerCreate(BaseModel):
+
+    tournament_id: int
+    player_id: int
+
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):
 
@@ -67,6 +72,73 @@ def admin_login(data: AdminLogin):
     return {
         "success": True
     }
+
+@app.post("/add-player-to-tournament")
+def add_player_to_tournament(
+    data: TournamentPlayerCreate
+):
+
+    with engine.connect() as connection:
+
+        connection.execute(
+            text(
+                """
+                INSERT INTO tournament_players (
+                    tournament_id,
+                    player_id
+                )
+                VALUES (
+                    :tournament_id,
+                    :player_id
+                )
+                """
+            ),
+            {
+                "tournament_id": data.tournament_id,
+                "player_id": data.player_id,
+            }
+        )
+
+        connection.commit()
+
+    return {
+        "success": True
+    }
+
+@app.get("/tournament/{tournament_id}/players")
+def tournament_players(tournament_id: int):
+
+    with engine.connect() as connection:
+
+        result = connection.execute(
+            text(
+                """
+                SELECT
+                    players.id,
+                    players.full_name,
+                    players.city,
+                    players.current_rating,
+                    players.category
+
+                FROM tournament_players
+
+                JOIN players
+                ON tournament_players.player_id = players.id
+
+                WHERE tournament_players.tournament_id = :id
+                """
+            ),
+            {"id": tournament_id}
+        )
+
+        players = []
+
+        for row in result:
+            players.append(
+                dict(row._mapping)
+            )
+
+        return players
 
 @app.post("/create-tournament")
 def create_tournament(data: TournamentCreate):
@@ -104,30 +176,6 @@ def create_tournament(data: TournamentCreate):
         "success": True
     }
 
-@app.get("/tournaments")
-def get_tournaments():
-
-    with engine.connect() as connection:
-
-        result = connection.execute(
-            text(
-                """
-                SELECT *
-                FROM tournaments
-                ORDER BY id DESC
-                """
-            )
-        )
-
-        tournaments = []
-
-        for row in result:
-            tournaments.append(
-                dict(row._mapping)
-            )
-
-        return tournaments
-        
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):
 
@@ -653,53 +701,53 @@ def leaderboard():
 
         rank = 1
 
-    for row in result:
+        for row in result:
 
-        player = dict(row._mapping)
+            player = dict(row._mapping)
 
-        total_matches = player["matches_played"]
+            total_matches = player["matches_played"]
 
-        win_rate = 0
+            win_rate = 0
 
-        if total_matches > 0:
-            win_rate = round(
-                (player["wins"] / total_matches) * 100,
-                2
-            )
+            if total_matches > 0:
+                win_rate = round(
+                    (player["wins"] / total_matches) * 100,
+                    2
+                )
 
-        player["win_rate"] = win_rate
-        player["rank"] = rank
+            player["win_rate"] = win_rate
+            player["rank"] = rank
 
-        recent_matches = connection.execute(
-            text(
-                """
-                SELECT winner_id
-                FROM matches
-                WHERE player_a_id = :id
-                   OR player_b_id = :id
-                ORDER BY played_at DESC
-                LIMIT 5
-                """
-            ),
-            {"id": player["id"]}
-        ).fetchall()
+            recent_matches = connection.execute(
+                text(
+                    """
+                    SELECT winner_id
+                    FROM matches
+                    WHERE player_a_id = :id
+                       OR player_b_id = :id
+                    ORDER BY played_at DESC
+                    LIMIT 5
+                    """
+                ),
+                {"id": player["id"]}
+            ).fetchall()
 
-        recent_form = []
+            recent_form = []
 
-        for match in recent_matches:
+            for match in recent_matches:
 
-            if match.winner_id == player["id"]:
-                recent_form.append("W")
-            else:
-                recent_form.append("L")
+                if match.winner_id == player["id"]:
+                    recent_form.append("W")
+                else:
+                    recent_form.append("L")
 
-        player["recent_form"] = recent_form
+            player["recent_form"] = recent_form
 
-        players.append(player)
+            players.append(player)
 
-        rank += 1
+            rank += 1
 
-    return players
+        return players
 
 @app.get("/player/{player_id}")
 def player_profile(player_id: int):
