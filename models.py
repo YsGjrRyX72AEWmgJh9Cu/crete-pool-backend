@@ -71,3 +71,12 @@ class Tournament(Base):
     race_to = Column(Integer)
 
     status = Column(String, default="upcoming")
+
+class TournamentPlayer(Base):
+    __tablename__ = "tournament_players"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    tournament_id = Column(Integer)
+
+    player_id = Column(Integer)
