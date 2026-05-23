@@ -46,6 +46,63 @@ class PlayerCreate(BaseModel):
 class AdminLogin(BaseModel):
     password: str
 
+class TournamentCreate(BaseModel):
+
+    name: str
+    game_type: str
+    race_to: int
+
+@app.post("/admin-login")
+def admin_login(data: AdminLogin):
+
+    ADMIN_PASSWORD = "cretepooladmin"
+
+    if data.password != ADMIN_PASSWORD:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid password"
+        )
+
+    return {
+        "success": True
+    }
+    
+@app.post("/create-tournament")
+def create_tournament(data: TournamentCreate):
+
+    with engine.connect() as connection:
+
+        connection.execute(
+            text(
+                """
+                INSERT INTO tournaments (
+                    name,
+                    game_type,
+                    race_to,
+                    status
+                )
+                VALUES (
+                    :name,
+                    :game_type,
+                    :race_to,
+                    :status
+                )
+                """
+            ),
+            {
+                "name": data.name,
+                "game_type": data.game_type,
+                "race_to": data.race_to,
+                "status": "upcoming"
+            }
+        )
+
+        connection.commit()
+
+    return {
+        "success": True
+    }
 
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):

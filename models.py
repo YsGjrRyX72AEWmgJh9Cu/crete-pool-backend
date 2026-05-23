@@ -58,3 +58,16 @@ class RatingHistory(Base):
     category_after = Column(String)
     
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class Tournament(Base):
+    __tablename__ = "tournaments"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    name = Column(String)
+
+    game_type = Column(String)
+
+    race_to = Column(Integer)
+
+    status = Column(String, default="upcoming")
