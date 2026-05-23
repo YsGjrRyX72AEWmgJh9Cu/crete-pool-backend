@@ -43,6 +43,25 @@ class PlayerCreate(BaseModel):
     city: str
     category: str = "D"
 
+class AdminLogin(BaseModel):
+    password: str
+
+
+@app.post("/admin-login")
+def admin_login(data: AdminLogin):
+
+    ADMIN_PASSWORD = "cretepooladmin"
+
+    if data.password != ADMIN_PASSWORD:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid password"
+        )
+
+    return {
+        "success": True
+    }
 
 @app.get("/")
 def home():
