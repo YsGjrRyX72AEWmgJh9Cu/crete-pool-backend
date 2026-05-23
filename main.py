@@ -553,28 +553,53 @@ def leaderboard():
 
         rank = 1
 
-        for row in result:
+    for row in result:
 
-            player = dict(row._mapping)
+        player = dict(row._mapping)
 
-            total_matches = player["matches_played"]
+        total_matches = player["matches_played"]
 
-            win_rate = 0
+        win_rate = 0
 
-            if total_matches > 0:
-                win_rate = round(
-                    (player["wins"] / total_matches) * 100,
-                    2
-                )
+        if total_matches > 0:
+            win_rate = round(
+                (player["wins"] / total_matches) * 100,
+                2
+            )
 
-            player["win_rate"] = win_rate
-            player["rank"] = rank
+        player["win_rate"] = win_rate
+        player["rank"] = rank
 
-            players.append(player)
+        recent_matches = connection.execute(
+            text(
+                """
+                SELECT winner_id
+                FROM matches
+                WHERE player_a_id = :id
+                   OR player_b_id = :id
+                ORDER BY played_at DESC
+                LIMIT 5
+                """
+            ),
+            {"id": player["id"]}
+        ).fetchall()
 
-            rank += 1
+        recent_form = []
 
-        return players
+        for match in recent_matches:
+
+            if match.winner_id == player["id"]:
+                recent_form.append("W")
+            else:
+                recent_form.append("L")
+
+        player["recent_form"] = recent_form
+
+        players.append(player)
+
+        rank += 1
+
+    return players
 
 @app.get("/player/{player_id}")
 def player_profile(player_id: int):
