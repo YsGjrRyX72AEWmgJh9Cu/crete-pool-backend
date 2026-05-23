@@ -176,6 +176,30 @@ def create_tournament(data: TournamentCreate):
         "success": True
     }
 
+@app.get("/tournaments")
+def get_tournaments():
+
+    with engine.connect() as connection:
+
+        result = connection.execute(
+            text(
+                """
+                SELECT *
+                FROM tournaments
+                ORDER BY id DESC
+                """
+            )
+        )
+
+        tournaments = []
+
+        for row in result:
+            tournaments.append(
+                dict(row._mapping)
+            )
+
+        return tournaments
+        
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):
 
