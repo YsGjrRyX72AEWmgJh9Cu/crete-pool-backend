@@ -212,6 +212,24 @@ def generate_bracket(tournament_id: int):
 
     with engine.connect() as connection:
 
+        existing_matches = connection.execute(
+            text(
+                """
+                SELECT COUNT(*) as total
+                FROM tournament_matches
+                WHERE tournament_id = :id
+                """
+            ),
+            {"id": tournament_id}
+        ).fetchone()
+
+        if existing_matches.total > 0:
+
+            return {
+                "success": False,
+                "message": "Bracket already exists"
+            }
+
         result = connection.execute(
             text(
                 """
