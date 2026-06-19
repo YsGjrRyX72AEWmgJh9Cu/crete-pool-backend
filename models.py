@@ -80,3 +80,22 @@ class TournamentPlayer(Base):
     tournament_id = Column(Integer)
 
     player_id = Column(Integer)
+
+class TournamentMatch(Base):
+    __tablename__ = "tournament_matches"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    tournament_id = Column(Integer)
+
+    player_a_id = Column(Integer)
+    player_b_id = Column(Integer)
+
+    score_a = Column(Integer, default=0)
+    score_b = Column(Integer, default=0)
+
+    winner_id = Column(Integer)
+
+    round_name = Column(String)
+
+    status = Column(String, default="pending")

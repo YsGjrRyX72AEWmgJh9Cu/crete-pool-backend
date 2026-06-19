@@ -2,9 +2,16 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy import text
+import random
 
 from database import engine
-from models import Base, Player
+from models import (
+    Base,
+    Player,
+    Tournament,
+    TournamentPlayer,
+    TournamentMatch,
+)
 
 Base.metadata.create_all(bind=engine)
 
@@ -200,6 +207,119 @@ def get_tournaments():
 
         return tournaments
         
+@app.post("/tournament/{tournament_id}/generate-bracket")
+def generate_bracket(tournament_id: int):
+
+    with engine.connect() as connection:
+
+        result = connection.execute(
+            text(
+                """
+                SELECT player_id
+                FROM tournament_players
+                WHERE tournament_id = :id
+                """
+            ),
+            {"id": tournament_id}
+        )
+
+        players = [row.player_id for row in result]
+
+        random.shuffle(players)
+
+        created_matches = []
+
+        for i in range(0, len(players) - 1, 2):
+
+            player_a = players[i]
+            player_b = players[i + 1]
+
+            connection.execute(
+                text(
+                    """
+                    INSERT INTO tournament_matches (
+                        tournament_id,
+                        player_a_id,
+                        player_b_id,
+                        round_name,
+                        status
+                    )
+                    VALUES (
+                        :tournament_id,
+                        :player_a_id,
+                        :player_b_id,
+                        :round_name,
+                        :status
+                    )
+                    """
+                ),
+                {
+                    "tournament_id": tournament_id,
+                    "player_a_id": player_a,
+                    "player_b_id": player_b,
+                    "round_name": "Round 1",
+                    "status": "pending"
+                }
+            )
+
+            created_matches.append(
+                {
+                    "player_a_id": player_a,
+                    "player_b_id": player_b
+                }
+            )
+
+        connection.commit()
+
+        return {
+            "success": True,
+            "matches_created": len(created_matches)
+        }
+
+@app.get("/tournament/{tournament_id}/matches")
+def tournament_matches(tournament_id: int):
+
+    with engine.connect() as connection:
+
+        result = connection.execute(
+            text(
+                """
+                SELECT
+                    tm.id,
+                    tm.round_name,
+                    tm.status,
+
+                    pa.full_name AS player_a_name,
+                    pb.full_name AS player_b_name,
+
+                    tm.score_a,
+                    tm.score_b
+
+                FROM tournament_matches tm
+
+                JOIN players pa
+                ON tm.player_a_id = pa.id
+
+                JOIN players pb
+                ON tm.player_b_id = pb.id
+
+                WHERE tm.tournament_id = :id
+
+                ORDER BY tm.id
+                """
+            ),
+            {"id": tournament_id}
+        )
+
+        matches = []
+
+        for row in result:
+            matches.append(
+                dict(row._mapping)
+            )
+
+        return matches
+
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):
 
