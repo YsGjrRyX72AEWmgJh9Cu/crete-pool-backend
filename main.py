@@ -64,6 +64,11 @@ class TournamentPlayerCreate(BaseModel):
     tournament_id: int
     player_id: int
 
+class TournamentMatchResult(BaseModel):
+
+    score_a: int
+    score_b: int    
+
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):
 
@@ -337,6 +342,65 @@ def tournament_matches(tournament_id: int):
             )
 
         return matches
+
+@app.post("/tournament-match/{match_id}/submit")
+def submit_tournament_match(
+    match_id: int,
+    result: TournamentMatchResult
+):
+
+    with engine.connect() as connection:
+
+        match = connection.execute(
+            text(
+                """
+                SELECT *
+                FROM tournament_matches
+                WHERE id = :id
+                """
+            ),
+            {"id": match_id}
+        ).fetchone()
+
+        if not match:
+
+            raise HTTPException(
+                status_code=404,
+                detail="Match not found"
+            )
+
+        winner_id = (
+            match.player_a_id
+            if result.score_a > result.score_b
+            else match.player_b_id
+        )
+
+        connection.execute(
+            text(
+                """
+                UPDATE tournament_matches
+                SET
+                    score_a = :score_a,
+                    score_b = :score_b,
+                    winner_id = :winner_id,
+                    status = 'completed'
+                WHERE id = :id
+                """
+            ),
+            {
+                "score_a": result.score_a,
+                "score_b": result.score_b,
+                "winner_id": winner_id,
+                "id": match_id
+            }
+        )
+
+        connection.commit()
+
+        return {
+            "success": True,
+            "winner_id": winner_id
+        }
 
 @app.post("/admin-login")
 def admin_login(data: AdminLogin):
