@@ -92,6 +92,28 @@ def add_player_to_tournament(
 
     with engine.connect() as connection:
 
+        existing = connection.execute(
+            text(
+                """
+                SELECT COUNT(*) as total
+                FROM tournament_players
+                WHERE tournament_id = :tournament_id
+                AND player_id = :player_id
+                """
+            ),
+            {
+                "tournament_id": data.tournament_id,
+                "player_id": data.player_id,
+            }
+        ).fetchone()
+
+        if existing.total > 0:
+
+            return {
+                "success": False,
+                "message": "Player already added"
+            }
+
         connection.execute(
             text(
                 """
@@ -248,6 +270,22 @@ def generate_bracket(tournament_id: int):
 
         players = [row.player_id for row in result]
 
+        player_count = len(players)
+
+        if player_count < 2:
+
+            return {
+                "success": False,
+                "message": "At least 2 players are required"
+            }
+
+        if player_count & (player_count - 1) != 0:
+
+            return {
+                "success": False,
+                "message": "Player count must be a power of 2"
+            }
+
         random.shuffle(players)
 
         created_matches = []
@@ -367,6 +405,13 @@ def submit_tournament_match(
             raise HTTPException(
                 status_code=404,
                 detail="Match not found"
+            )
+
+        if result.score_a == result.score_b:
+
+            raise HTTPException(
+                status_code=400,
+                detail="Match cannot end in a draw"
             )
 
         winner_id = (
