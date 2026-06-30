@@ -1,49 +1,45 @@
 """
 CueScore Match Parser.
 
-Responsible for transforming CueScore match HTML
-into structured Python data.
-
-The parser does NOT communicate with the database.
+Transforms CueScore JSON into the internal match model.
 """
-
-from bs4 import BeautifulSoup
 
 
 class MatchParser:
     """
-    Parses a CueScore match page.
+    Maps CueScore match JSON into the internal domain model.
     """
 
-    def parse(self, html: str) -> dict:
+    def parse(self, match: dict) -> dict:
         """
-        Parse a CueScore match page.
-
-        Args:
-            html: Raw HTML returned by CueScore.
-
-        Returns:
-            Structured match data.
+        Transform CueScore JSON into the internal match model.
         """
-
-        soup = BeautifulSoup(
-            html,
-            "html.parser",
-        )
-
-        match_page = soup.find("cs-match-page")
-
-        match_id = None
-        tournament_id = None
-
-        if match_page:
-            match_id = match_page.get("match-id")
-            tournament_id = match_page.get("tournament-id")
 
         return {
-            "match_id": match_id,
-            "tournament_id": tournament_id,
-            "players": [],
-            "frames": [],
-            "metadata": {},
+            "match_id": match["matchId"],
+            "tournament_id": match["tournamentId"],
+
+            "player_a": {
+                "id": match["playerA"]["playerId"],
+                "name": match["playerA"]["name"],
+            },
+
+            "player_b": {
+                "id": match["playerB"]["playerId"],
+                "name": match["playerB"]["name"],
+            },
+
+            "score": {
+                "player_a": match["scoreA"],
+                "player_b": match["scoreB"],
+            },
+
+            "round": {
+                "name": match["roundName"],
+                "code": match["roundCode"],
+            },
+
+            "discipline": match["discipline"],
+
+            "status": match["matchstatusCode"],
         }

@@ -16,10 +16,10 @@ class Importer:
 
     def import_match(self, match_id):
 
-        html = self.client.get_match(
+        match = self.client.get_match(
             match_id
         )
 
         return self.parser.parse(
-            html
+            match
         )

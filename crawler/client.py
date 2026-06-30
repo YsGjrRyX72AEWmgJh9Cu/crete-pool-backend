@@ -64,12 +64,16 @@ class CueScoreClient:
     def get_match(self, match_id):
 
         url = (
-            f"{CUESCORE_BASE_URL}/match/?matchId={match_id}"
+            f"{CUESCORE_API_URL}/match/?matchId={match_id}"
         )
 
         response = self._get(url)
-        
-        return response.text
+
+        print("STATUS:", response.status_code)
+        print("CONTENT-TYPE:", response.headers.get("Content-Type"))
+        print(response.text[:500])
+
+        return response.json()
 
     def get_tournament(self, tournament_id):
 
