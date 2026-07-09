@@ -1,6 +1,6 @@
 # Domain Model
 
-Version 1.0
+Version 2.0
 
 ---
 
@@ -65,21 +65,20 @@ Examples:
 - Player
 - Match
 - Tournament
-- Club
-- Venue
 
 ---
 
-## Supporting Concept
+## Relationship Entity
 
-A Supporting Concept exists only within the context of another Domain concept.
+A Relationship Entity represents historical information that belongs to the relationship between two Core Entities.
 
-It provides additional historical meaning without having an independent lifecycle.
+It has its own identity within the Domain while existing only in the context of the related Core Entities.
 
-Examples:
+Relationship Entities preserve historical information that cannot be assigned exclusively to either related Core Entity.
 
-- Match Participant
-- Match Context
+Example:
+
+- Tournament Participation
 
 ---
 
@@ -128,8 +127,10 @@ A Relationship describes how entities are connected within the historical archiv
 
 Examples:
 
-- A Player participates in many Matches.
+- A Player participates in many Tournaments through Tournament Participation.
+- A Tournament contains many Tournament Participations.
 - A Tournament contains many Matches.
+- A Player participates in many Matches.
 - A Club has many Players.
 
 ---
@@ -140,11 +141,18 @@ The platform is built around a small number of core historical entities.
 
 These entities represent the fundamental concepts of the historical archive.
 
-Current and planned core entities include:
+Current Core Entities include:
 
 - Player
 - Match
 - Tournament
+
+Emerging Core Entities include:
+
+- Tournament Participation
+
+Future Core Entities may include:
+
 - Club
 - Venue
 - Organization
@@ -163,6 +171,7 @@ Examples include:
 - Identity
 - External References
 - Metadata
+- Relationship Entities
 
 Shared Patterns promote consistency across Domain Specifications while preserving the responsibility of each Domain Entity.
 
@@ -181,3 +190,13 @@ The Constitution defines why the platform exists.
 The Domain Model defines how the platform understands the historical archive.
 
 All specifications and implementations should be derived from the Domain Model.
+
+---
+
+# Review Status
+
+Architecture Review: Approved
+
+Specification Version: 2.0
+
+Status: Stable Reference Specification

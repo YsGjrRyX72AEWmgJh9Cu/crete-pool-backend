@@ -1,4 +1,4 @@
-# Architecture Documentation Index
+# Architecture Guide
 
 Version 1.0
 
@@ -8,7 +8,7 @@ Version 1.0
 
 This document provides the recommended reading order for the architecture documentation of the Hellenic American Pool History Platform.
 
-Each document has a distinct responsibility within the architecture.
+Each document has a distinct architectural responsibility and contributes to the platform's Domain knowledge.
 
 Reading the documentation in the recommended order provides a complete understanding of the platform before implementation begins.
 
@@ -58,36 +58,72 @@ All architectural documents and implementations should use this terminology cons
 
 ---
 
-## 5. Specification Template
+## 5. Common Value Objects
 
-Defines the standard structure used to describe every Domain Entity.
+Defines the reusable Value Objects shared across the Domain Model.
 
-Ensures consistency across all Domain Specifications.
+Provides a consistent vocabulary for immutable historical concepts used throughout the platform.
 
 ---
 
-## 6. Domain Specifications
+## 6. Value Object Specifications
 
-Each Specification describes a single Domain Entity.
+Defines the individual specifications of every reusable Value Object.
+
+Each Value Object is documented in its own Specification to preserve consistency, clarity and future extensibility.
+
+Current Value Object Specifications include:
+
+- Country
+- Discipline
+- Category
+- Round
+- Score
+- Final Position
+- Match Status
+- Tournament Status
+
+Future Value Object Specifications include:
+
+- Participation Status
+
+---
+
+## 7. Specification Template
+
+Defines the standard structure used to describe Domain Specifications.
+
+The template is reused across Core Entity Specifications and may be adapted for other Specification types while preserving architectural consistency.
+
+---
+
+## 8. Core Entity Specifications
+
+Each Specification describes a single Core Domain Entity.
 
 Current Specifications include:
 
 - Player
 - Match
+- Tournament
 
 Future Specifications may include:
 
-- Tournament
+- Tournament Participation
 - Venue
 - Club
 - Organization
 - Referee
 
+Tournament Participation represents the relationship between a Participant and a Tournament.
+
+It will preserve participation-specific historical information that belongs to the relationship between a Participant and a Tournament.
+
 ---
 
-## 7. Implementation
+## 9. Implementation
 
-The implementation translates the Domain Model, Domain Rules and Specifications into software.
+The implementation translates the Domain Model, Domain Rules, Value Objects and Specifications into software.
 
 Implementation must remain consistent with the architectural documentation.
 
@@ -103,9 +139,11 @@ Domain Rules
         ↓
 Domain Glossary
         ↓
-Specification Template
+Common Value Objects
         ↓
-Domain Specifications
+Value Object Specifications
+        ↓
+Core Entity Specifications
         ↓
 Implementation
 
@@ -121,3 +159,14 @@ Before introducing a new architectural document, verify that:
 - The document uses the terminology defined by the Domain Glossary.
 - The document remains consistent with the Project Constitution.
 - The document contributes to the overall architecture of the platform.
+- The document follows the appropriate architectural template for its document type.
+
+---
+
+# Review Status
+
+Architecture Review: Approved
+
+Specification Version: 1.0
+
+Status: Stable Reference Specification
