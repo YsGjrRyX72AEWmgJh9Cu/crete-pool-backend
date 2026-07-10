@@ -1,0 +1,169 @@
+Processing 1/100 (player 6480448)
+Processing 2/100 (player 1067720)
+Processing 3/100 (player 1296594)
+Processing 4/100 (player 16371739)
+Processing 5/100 (player 1000615)
+Processing 6/100 (player 21117703)
+Processing 7/100 (player 16780117)
+Processing 8/100 (player 26081296)
+Processing 9/100 (player 21388510)
+Processing 10/100 (player 21025570)
+Processing 11/100 (player 2685550)
+Processing 12/100 (player 1202284)
+Processing 13/100 (player 24683542)
+Processing 14/100 (player 81182041)
+Processing 15/100 (player 7917438)
+Processing 16/100 (player 2384403)
+Processing 17/100 (player 1702914)
+Processing 18/100 (player 2170290)
+Processing 19/100 (player 1076143)
+Processing 20/100 (player 20536039)
+Processing 21/100 (player 8263596)
+Processing 22/100 (player 22936396)
+Processing 23/100 (player 1387622)
+Processing 24/100 (player 5508490)
+Processing 25/100 (player 7945527)
+Processing 26/100 (player 2039353)
+Processing 27/100 (player 52339018)
+Processing 28/100 (player 52923307)
+Processing 29/100 (player 41551366)
+Processing 30/100 (player 1334718)
+Processing 31/100 (player 1141434)
+Processing 32/100 (player 78749287)
+Processing 33/100 (player 3629085)
+Processing 34/100 (player 9222363)
+Processing 35/100 (player 75135424)
+Processing 36/100 (player 1154378)
+Processing 37/100 (player 1045257)
+Processing 38/100 (player 82084633)
+Processing 39/100 (player 1173852)
+Processing 40/100 (player 80931526)
+Processing 41/100 (player 34777333)
+Processing 42/100 (player 1338460)
+Processing 43/100 (player 26644624)
+Processing 44/100 (player 73712560)
+Processing 45/100 (player 6973950)
+Processing 46/100 (player 25613929)
+Processing 47/100 (player 1039642)
+Processing 48/100 (player 2357135)
+Processing 49/100 (player 83496901)
+Processing 50/100 (player 76425157)
+Processing 51/100 (player 24662863)
+Processing 52/100 (player 7129763)
+Processing 53/100 (player 5161121)
+Processing 54/100 (player 1046690)
+Processing 55/100 (player 80555821)
+Processing 56/100 (player 82498999)
+Processing 57/100 (player 14878063)
+Processing 58/100 (player 2856710)
+Processing 59/100 (player 19046884)
+Processing 60/100 (player 11577814)
+Processing 61/100 (player 57195487)
+Processing 62/100 (player 78700051)
+Processing 63/100 (player 34373881)
+Processing 64/100 (player 1905403)
+Processing 65/100 (player 1094378)
+Processing 66/100 (player 82666456)
+Processing 67/100 (player 83958208)
+Processing 68/100 (player 1346742)
+Processing 69/100 (player 1556358)
+Processing 70/100 (player 37758964)
+Processing 71/100 (player 63824935)
+Processing 72/100 (player 50937226)
+Processing 73/100 (player 18268441)
+Processing 74/100 (player 4717150)
+Processing 75/100 (player 28964854)
+Processing 76/100 (player 36397237)
+Processing 77/100 (player 83702107)
+Processing 78/100 (player 48323203)
+Processing 79/100 (player 1046438)
+Processing 80/100 (player 11037283)
+Processing 81/100 (player 20749714)
+Processing 82/100 (player 6646720)
+Processing 83/100 (player 52121119)
+Processing 84/100 (player 22556707)
+Processing 85/100 (player 61392685)
+Processing 86/100 (player 51683593)
+Processing 87/100 (player 1904061)
+Processing 88/100 (player 52673785)
+Processing 89/100 (player 51192991)
+Processing 90/100 (player 3614941)
+Processing 91/100 (player 29748868)
+Processing 92/100 (player 2103049)
+Processing 93/100 (player 73861498)
+Processing 94/100 (player 1135370)
+Processing 95/100 (player 75030820)
+Processing 96/100 (player 21140875)
+Processing 97/100 (player 16975207)
+Processing 98/100 (player 53847808)
+Processing 99/100 (player 61796092)
+Processing 100/100 (player 54299236)
+
+Found 75 tournaments
+
+32503774 - *** CHANIA CAR & TRUCKS  OPEN 9BALL ARAMIS  2024 +3000€ ***
+36503344 - ARAMIS HANDICAP 9BALL TUESDAYS +150 BONUS
+37518175 - HANDICAP 9-BALL
+37884856 - HANDICAP 9-BALL
+38996656 - Hall of fame 9 ball handicap
+58719844 - D’ DIVISION OPEN TOYRNAMENT PATRAS(+700)
+58721740 - C’DIVISION OPEN TOURNAMENT PATRAS(+1500€)
+60392956 - ARAMIS SUMMER 9BALL HANTICAP +200 BONUS
+61176718 - ATHENS 9-BALL OPEN “DIFFERENT BILLIARDS CLUB” +2.000€
+61342675 - ARAMIS SUMMER 9BALL HANTICAP +200 BONUS
+61906948 - ARAMIS SUMMER 9BALL HANTICAP +250 BONUS
+65750485 - ARAMIS SUMMER  9BALL HANTICAP +300 BONUS
+69951232 - Handicap (+40)
+70139050 - Frozen 9ball handicap+100€
+72603844 - LOGIN BILLIARDS OPEN 2526€  BONUS...HYBRID STYLE...
+72929626 - 1st FIREBALL HANDICAP  +100
+73360210 - ARAMIS MEGA WARM-UP 9BALL HANTICAP +300 BONUS
+73611487 - Dynamic Open 9Ball GREECE 🇬🇷 ²⁶
+74902861 - HANDICAP  ARAMIS CHANIA 24 PLAYERS MAX +150 BONUS
+74988235 - rhino open 9ball c division +1200€ 96p
+75179446 - HALL OF FAME (2) 10BALL OPEN TOURNAMENT +2000BONUS
+76236559 - CHANIA TOP 8 PLAYERS B" DIVISION "ARAMIS" 9 BALL
+77638873 - 🔶 Billia’s Rethymno - 9-Ball Open Tournament (+100€ BONUS)🔶
+78070756 - 👑KING8 PREDATOR B’ DIVISION 9-BALL OPEN TOURNAMENT +1500💶 👑
+78145981 - B Division 16 Max players
+78868762 - B' DIVISION ΟPEN TOURNAMENT WHITE RHINO +1200
+79114426 - handicap epanastatiko 9ball
+7942238 - Billia's Rethymno - 9-Ball Handicap Open B' Division
+79465657 - ΠΑΣΧΑΛΙΝΟ HANDICAP +€€€€€
+79484296 - handicap 9ball
+80559616 - sunday handicap 10ball + μπονους 50$
+80931934 - No1 Different Handicap (B_Γ_Δ_Ε+_Ε-) series Μαιου
+81070243 - Workshop Tuesday Handicap 16 players Max
+81070261 - Workshop Tuesday Handicap 16 players Max
+81094720 - Frozen 10ball +100 bonus
+81129553 - Handicap (+40)
+81170869 - BSD OPEN - SOFIA OPEN R3
+81389200 - JOLLY BILLIARDS HANDICAP 9-BALL (BOX BREAK)
+81572965 - Handicap (+40)
+81577666 - TUESDAYS HANTICAP 9 BALL ARAMIS  MAX 32 +300 BONUS
+81615406 - JOLLY BILLIARDS HANDICAP 9-BALL (BOX BREAK)
+82038997 - POOLEVARD WARM UP HANDICAP
+82077691 - Handicap (+40)
+82100722 - JOLLY BILLIARDS HANDICAP 9-BALL (BOX BREAK)
+82133152 - Different Handicap
+82304218 - Frozen 9ball handicap +100 bonus
+82426132 - Workshop Tuesday Handicap 16 players Max
+82426147 - Workshop Tuesday Handicap 16 players Max
+82571320 - 9 ball handicap + bonus 50
+82582447 - 9 BALL HANDICAP Γ ΚΑΤΗΓΟΡΙΑΣ +200 ΑΚΑΔΗΜΊΑ ΜΠΙΛΙΆΡΔΟΥ
+82611154 - "Enjoy Pool Hall Sunday 10Ball Handicap 50€ Bonus""
+82629223 - Frozen 10ball +100 bonus
+82660783 - TBK's TirsdagsCup 2/6-26
+82931161 - MONDAYS HANTICAP 9 BALL ARAMIS 32 MAX +300 BONUS
+82946335 - JOLLY BILLIARDS HANDICAP 9-BALL (BOX BREAK)
+83077438 - Frozen 9ball handicap +100 bonus
+83248078 - SUNDAY HANDICAP 9BALL +BONUS 50
+83440396 - HALL OF FAME (2) 9BALL WINNER TAKE ALL
+83542945 - HALL OF FAME (2) 9BALL B' - C' DIVISION WINNER TAKE ALL
+83590735 - JOLLY BILLIARDS HANDICAP 9-BALL (BOX BREAK)
+83651404 - 2026 Billard Beckmann Men's Open
+83712967 - 👑KING8 THURSDAY 9-BALL HANDICAP👑
+83759593 - Handicap (+40)
+83759752 - *Thursday Handicap* By Enjoy Pool Hall...
+83760019 - HALL OF FAME (2) 9BALL "TOP" 16
+83784730 - HALL OF FAME(2)  9BALL B'-C' DIVISION WINNER TAKE ALL
