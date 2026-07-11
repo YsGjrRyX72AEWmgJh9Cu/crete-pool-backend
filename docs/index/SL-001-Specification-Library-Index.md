@@ -77,6 +77,10 @@ Draft documents shall not be registered.
 | CE-002 | Tournament Specification | Core Entity Specification | 1.0 | Stable Reference Specification |
 | CE-003 | Match Specification | Core Entity Specification | 1.0 | Stable Reference Specification |
 | RE-001 | Tournament Participation Specification | Relationship Entity Specification | 1.0 | Stable Reference Specification |
+| VO-001 | Country | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-002 | Discipline | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-003 | Category | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-004 | Round | Value Object Specification | 1.0 | Stable Reference Specification |
 
 ---
 

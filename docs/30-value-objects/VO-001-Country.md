@@ -12,7 +12,7 @@
 
 # Purpose
 
-Defines the Country Value Object used throughout the Hellenic American Pool History Platform.
+Defines the Country Value Object used throughout the Domain Model of the Hellenic American Pool History Platform.
 
 The Country Value Object represents the country associated with a domain concept while ensuring consistency, immutability and reuse across the Domain Model.
 
@@ -28,7 +28,7 @@ Implementation details are intentionally excluded.
 
 Country is an immutable Value Object representing a sovereign state or territory recognized by the platform.
 
-Country provides a standardized representation that can be reused consistently across multiple domain entities.
+Country provides a standardized and immutable representation that can be reused consistently across the Domain Model.
 
 # Responsibilities
 
@@ -158,4 +158,3 @@ The Value Object promotes consistency, reuse and interoperability between Specif
 | **Architecture Review** | Approved |
 | **Version** | 1.0 |
 | **Status** | Stable Reference Specification |
-
