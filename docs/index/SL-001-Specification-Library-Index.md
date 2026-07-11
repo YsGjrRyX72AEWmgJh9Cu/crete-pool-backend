@@ -63,9 +63,11 @@ Draft documents shall not be registered.
 
 # Registered Documents
 
-| ID | Document | Type | Version | Status |
-|----|----------|------|---------|--------|
-| GOV-008 | Specification Template | Governance Standard | 1.0 | Stable Reference Specification |
+| ID         | Document                     | Type                          | Version | Status                             |
+| ---------- | ---------------------------- | ----------------------------- | ------- | ---------------------------------- |
+| GOV-008    | Specification Template       | Governance Standard           | 1.0     | Stable Reference Specification     |
+| CE-001     | Player Specification         | Core Entity Specification     | 1.0     | Stable Reference Specification     |
+| **CE-002** | **Tournament Specification** | **Core Entity Specification** | **1.0** | **Stable Reference Specification** |
 
 ---
 
