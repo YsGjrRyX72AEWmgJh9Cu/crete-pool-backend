@@ -220,6 +220,18 @@ Approved specifications become Stable Reference Specifications and constitute th
 
 ---
 
+## Canonical Source
+
+Each Specification shall serve as the canonical source for its corresponding domain concept.
+
+Domain terminology shall be defined by the Domain Glossary (GOV-011).
+
+Duplicate definitions across Specifications, Governance Documents and supporting documentation shall be avoided.
+
+Other documents shall reference the corresponding Specification rather than redefining the same concept.
+
+---
+
 # Change Control
 
 Changes to approved specifications shall follow the Architecture Review process.

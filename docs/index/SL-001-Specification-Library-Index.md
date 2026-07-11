@@ -22,7 +22,9 @@ It provides a single authoritative index of every document that has successfully
 
 # Scope
 
-This index includes every approved document contained in the Specification Library, including:
+This index registers every approved document contained in the Specification Library.
+
+Categories without approved documents remain reserved for future use.
 
 - Governance Standards
 - Core Entity Specifications
@@ -63,15 +65,18 @@ Draft documents shall not be registered.
 
 # Registered Documents
 
-| ID      | Document                               | Type                              | Version | Status                         |
-| ------- | -------------------------------------- | --------------------------------- | ------- | ------------------------------ |
-| GOV-008 | Specification Template                 | Governance Standard               | 1.0     | Stable Reference Specification |
-| GOV-009 | Architecture Baseline Review v1.0      | Governance Review                 | 1.0     | Stable Reference Specification |
-| GOV-010 | Architecture Improvement Log           | Governance Register               | 1.0     | Stable Reference Specification |
-| CE-001  | Player Specification                   | Core Entity Specification         | 1.0     | Stable Reference Specification |
-| CE-002  | Tournament Specification               | Core Entity Specification         | 1.0     | Stable Reference Specification |
-| CE-003  | Match Specification                    | Core Entity Specification         | 1.0     | Stable Reference Specification |
-| RE-001  | Tournament Participation Specification | Relationship Entity Specification | 1.0     | Stable Reference Specification |
+| ID | Document | Type | Version | Status |
+|----|----------|------|---------|--------|
+| GOV-001 | Governance Index | Governance Index | 1.0 | Stable Reference Specification |
+| GOV-008 | Specification Template | Governance Standard | 1.0 | Stable Reference Specification |
+| GOV-009 | Architecture Baseline Review v1.0 | Governance Review | 1.0 | Stable Reference Specification |
+| GOV-010 | Architecture Improvement Log | Governance Register | 1.0 | Stable Reference Specification |
+| GOV-011 | Domain Glossary | Governance Reference | 1.0 | Stable Reference Specification |
+| GOV-012 | Architecture Review Checklists | Governance Standard | 1.0 | Stable Reference Specification |
+| CE-001 | Player Specification | Core Entity Specification | 1.0 | Stable Reference Specification |
+| CE-002 | Tournament Specification | Core Entity Specification | 1.0 | Stable Reference Specification |
+| CE-003 | Match Specification | Core Entity Specification | 1.0 | Stable Reference Specification |
+| RE-001 | Tournament Participation Specification | Relationship Entity Specification | 1.0 | Stable Reference Specification |
 
 ---
 

@@ -24,6 +24,7 @@ It provides traceability for future architectural evolution while preserving the
 | ID | Status | Priority | Description | Affected Documents | Target Version |
 |----|--------|----------|-------------|--------------------|----------------|
 | AI-001 | Open | Low | Clarify the distinction between Lifecycle States and Status Value Objects across all Entity Specifications. | CE-001, CE-002, CE-003, RE-001 | v1.1 |
+| AI-002 | Open | Low | Clarify that Value Object Specifications may explicitly mark the Relationships and Lifecycle sections as "Not Applicable" in accordance with the Specification Template. | GOV-008 | v1.1 |
 
 ---
 
