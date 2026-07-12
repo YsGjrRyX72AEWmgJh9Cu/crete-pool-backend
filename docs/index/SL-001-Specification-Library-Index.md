@@ -82,6 +82,10 @@ Draft documents shall not be registered.
 | VO-003 | Category | Value Object Specification | 1.0 | Stable Reference Specification |
 | VO-004 | Round | Value Object Specification | 1.0 | Stable Reference Specification |
 | VO-005 | Score | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-006 | Final Position | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-007 | Match Status | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-008 | Tournament Status | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-009 | Participation Status | Value Object Specification | 1.0 | Stable Reference Specification |
 
 ---
 
