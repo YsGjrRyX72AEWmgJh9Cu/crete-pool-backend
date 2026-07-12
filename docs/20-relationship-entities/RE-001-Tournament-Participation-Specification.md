@@ -6,8 +6,8 @@
 | **Document ID** | RE-001 |
 | **Document Name** | Tournament Participation Specification |
 | **Version** | 1.0 |
-| **Status** | Draft |
-| **Review Status** | Pending Architecture Review |
+| **Status** | Stable Reference Specification |
+| **Review Status** | Architecture Review: Approved |
 | **Owner** | Domain Architecture |
 
 ---
@@ -90,7 +90,9 @@ Tournament Participation does not own Match entities.
 
 ## Value Objects
 
-The Tournament Participation uses approved Value Objects where appropriate to represent immutable domain concepts.
+The Tournament Participation uses the approved Participation Status and Final Position Value Objects.
+
+Other approved Value Objects are not applicable to this entity.
 
 ---
 
@@ -173,7 +175,7 @@ When assigned, the Final Position shall be represented using the approved Final 
 
 ### BR-007 – Match Eligibility
 
-Only an active Tournament Participation shall make a Player eligible to participate in Matches belonging to the associated Tournament.
+Only a Tournament Participation with the Participating status shall make a Player eligible to participate in Matches belonging to the associated Tournament.
 
 ---
 
@@ -237,8 +239,6 @@ Tournament Participation serves as the authoritative source for the relationship
 
 - GOV-008 – Specification Template
 - SL-001 – Specification Library Index
-- Domain Model v2.0
-- Architecture Guide
 - CE-001 – Player Specification
 - CE-002 – Tournament Specification
 - CE-003 – Match Specification

@@ -6,8 +6,8 @@
 | **Document ID** | CE-003 |
 | **Document Name** | Match Specification |
 | **Version** | 1.0 |
-| **Status** | Draft |
-| **Review Status** | Pending Architecture Review |
+| **Status** | Stable Reference Specification |
+| **Review Status** | Architecture Review: Approved |
 | **Owner** | Domain Architecture |
 
 ---
@@ -92,7 +92,9 @@ A Match shall not reference Players who are not registered participants of the T
 
 ## Value Objects
 
-The Match uses approved Value Objects where appropriate to represent immutable domain concepts.
+The Match uses the approved Round, Match Status and Score Value Objects.
+
+Other approved Value Objects are not applicable to this entity.
 
 ---
 
@@ -173,7 +175,8 @@ Every Match shall always have one valid Match Status.
 
 ### BR-006 – Official Score
 
-When a Match has been completed, the official result shall be represented using the approved Score Value Object.
+When a Match has been completed with an official result,
+the result shall be represented using the approved Score Value Object.
 
 ---
 
@@ -237,8 +240,6 @@ This separation preserves clear domain responsibilities and supports future expa
 
 - GOV-008 – Specification Template
 - SL-001 – Specification Library Index
-- Domain Model v2.0
-- Architecture Guide
 - CE-001 – Player Specification
 - CE-002 – Tournament Specification
 - RE-001 – Tournament Participation Specification

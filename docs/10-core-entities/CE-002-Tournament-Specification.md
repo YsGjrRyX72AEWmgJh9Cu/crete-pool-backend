@@ -6,8 +6,8 @@
 | **Document ID** | CE-002 |
 | **Document Name** | Tournament Specification |
 | **Version** | 1.0 |
-| **Status** | Draft |
-| **Review Status** | Pending Architecture Review |
+| **Status** | Stable Reference Specification |
+| **Review Status** | Architecture Review: Approved |
 | **Owner** | Domain Architecture |
 
 ---
@@ -92,7 +92,9 @@ Each Match belongs to exactly one Tournament.
 
 ## Value Objects
 
-The Tournament uses approved Value Objects where appropriate to represent immutable domain concepts.
+The Tournament uses the approved Discipline, Category and Tournament Status Value Objects.
+
+Other approved Value Objects are not applicable to this entity.
 
 ---
 
@@ -243,8 +245,6 @@ Player registrations, participation-specific data and competitive progression ar
 
 - GOV-008 – Specification Template
 - SL-001 – Specification Library Index
-- Domain Model v2.0
-- Architecture Guide
 - CE-001 – Player Specification
 - RE-001 – Tournament Participation Specification
 - VO-002 – Discipline

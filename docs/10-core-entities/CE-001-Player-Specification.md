@@ -6,8 +6,8 @@
 | **Document ID** | CE-001 |
 | **Document Name** | Player Specification |
 | **Version** | 1.0 |
-| **Status** | Draft |
-| **Review Status** | Pending Architecture Review |
+| **Status** | Stable Reference Specification |
+| **Review Status** | Architecture Review: Approved |
 | **Owner** | Domain Architecture |
 
 ---
@@ -35,73 +35,6 @@ It covers:
 Implementation details are intentionally excluded.
 
 ---
-
-# Domain Definition
-
-> *To be completed.*
-
----
-
-# Responsibilities
-
-> *To be completed.*
-
----
-
-# Relationships
-
-> *To be completed.*
-
----
-
-# Attributes
-
-> *To be completed.*
-
----
-
-# Value Objects
-
-> *To be completed.*
-
----
-
-# Business Rules
-
-> *To be completed.*
-
----
-
-# Domain Invariants
-
-> *To be completed.*
-
----
-
-# Lifecycle
-
-> *To be completed.*
-
----
-
-# Notes
-
-None.
-
----
-
-# References
-
-- Domain Model v2.0
-- GOV-008 Specification Template
-- RE-001 Tournament Participation Specification
-- VO Specifications
-
----
-
-# Architecture Review
-
-Pending.
 
 # Domain Definition
 
@@ -161,6 +94,10 @@ Match participation is determined by tournament progression and recorded indepen
 ## Value Objects
 
 The Player uses approved Value Objects where appropriate to represent immutable domain concepts.
+
+The Player currently uses only the Country Value Object.
+
+Other approved Value Objects are not applicable to this entity.
 
 ---
 
@@ -295,8 +232,6 @@ Competitive history is represented through relationships rather than embedded co
 
 - GOV-008 – Specification Template
 - SL-001 – Specification Library Index
-- Domain Model v2.0
-- Architecture Guide
 - RE-001 – Tournament Participation Specification
 - VO-001 – Country
 
