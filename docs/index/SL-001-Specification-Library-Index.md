@@ -81,6 +81,7 @@ Draft documents shall not be registered.
 | VO-002 | Discipline | Value Object Specification | 1.0 | Stable Reference Specification |
 | VO-003 | Category | Value Object Specification | 1.0 | Stable Reference Specification |
 | VO-004 | Round | Value Object Specification | 1.0 | Stable Reference Specification |
+| VO-005 | Score | Value Object Specification | 1.0 | Stable Reference Specification |
 
 ---
 
