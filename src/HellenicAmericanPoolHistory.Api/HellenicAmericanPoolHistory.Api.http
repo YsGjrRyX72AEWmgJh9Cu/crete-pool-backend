@@ -1,0 +1,6 @@
+@HellenicAmericanPoolHistory.Api_HostAddress = http://localhost:5103
+
+GET {{HellenicAmericanPoolHistory.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

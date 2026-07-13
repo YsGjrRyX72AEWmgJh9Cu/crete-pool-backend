@@ -1,5 +1,14 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/HellenicAmericanPoolHistory.Api/HellenicAmericanPoolHistory.Api.csproj" />
+    <Project Path="src/HellenicAmericanPoolHistory.Application/HellenicAmericanPoolHistory.Application.csproj" />
     <Project Path="src/HellenicAmericanPoolHistory.Domain/HellenicAmericanPoolHistory.Domain.csproj" />
+    <Project Path="src/HellenicAmericanPoolHistory.Infrastructure/HellenicAmericanPoolHistory.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HellenicAmericanPoolHistory.Api.Tests/HellenicAmericanPoolHistory.Api.Tests.csproj" />
+    <Project Path="tests/HellenicAmericanPoolHistory.Application.Tests/HellenicAmericanPoolHistory.Application.Tests.csproj" />
+    <Project Path="tests/HellenicAmericanPoolHistory.Domain.Tests/HellenicAmericanPoolHistory.Domain.Tests.csproj" />
+    <Project Path="tests/HellenicAmericanPoolHistory.Infrastructure.Tests/HellenicAmericanPoolHistory.Infrastructure.Tests.csproj" />
   </Folder>
 </Solution>
