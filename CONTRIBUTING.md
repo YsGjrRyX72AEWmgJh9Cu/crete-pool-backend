@@ -196,10 +196,10 @@ Please keep the project documentation up to date whenever necessary.
 
 The following documents describe the project:
 
-* `README.md`
-* `PROJECT_CONTEXT.md`
-* `DOMAIN_MODEL.md`
-* `DEVELOPMENT_LOG.md`
-* `CONTRIBUTING.md`
+- `README.md`
+- `CONTRIBUTING.md`
+- `docs/00-overview/PROJECT_CONTEXT.md`
+- `docs/01-architecture/DOMAIN_MODEL.md`
+- `docs/04-implementation/DEVELOPMENT_LOG.md`
 
 Documentation is considered part of the project and should evolve together with the source code.
