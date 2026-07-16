@@ -138,3 +138,13 @@ Every completed feature must satisfy:
 - Successful tests
 - Clean git status
 - Meaningful commit
+
+---
+
+## Refactoring
+
+✔ Unified strongly typed identifiers using readonly record struct
+
+Git Commits
+
+✔ refactor(domain): unify strongly typed identifiers
