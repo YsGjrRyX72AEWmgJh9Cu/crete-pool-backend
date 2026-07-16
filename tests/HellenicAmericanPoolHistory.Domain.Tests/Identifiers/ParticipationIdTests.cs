@@ -3,7 +3,7 @@ using HellenicAmericanPoolHistory.Domain.Identifiers;
 namespace HellenicAmericanPoolHistory.Domain.Tests.Identifiers;
 
 /// <summary>
-/// Unit tests for the <see cref="ParticipationId"/> value object.
+/// Unit tests for the <see cref="TournamentId"/>.
 /// </summary>
 public class ParticipationIdTests
 {

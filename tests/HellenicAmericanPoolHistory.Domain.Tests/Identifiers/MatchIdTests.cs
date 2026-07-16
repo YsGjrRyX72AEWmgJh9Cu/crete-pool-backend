@@ -3,18 +3,18 @@ using HellenicAmericanPoolHistory.Domain.Identifiers;
 namespace HellenicAmericanPoolHistory.Domain.Tests.Identifiers;
 
 /// <summary>
-/// Unit tests for the <see cref="PlayerId"/>.
+/// Unit tests for the <see cref="MatchId"/>.
 /// </summary>
-public class PlayerIdTests
+public class MatchIdTests
 {
     [Fact]
-    public void PlayerIds_With_Same_Value_Should_Be_Equal()
+    public void MatchIds_With_Same_Value_Should_Be_Equal()
     {
         // Arrange
         var id = Guid.NewGuid();
 
-        var first = new PlayerId(id);
-        var second = new PlayerId(id);
+        var first = new MatchId(id);
+        var second = new MatchId(id);
 
         // Act
         var result = first.Equals(second);
@@ -24,11 +24,11 @@ public class PlayerIdTests
     }
 
     [Fact]
-    public void PlayerIds_With_Different_Value_Should_Not_Be_Equal()
+    public void MatchIds_With_Different_Value_Should_Not_Be_Equal()
     {
         // Arrange
-        var first = PlayerId.New();
-        var second = PlayerId.New();
+        var first = MatchId.New();
+        var second = MatchId.New();
 
         // Act
         var result = first.Equals(second);
@@ -41,7 +41,7 @@ public class PlayerIdTests
     public void New_Should_Create_Non_Empty_Guid()
     {
         // Arrange
-        var id = PlayerId.New();
+        var id = MatchId.New();
 
         // Assert
         Assert.NotEqual(Guid.Empty, id.Value);
