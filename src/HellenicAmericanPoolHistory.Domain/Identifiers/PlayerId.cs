@@ -1,9 +1,12 @@
+using HellenicAmericanPoolHistory.Domain.Common.Abstractions;
+
 namespace HellenicAmericanPoolHistory.Domain.Identifiers;
 
 /// <summary>
 /// Strongly typed identifier for a player.
 /// </summary>
 public readonly record struct PlayerId(Guid Value)
+    : IStronglyTypedId<Guid>
 {
     /// <summary>
     /// Creates a new unique player identifier.
