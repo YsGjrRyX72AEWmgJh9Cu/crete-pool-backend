@@ -15,23 +15,23 @@ public sealed class Player : Entity<PlayerId>
     /// <param name="id">The player identifier.</param>
     /// <param name="firstName">The player's first name.</param>
     /// <param name="lastName">The player's last name.</param>
-    /// <param name="country">The player's country.</param>
+    /// <param name="countryOfOrigin">The player's country of origin.</param>
     /// <param name="birthDate">The player's birth date.</param>
     public Player(
         PlayerId id,
         string firstName,
         string lastName,
-        Country country,
+        Country countryOfOrigin,
         DateOnly? birthDate = null)
         : base(id)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
         ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
-        ArgumentNullException.ThrowIfNull(country);
+        ArgumentNullException.ThrowIfNull(countryOfOrigin);
 
         FirstName = firstName.Trim();
         LastName = lastName.Trim();
-        Country = country;
+        CountryOfOrigin = countryOfOrigin;
         BirthDate = birthDate;
     }
 
@@ -51,9 +51,9 @@ public sealed class Player : Entity<PlayerId>
     public string FullName => $"{FirstName} {LastName}";
 
     /// <summary>
-    /// Gets the player's country.
+    /// Gets the player's country of origin.
     /// </summary>
-    public Country Country { get; }
+    public Country CountryOfOrigin { get; }
 
     /// <summary>
     /// Gets the player's birth date.

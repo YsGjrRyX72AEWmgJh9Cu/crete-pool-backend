@@ -27,7 +27,7 @@ public class PlayerTests
         Assert.Equal(id, player.Id);
         Assert.Equal("Manos", player.FirstName);
         Assert.Equal("Menioudakis", player.LastName);
-        Assert.Equal(country, player.Country);
+        Assert.Equal(country, player.CountryOfOrigin);
     }
 
     [Fact]

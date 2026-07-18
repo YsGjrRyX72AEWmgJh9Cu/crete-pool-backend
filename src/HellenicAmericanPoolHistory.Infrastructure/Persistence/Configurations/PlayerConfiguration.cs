@@ -52,7 +52,7 @@ public sealed class PlayerConfiguration : IEntityTypeConfiguration<Player>
 
     private static void ConfigureCountry(EntityTypeBuilder<Player> builder)
     {
-        builder.Property(player => player.Country)
+        builder.Property(player => player.CountryOfOrigin)
             .HasConversion(
                 country => country.Value,
                 value => new Country(value))
