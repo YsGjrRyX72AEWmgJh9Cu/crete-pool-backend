@@ -1,4 +1,5 @@
 using HellenicAmericanPoolHistory.Domain.Entities;
+using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using Microsoft.EntityFrameworkCore;
 

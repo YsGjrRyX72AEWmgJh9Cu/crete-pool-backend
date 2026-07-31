@@ -1,6 +1,5 @@
-using HellenicAmericanPoolHistory.Domain.ValueObjects;
-using HellenicAmericanPoolHistory.Domain.Entities;
-using HellenicAmericanPoolHistory.Domain.Identifiers;
+using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,7 +19,7 @@ public sealed class TournamentConfiguration : IEntityTypeConfiguration<Tournamen
         ConfigureTable(builder);
         ConfigureKey(builder);
         ConfigureProperties(builder);
-        ConfigureValueObjects(builder);
+        ConfigureRelationships(builder);
     }
 
     private static void ConfigureTable(EntityTypeBuilder<Tournament> builder)
@@ -43,34 +42,38 @@ public sealed class TournamentConfiguration : IEntityTypeConfiguration<Tournamen
             .IsRequired()
             .HasMaxLength(200);
 
+        builder.Property(tournament => tournament.TournamentType)
+            .HasConversion<string>()
+            .IsRequired();
+
+        builder.Property(tournament => tournament.TournamentStatus)
+            .HasConversion<string>()
+            .IsRequired();
+
+        builder.Property(tournament => tournament.BracketType)
+            .HasConversion<string>()
+            .IsRequired();
+
+        builder.Property(tournament => tournament.GameSet)
+            .HasConversion<string>()
+            .IsRequired();
+
         builder.Property(tournament => tournament.StartDate)
             .IsRequired();
 
         builder.Property(tournament => tournament.EndDate)
             .IsRequired();
+
+        builder.Property(tournament => tournament.VenueId)
+            .HasConversion(new StronglyTypedIdConverter<VenueId>())
+            .IsRequired();
     }
 
-    private static void ConfigureValueObjects(EntityTypeBuilder<Tournament> builder)
+    private static void ConfigureRelationships(EntityTypeBuilder<Tournament> builder)
     {
-        builder.Property(tournament => tournament.Country)
-            .HasConversion(
-                country => country.Value,
-                value => new Country(value))
-            .HasMaxLength(100)
-            .IsRequired();
-
-        builder.Property(tournament => tournament.Discipline)
-            .HasConversion(
-                discipline => discipline.Value,
-                value => new Discipline(value))
-            .HasMaxLength(100)
-            .IsRequired();
-
-        builder.Property(tournament => tournament.Category)
-            .HasConversion(
-                category => category.Value,
-                value => new Category(value))
-            .HasMaxLength(100)
-            .IsRequired();
+        builder.HasOne<Venue>()
+            .WithMany()
+            .HasForeignKey(tournament => tournament.VenueId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
