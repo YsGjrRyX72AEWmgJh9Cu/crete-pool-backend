@@ -1,4 +1,5 @@
 using HellenicAmericanPoolHistory.Domain.Entities;
+using HellenicAmericanPoolHistory.Domain.Venue;
 using Microsoft.EntityFrameworkCore;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Persistence;
@@ -25,6 +26,8 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Participation> Participations => Set<Participation>();
 
     public DbSet<Match> Matches => Set<Match>();
+
+    public DbSet<Venue> Venues => Set<Venue>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
