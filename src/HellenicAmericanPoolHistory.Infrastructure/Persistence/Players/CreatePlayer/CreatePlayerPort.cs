@@ -2,7 +2,7 @@ using HellenicAmericanPoolHistory.Application.Features.Players.CreatePlayer;
 using HellenicAmericanPoolHistory.Domain.Entities;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 
-namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Players;
+namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Players.CreatePlayer;
 
 /// <summary>
 /// Persists newly created players.

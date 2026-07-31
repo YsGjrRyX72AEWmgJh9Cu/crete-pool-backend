@@ -18,7 +18,7 @@ public sealed class CreatePlayerHandler
         _port = port;
     }
 
-    public async Task<PlayerId> HandleAsync(
+    public async Task<CreatePlayerResponse> HandleAsync(
         CreatePlayerCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -33,6 +33,9 @@ public sealed class CreatePlayerHandler
             new Country(command.CountryOfOrigin),
             command.BirthDate);
 
-        return await _port.CreateAsync(player, cancellationToken);
+        var createdPlayerId =
+            await _port.CreateAsync(player, cancellationToken);
+
+        return new CreatePlayerResponse(createdPlayerId.Value);
     }
 }

@@ -36,14 +36,37 @@ public sealed class Player : Entity<PlayerId>
     }
 
     /// <summary>
+    /// Updates the player's information.
+    /// </summary>
+    /// <param name="firstName">The player's first name.</param>
+    /// <param name="lastName">The player's last name.</param>
+    /// <param name="countryOfOrigin">The player's country of origin.</param>
+    /// <param name="birthDate">The player's birth date.</param>
+    public void Update(
+        string firstName,
+        string lastName,
+        Country countryOfOrigin,
+        DateOnly? birthDate)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
+        ArgumentNullException.ThrowIfNull(countryOfOrigin);
+
+        FirstName = firstName.Trim();
+        LastName = lastName.Trim();
+        CountryOfOrigin = countryOfOrigin;
+        BirthDate = birthDate;
+    }
+
+    /// <summary>
     /// Gets the player's first name.
     /// </summary>
-    public string FirstName { get; }
+    public string FirstName { get; private set; }
 
     /// <summary>
     /// Gets the player's last name.
     /// </summary>
-    public string LastName { get; }
+    public string LastName { get; private set; }
 
     /// <summary>
     /// Gets the player's full name.
@@ -53,10 +76,10 @@ public sealed class Player : Entity<PlayerId>
     /// <summary>
     /// Gets the player's country of origin.
     /// </summary>
-    public Country CountryOfOrigin { get; }
+    public Country CountryOfOrigin { get; private set; }
 
     /// <summary>
     /// Gets the player's birth date.
     /// </summary>
-    public DateOnly? BirthDate { get; }
+    public DateOnly? BirthDate { get; private set; }
 }

@@ -1,260 +1,235 @@
-# DOMAIN MODEL
+# Domain Model
 
 > This document describes the business domain of the Hellenic American Pool History project.
 
 ---
 
-# Domain Overview
+# Purpose
 
-The system stores historical information about:
+The Hellenic American Pool History domain is responsible for preserving the historical record of pocket billiards competitions.
 
-- Players
-- Tournaments
-- Participations
-- Matches
-- Rankings
-- Statistics
+The primary goal of the system is to accurately represent players, tournaments, venues, organizations, participations and match results while preserving historical integrity.
 
-The Domain layer contains only business concepts.
+The domain is designed following Domain-Driven Design (DDD) principles using:
+
+- Aggregates
+- Entities
+- Value Objects
+- Strongly Typed Identifiers
+- Domain Events (future)
+
+This document is the authoritative description of the business domain.
 
 ---
 
-# Current Domain Model
+# Core Aggregates
 
-## Player
+The domain is organized around the following aggregates.
 
-Represents a person participating in pool tournaments.
+---
 
-Properties
+# Aggregate Relationships
 
-- PlayerId
-- FirstName
-- LastName
-- Country
+The aggregates are related as follows:
 
-Status
+```text
+Organization
+      │
+      ▼
+Tournament Series
+      │
+      ▼
+Tournament ─────────────► Venue
+      │
+      ├────────────► Participant ───────────► Player
+      │
+      ▼
+Bracket
+      │
+      ▼
+Match
+```
 
-✔ Implemented
+## Relationship Rules
+
+- An Organization owns zero or more Tournament Series.
+- A Tournament Series contains zero or more Tournaments.
+- A Tournament is held at exactly one Venue.
+- A Tournament contains zero or more Participants.
+- A Participant references exactly one Player.
+- A Tournament owns exactly one Bracket.
+- A Bracket contains one or more Matches.
+- A Match is always part of a single Bracket.
+
+---
+
+## Organization
+
+Represents an organization responsible for managing tournaments.
+
+Examples:
+
+- Hellenic American Pool Association
+- Local Pool Club
+
+Responsibilities:
+
+- Owns tournament series.
+- Defines organizational context.
+
+---
+
+## Tournament Series
+
+Represents a recurring collection of tournaments.
+
+Examples:
+
+- Monthly Championship
+- Summer Open Series
+
+Responsibilities:
+
+- Groups related tournaments.
+- Provides historical continuity.
 
 ---
 
 ## Tournament
 
-Represents a tournament.
+Represents a single tournament event.
 
-Properties
+Responsibilities:
 
-- TournamentId
-- Name
-- Country
-- Discipline
-- Category
-- StartDate
-- EndDate
+- Defines tournament rules.
+- References the venue.
+- Contains participants.
+- Produces the competition bracket.
 
-Business Rule
+---
 
-- EndDate cannot be before StartDate.
+## Venue
 
-Status
+Represents the physical location where tournaments are held.
 
-✔ Implemented
+Responsibilities:
+
+- Stores venue information.
+- Defines geographical location.
+
+---
+
+## Player
+
+Represents a person participating in tournaments.
+
+Responsibilities:
+
+- Stores player identity.
+- Maintains historical participation.
+
+---
+
+## Participant
+
+Represents a player's participation in a specific tournament.
+
+Responsibilities:
+
+- Connects a player with a tournament.
+- Stores tournament-specific information.
+
+---
+
+## Bracket
+
+Represents the tournament bracket.
+
+Responsibilities:
+
+- Organizes matches.
+- Determines tournament progression.
+
+---
+
+## Match
+
+Represents a played match between participants.
+
+Responsibilities:
+
+- Stores the result.
+- Determines winner and loser.
 
 ---
 
 # Value Objects
 
-## Country
+The domain uses Value Objects to model concepts that are identified by their values rather than by identity.
 
-Represents a country.
+## VenueLocation
 
-Examples
+Represents the physical location of a venue.
 
-- Greece
-- Cyprus
-- Germany
+Properties:
 
-Status
-
-✔ Implemented
+- Country
+- City
+- Address (optional)
 
 ---
 
-## Discipline
+## GameSet
 
-Represents the discipline played.
+Represents the discipline played during a tournament.
 
-Examples
+Examples:
 
 - 8-Ball
 - 9-Ball
 - 10-Ball
 - Straight Pool
 
-Status
-
-✔ Implemented
-
 ---
 
-## Category
+## TournamentType
 
-Represents the tournament category.
+Represents the type of tournament.
 
-Examples
+Examples:
 
+- Weekly
+- Monthly
 - Open
-- Women
+- Championship
+- Team
+- Handicap
 - Junior
-- Senior
-
-Status
-
-✔ Implemented
+- Invitational
 
 ---
 
-# Strongly Typed Identifiers
+## TournamentStatus
 
-## PlayerId
+Represents the lifecycle of a tournament.
 
-Wraps Guid.
+Examples:
 
-Status
-
-✔ Implemented
-
----
-
-## TournamentId
-
-Wraps Guid.
-
-Status
-
-✔ Implemented
+- Draft
+- Published
+- RegistrationOpen
+- InProgress
+- Completed
+- Cancelled
 
 ---
 
-# Entity Relationships
+## BracketType
 
-Current
+Represents the competition format.
 
-```
-Player
+Examples:
 
-Tournament
-```
-
-Planned
-
-```
-Player
-    │
-    │ participates in
-    ▼
-Participation
-    │
-    ▼
-Tournament
-```
-
-Later
-
-```
-Tournament
-      │
-      ▼
-Match
-      │
-      ▼
-Result
-```
-
-Later
-
-```
-Player
-      │
-      ▼
-Ranking
-```
-
----
-
-# Planned Entities
-
-The following entities are expected to be implemented.
-
-## Participation
-
-Represents a player's participation in a tournament.
-
-Status
-
-⬜ Planned
-
----
-
-## Match
-
-Represents a played match.
-
-Status
-
-⬜ Planned
-
----
-
-## Ranking
-
-Represents tournament standings.
-
-Status
-
-⬜ Planned
-
----
-
-## Statistics
-
-Represents player statistics.
-
-Status
-
-⬜ Planned
-
----
-
-# Domain Rules
-
-Current rules
-
-✔ Tournament end date must not be before start date.
-
-Future rules
-
-- A player cannot participate twice in the same tournament.
-- Rankings are unique per tournament.
-- Match winner must be one of the participating players.
-- Statistics are derived from historical results.
-
----
-
-# Implementation Progress
-
-| Domain Object | Status |
-|---------------|--------|
-| Entity<TId> | ✔ |
-| ValueObject | ✔ |
-| PlayerId | ✔ |
-| TournamentId | ✔ |
-| Country | ✔ |
-| Discipline | ✔ |
-| Category | ✔ |
-| Player | ✔ |
-| Tournament | ✔ |
-| Participation | ⬜ |
-| Match | ⬜ |
-| Ranking | ⬜ |
-| Statistics | ⬜ |
+- Single Elimination
+- Double Elimination
+- Round Robin
