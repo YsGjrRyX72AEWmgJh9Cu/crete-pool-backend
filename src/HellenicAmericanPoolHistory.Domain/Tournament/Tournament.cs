@@ -66,6 +66,32 @@ public sealed class Tournament : Entity<TournamentId>
         Name = name.Trim();
     }
 
+    /// <summary>
+    /// Updates the tournament while it is still in Draft status.
+    /// </summary>
+    /// <param name="data">The updated tournament data.</param>
+    public void Edit(TournamentData data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        EnsureStatus(TournamentStatus.Draft);
+
+        Rename(data.Name);
+
+        if (data.EndDate < data.StartDate)
+        {
+            throw new ArgumentException(
+                "End date cannot be before start date.");
+        }
+
+        TournamentType = data.TournamentType;
+        BracketType = data.BracketType;
+        GameSet = data.GameSet;
+        StartDate = data.StartDate;
+        EndDate = data.EndDate;
+        VenueId = data.VenueId;
+    }
+
     public void Schedule()
     {
         EnsureStatus(TournamentStatus.Draft);

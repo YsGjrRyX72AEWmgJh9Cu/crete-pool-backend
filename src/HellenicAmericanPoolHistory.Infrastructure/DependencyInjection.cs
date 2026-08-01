@@ -24,6 +24,8 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournament
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournaments;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournaments;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.UpdateTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.UpdateTournament;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -57,6 +59,10 @@ public static class DependencyInjection
 
         services.AddScoped<IGetTournamentsPort, GetTournamentsPort>();
 
+        Console.WriteLine("Registering IUpdateTournamentPort...");
+        services.AddScoped<IUpdateTournamentPort, UpdateTournamentPort>();
+        Console.WriteLine("Registered IUpdateTournamentPort.");
+        
         return services;
     }
 }
