@@ -20,6 +20,8 @@ using HellenicAmericanPoolHistory.Application.Features.Venues.GetVenue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.GetVenue;
 using HellenicAmericanPoolHistory.Application.Features.Venues.GetVenues;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.GetVenues;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournament;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -48,6 +50,8 @@ public static class DependencyInjection
         services.AddScoped<IGetVenuePort, GetVenuePort>();
 
         services.AddScoped<IGetVenuesPort, GetVenuesPort>();
+
+        services.AddScoped<IGetTournamentPort, GetTournamentPort>();
 
         return services;
     }
