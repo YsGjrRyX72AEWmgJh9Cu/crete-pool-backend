@@ -12,6 +12,10 @@ using HellenicAmericanPoolHistory.Infrastructure.Persistence.Players.GetPlayers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.CreateTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CreateTournament;
+using HellenicAmericanPoolHistory.Application.Features.Venues.CreateVenue;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.CreateVenue;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -32,6 +36,10 @@ public static class DependencyInjection
         services.AddScoped<IGetPlayersPort, GetPlayersPort>();
         services.AddScoped<IUpdatePlayerPort, UpdatePlayerPort>();
         services.AddScoped<IDeletePlayerPort, DeletePlayerPort>();
+
+        services.AddScoped<ICreateTournamentPort, CreateTournamentPort>();
+
+        services.AddScoped<ICreateVenuePort, CreateVenuePort>();
 
         return services;
     }
