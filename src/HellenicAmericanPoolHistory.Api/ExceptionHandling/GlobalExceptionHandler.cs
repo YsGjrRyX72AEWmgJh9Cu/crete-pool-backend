@@ -12,6 +12,8 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
+        Console.WriteLine(exception);
+        
         if (exception is not NotFoundException)
         {
             return false;

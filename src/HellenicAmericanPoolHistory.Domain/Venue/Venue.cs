@@ -23,12 +23,24 @@ public sealed class Venue : Entity<VenueId>
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentNullException.ThrowIfNull(location);
 
-        var venue = new Venue(VenueId.New())
+        return new Venue(VenueId.New())
         {
             Name = name.Trim(),
             Location = location
         };
+    }
 
-        return venue;
+    /// <summary>
+    /// Updates the venue.
+    /// </summary>
+    public void Edit(VenueData data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        Name = data.Name.Trim();
+
+        Location = new VenueLocation(
+            data.City,
+            data.Address);
     }
 }

@@ -17,13 +17,14 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournament
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournaments;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.UpdateTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.DeleteTournament;
+using HellenicAmericanPoolHistory.Application.Features.Venues.UpdateVenue;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreatePlayerHandler>();
-
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateVenueRequestValidator>();
 builder.Services.AddScoped<CreatePlayerHandler>();
 builder.Services.AddScoped<GetPlayerHandler>();
 builder.Services.AddScoped<GetPlayersHandler>();
@@ -37,6 +38,7 @@ builder.Services.AddScoped<GetTournamentHandler>();
 builder.Services.AddScoped<GetTournamentsHandler>();
 builder.Services.AddScoped<UpdateTournamentHandler>();
 builder.Services.AddScoped<DeleteTournamentHandler>();
+builder.Services.AddScoped<UpdateVenueHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -81,5 +83,7 @@ app.MapGetTournamentsEndpoint();
 app.MapUpdateTournamentEndpoint();
 
 app.MapDeleteTournamentEndpoint();
+
+app.MapUpdateVenueEndpoint();
 
 app.Run();
