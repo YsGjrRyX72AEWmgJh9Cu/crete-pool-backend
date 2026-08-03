@@ -30,6 +30,8 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.DeleteTournam
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.DeleteTournament;
 using HellenicAmericanPoolHistory.Application.Features.Venues.UpdateVenue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.UpdateVenue;
+using HellenicAmericanPoolHistory.Application.Features.Venues.DeleteVenue;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.DeleteVenue;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -58,8 +60,8 @@ public static class DependencyInjection
         services.AddScoped<IGetVenuePort, GetVenuePort>();
 
         services.AddScoped<IGetVenuesPort, GetVenuesPort>();
-
         services.AddScoped<IUpdateVenuePort, UpdateVenuePort>();
+        services.AddScoped<IDeleteVenuePort, DeleteVenuePort>();
 
         services.AddScoped<IGetTournamentPort, GetTournamentPort>();
 
