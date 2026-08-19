@@ -20,6 +20,8 @@ public sealed class ParticipationConfiguration
         ConfigureTable(builder);
         ConfigureKey(builder);
         ConfigureProperties(builder);
+        ConfigureIndexes(builder);
+        ConfigureRelationships(builder);
     }
 
     private static void ConfigureTable(EntityTypeBuilder<Participation> builder)
@@ -48,5 +50,33 @@ public sealed class ParticipationConfiguration
 
         builder.Property(participation => participation.RegistrationDate)
             .IsRequired();
+
+        builder.Property(participation => participation.Seed);
+
+        builder.Property(participation => participation.Status)
+            .HasConversion<int>()
+            .IsRequired();
+    }
+
+    private static void ConfigureRelationships(
+        EntityTypeBuilder<Participation> builder)
+    {
+        builder.HasOne(participation => participation.Player)
+            .WithMany(player => player.Participations)
+            .HasForeignKey(participation => participation.PlayerId);
+
+        builder.HasOne(participation => participation.Tournament)
+            .WithMany(tournament => tournament.Participations)
+            .HasForeignKey(participation => participation.TournamentId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+    private static void ConfigureIndexes(EntityTypeBuilder<Participation> builder)
+    {
+        builder.HasIndex(participation => new
+        {
+            participation.TournamentId,
+            participation.PlayerId
+        })
+        .IsUnique();
     }
 }
