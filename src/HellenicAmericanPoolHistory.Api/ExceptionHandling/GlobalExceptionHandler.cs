@@ -13,25 +13,45 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
         CancellationToken cancellationToken)
     {
         Console.WriteLine(exception);
-        
-        if (exception is not NotFoundException)
+
+        if (exception is NotFoundException)
         {
-            return false;
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Resource not found",
+                Detail = exception.Message
+            };
+
+            httpContext.Response.StatusCode =
+                StatusCodes.Status404NotFound;
+
+            await httpContext.Response.WriteAsJsonAsync(
+                problemDetails,
+                cancellationToken);
+
+            return true;
         }
 
-        var problemDetails = new ProblemDetails
+        if (exception is ConflictException)
         {
-            Status = StatusCodes.Status404NotFound,
-            Title = "Resource not found",
-            Detail = exception.Message
-        };
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Title = "Conflict",
+                Detail = exception.Message
+            };
 
-        httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            httpContext.Response.StatusCode =
+                StatusCodes.Status409Conflict;
 
-        await httpContext.Response.WriteAsJsonAsync(
-            problemDetails,
-            cancellationToken);
+            await httpContext.Response.WriteAsJsonAsync(
+                problemDetails,
+                cancellationToken);
 
-        return true;
+            return true;
+        }
+
+        return false;
     }
 }

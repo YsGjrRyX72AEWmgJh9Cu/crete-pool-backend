@@ -1,3 +1,5 @@
+using HellenicAmericanPoolHistory.Application.Features.Participations.DeleteParticipation;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Participations.DeleteParticipation;
 using HellenicAmericanPoolHistory.Application.Features.Players.DeletePlayer;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Players.DeletePlayer;
 using HellenicAmericanPoolHistory.Application.Features.Players.UpdatePlayer;
@@ -32,6 +34,30 @@ using HellenicAmericanPoolHistory.Application.Features.Venues.UpdateVenue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.UpdateVenue;
 using HellenicAmericanPoolHistory.Application.Features.Venues.DeleteVenue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.DeleteVenue;
+using HellenicAmericanPoolHistory.Application.Features.Participations.CreateParticipation;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Participations.CreateParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Participations.GetParticipation;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Participations.GetParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Participations.GetParticipations;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Participations.GetParticipations;
+using HellenicAmericanPoolHistory.Application.Features.Participations.UpdateParticipation;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Participations.UpdateParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.CreateMatch;
+using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatch;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.GetMatch;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.ScheduleTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.ScheduleTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.StartTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.StartTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.CompleteTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CompleteTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.CancelTournament;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CancelTournament;
+using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatches;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.GetMatches;
+using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.DeleteMatch;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -48,12 +74,25 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString));
 
         services.AddScoped<ICreatePlayerPort, CreatePlayerPort>();
+        services.AddScoped<ICreateParticipationPort, CreateParticipationPort>();
+        services.AddScoped<IDeleteParticipationPort, DeleteParticipationPort>();
+        services.AddScoped<IGetParticipationPort, GetParticipationPort>();
+        services.AddScoped<IUpdateParticipationPort, UpdateParticipationPort>();
+        services.AddScoped<IGetParticipationsPort, GetParticipationsPort>();
         services.AddScoped<IGetPlayerPort, GetPlayerPort>();
         services.AddScoped<IGetPlayersPort, GetPlayersPort>();
         services.AddScoped<IUpdatePlayerPort, UpdatePlayerPort>();
         services.AddScoped<IDeletePlayerPort, DeletePlayerPort>();
 
         services.AddScoped<ICreateTournamentPort, CreateTournamentPort>();
+
+        services.AddScoped<ICreateMatchPort, CreateMatchPort>();
+
+        services.AddScoped<IGetMatchPort, GetMatchPort>();
+
+        services.AddScoped<IGetMatchesPort, GetMatchesPort>();
+
+        services.AddScoped<IDeleteMatchPort, DeleteMatchPort>();
 
         services.AddScoped<ICreateVenuePort, CreateVenuePort>();
 
@@ -69,7 +108,11 @@ public static class DependencyInjection
 
         services.AddScoped<IUpdateTournamentPort, UpdateTournamentPort>();
         services.AddScoped<IDeleteTournamentPort, DeleteTournamentPort>();
-        
+        services.AddScoped<IScheduleTournamentPort, ScheduleTournamentPort>();
+        services.AddScoped<IStartTournamentPort, StartTournamentPort>();
+        services.AddScoped<ICompleteTournamentPort, CompleteTournamentPort>();
+        services.AddScoped<ICancelTournamentPort, CancelTournamentPort>();
+
         return services;
     }
 }

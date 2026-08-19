@@ -19,11 +19,28 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.UpdateTournam
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.DeleteTournament;
 using HellenicAmericanPoolHistory.Application.Features.Venues.UpdateVenue;
 using HellenicAmericanPoolHistory.Application.Features.Venues.DeleteVenue;
+using HellenicAmericanPoolHistory.Api.Endpoints.Participations;
+using HellenicAmericanPoolHistory.Application.Features.Participations.CreateParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Participations.DeleteParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Participations.GetParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Participations.GetParticipations;
+using HellenicAmericanPoolHistory.Application.Features.Participations.UpdateParticipation;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.ScheduleTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.StartTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.CompleteTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.CancelTournament;
+using HellenicAmericanPoolHistory.Api.Endpoints.Matches;
+using HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
+using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatch;
+using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatches;
+using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTournamentValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateParticipationRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateVenueRequestValidator>();
 builder.Services.AddScoped<CreatePlayerHandler>();
 builder.Services.AddScoped<GetPlayerHandler>();
@@ -38,8 +55,23 @@ builder.Services.AddScoped<GetTournamentHandler>();
 builder.Services.AddScoped<GetTournamentsHandler>();
 builder.Services.AddScoped<UpdateTournamentHandler>();
 builder.Services.AddScoped<DeleteTournamentHandler>();
+builder.Services.AddScoped<ScheduleTournamentHandler>();
+builder.Services.AddScoped<StartTournamentHandler>();
+builder.Services.AddScoped<ScheduleTournamentHandler>();
+builder.Services.AddScoped<CompleteTournamentHandler>();
+builder.Services.AddScoped<StartTournamentHandler>();
+builder.Services.AddScoped<CancelTournamentHandler>();
 builder.Services.AddScoped<UpdateVenueHandler>();
 builder.Services.AddScoped<DeleteVenueHandler>();
+builder.Services.AddScoped<CreateParticipationHandler>();
+builder.Services.AddScoped<CreateMatchHandler>();
+builder.Services.AddScoped<GetMatchHandler>();
+builder.Services.AddScoped<GetMatchesHandler>();
+builder.Services.AddScoped<DeleteMatchHandler>();
+builder.Services.AddScoped<DeleteParticipationHandler>();
+builder.Services.AddScoped<GetParticipationHandler>();
+builder.Services.AddScoped<GetParticipationsHandler>();
+builder.Services.AddScoped<UpdateParticipationHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -79,14 +111,44 @@ app.MapGetVenuesEndpoint();
 
 app.MapGetTournamentEndpoint();
 
+app.MapCompleteTournamentEndpoint();
+
+app.MapCancelTournamentEndpoint();
+
 app.MapGetTournamentsEndpoint();
 
 app.MapUpdateTournamentEndpoint();
 
 app.MapDeleteTournamentEndpoint();
 
+app.MapScheduleTournamentEndpoint();
+
+app.MapStartTournamentEndpoint();
+
 app.MapUpdateVenueEndpoint();
 
 app.MapDeleteVenueEndpoint();
 
+app.MapCreateParticipationEndpoint();
+
+app.MapCreateMatchEndpoint();
+
+app.MapGetMatchEndpoint();
+
+app.MapGetMatchesEndpoint();
+
+app.MapDeleteMatchEndpoint();
+
+app.MapDeleteParticipationEndpoint();
+
+app.MapGetParticipationEndpoint();
+
+app.MapGetParticipationsEndpoint();
+
+app.MapUpdateParticipationEndpoint();
+
 app.Run();
+
+public partial class Program
+{
+}

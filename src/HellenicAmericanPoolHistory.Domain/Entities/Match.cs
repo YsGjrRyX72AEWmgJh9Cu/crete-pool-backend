@@ -1,5 +1,7 @@
 using HellenicAmericanPoolHistory.Domain.Common.Abstractions;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
+using HellenicAmericanPoolHistory.Domain.Tournament;
+using TournamentEntity = HellenicAmericanPoolHistory.Domain.Tournament.Tournament;
 
 namespace HellenicAmericanPoolHistory.Domain.Entities;
 
@@ -12,6 +14,7 @@ public sealed class Match : Entity<MatchId>
     /// Initializes a new instance of the <see cref="Match"/> class.
     /// </summary>
     /// <param name="id">The unique match identifier.</param>
+    /// <param name="tournamentId">The tournament identifier.</param>
     /// <param name="participant1Id">The first participant.</param>
     /// <param name="participant2Id">The second participant.</param>
     /// <param name="winnerParticipationId">The winning participant.</param>
@@ -30,6 +33,7 @@ public sealed class Match : Entity<MatchId>
     /// </exception>
     public Match(
         MatchId id,
+        TournamentId tournamentId,
         ParticipationId participant1Id,
         ParticipationId participant2Id,
         ParticipationId winnerParticipationId,
@@ -37,7 +41,12 @@ public sealed class Match : Entity<MatchId>
         int participant2Score)
         : base(id)
     {
-        // Validation
+        if (tournamentId == default)
+        {
+            throw new ArgumentException(
+                "Tournament is required.",
+                nameof(tournamentId));
+        }
 
         if (participant1Id == participant2Id)
         {
@@ -56,12 +65,14 @@ public sealed class Match : Entity<MatchId>
 
         if (participant1Score < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(participant1Score));
+            throw new ArgumentOutOfRangeException(
+                nameof(participant1Score));
         }
 
         if (participant2Score < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(participant2Score));
+            throw new ArgumentOutOfRangeException(
+                nameof(participant2Score));
         }
 
         var winnerHasHigherScore =
@@ -76,8 +87,7 @@ public sealed class Match : Entity<MatchId>
                 nameof(winnerParticipationId));
         }
 
-        // Assignments
-
+        TournamentId = tournamentId;
         Participant1Id = participant1Id;
         Participant2Id = participant2Id;
         WinnerParticipationId = winnerParticipationId;
@@ -86,17 +96,22 @@ public sealed class Match : Entity<MatchId>
     }
 
     /// <summary>
-    /// Gets the first participant.
+    /// Gets the tournament identifier.
+    /// </summary>
+    public TournamentId TournamentId { get; }
+
+    /// <summary>
+    /// Gets the first participant identifier.
     /// </summary>
     public ParticipationId Participant1Id { get; }
 
     /// <summary>
-    /// Gets the second participant.
+    /// Gets the second participant identifier.
     /// </summary>
     public ParticipationId Participant2Id { get; }
 
     /// <summary>
-    /// Gets the winning participant.
+    /// Gets the winning participant identifier.
     /// </summary>
     public ParticipationId WinnerParticipationId { get; }
 
@@ -109,4 +124,24 @@ public sealed class Match : Entity<MatchId>
     /// Gets the second participant's score.
     /// </summary>
     public int Participant2Score { get; }
+
+    /// <summary>
+    /// Gets the tournament.
+    /// </summary>
+  public TournamentEntity Tournament { get; private set; } = default!;
+
+    /// <summary>
+    /// Gets the first participant.
+    /// </summary>
+    public Participation Participant1 { get; private set; } = default!;
+
+    /// <summary>
+    /// Gets the second participant.
+    /// </summary>
+    public Participation Participant2 { get; private set; } = default!;
+
+    /// <summary>
+    /// Gets the winning participant.
+    /// </summary>
+    public Participation Winner { get; private set; } = default!;
 }

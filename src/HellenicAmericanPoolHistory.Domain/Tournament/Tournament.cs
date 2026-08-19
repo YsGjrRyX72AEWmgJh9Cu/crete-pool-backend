@@ -1,5 +1,7 @@
 using HellenicAmericanPoolHistory.Domain.Common.Abstractions;
+using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Venue;
+using HellenicAmericanPoolHistory.Domain.Entities;
 
 namespace HellenicAmericanPoolHistory.Domain.Tournament;
 
@@ -133,4 +135,16 @@ public sealed class Tournament : Entity<TournamentId>
                 $"Operation requires tournament status '{expectedStatus}', but current status is '{TournamentStatus}'.");
         }
     }
+
+    /// <summary>
+    /// Gets the tournament participations.
+    /// </summary>
+    public ICollection<Participation> Participations { get; } =
+        new List<Participation>();
+
+    /// <summary>
+    /// Gets the tournament matches.
+    /// </summary>
+    public ICollection<Match> Matches { get; } =
+        new List<Match>();
 }

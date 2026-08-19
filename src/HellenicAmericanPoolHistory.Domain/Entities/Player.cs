@@ -9,15 +9,7 @@ namespace HellenicAmericanPoolHistory.Domain.Entities;
 /// </summary>
 public sealed class Player : Entity<PlayerId>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Player"/> class.
-    /// </summary>
-    /// <param name="id">The player identifier.</param>
-    /// <param name="firstName">The player's first name.</param>
-    /// <param name="lastName">The player's last name.</param>
-    /// <param name="countryOfOrigin">The player's country of origin.</param>
-    /// <param name="birthDate">The player's birth date.</param>
-    public Player(
+    private Player(
         PlayerId id,
         string firstName,
         string lastName,
@@ -34,6 +26,26 @@ public sealed class Player : Entity<PlayerId>
         CountryOfOrigin = countryOfOrigin;
         BirthDate = birthDate;
     }
+
+    /// <summary>
+    /// Creates a new player.
+    /// </summary>
+    /// <param name="firstName">The player's first name.</param>
+    /// <param name="lastName">The player's last name.</param>
+    /// <param name="countryOfOrigin">The player's country of origin.</param>
+    /// <param name="birthDate">The player's birth date.</param>
+    /// <returns>A new player.</returns>
+    public static Player Create(
+        string firstName,
+        string lastName,
+        Country countryOfOrigin,
+        DateOnly? birthDate = null)
+        => new(
+            PlayerId.New(),
+            firstName,
+            lastName,
+            countryOfOrigin,
+            birthDate);
 
     /// <summary>
     /// Updates the player's information.
@@ -82,4 +94,10 @@ public sealed class Player : Entity<PlayerId>
     /// Gets the player's birth date.
     /// </summary>
     public DateOnly? BirthDate { get; private set; }
+
+    /// <summary>
+    /// Gets the player's tournament participations.
+    /// </summary>
+    public ICollection<Participation> Participations { get; } =
+        new List<Participation>();
 }

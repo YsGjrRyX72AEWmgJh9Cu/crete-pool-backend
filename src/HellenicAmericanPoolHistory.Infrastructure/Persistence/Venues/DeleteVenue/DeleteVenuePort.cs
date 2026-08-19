@@ -33,6 +33,17 @@ public sealed class DeleteVenuePort : IDeleteVenuePort
             throw new NotFoundException("Venue not found.");
         }
 
+        var isUsedByTournament = await _context.Tournaments
+            .AnyAsync(
+                tournament => tournament.VenueId == venueId,
+                cancellationToken);
+
+        if (isUsedByTournament)
+        {
+            throw new ConflictException(
+                "Venue cannot be deleted because it is used by a tournament.");
+        }
+
         _context.Venues.Remove(venue);
 
         await _context.SaveChangesAsync(cancellationToken);

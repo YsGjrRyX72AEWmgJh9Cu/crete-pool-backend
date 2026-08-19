@@ -1,5 +1,4 @@
 using HellenicAmericanPoolHistory.Domain.Entities;
-using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 
 namespace HellenicAmericanPoolHistory.Domain.Tests.Entities;
@@ -10,36 +9,32 @@ namespace HellenicAmericanPoolHistory.Domain.Tests.Entities;
 public class PlayerTests
 {
     [Fact]
-    public void Constructor_Should_Create_Player()
+    public void Create_Should_Create_Player()
     {
         // Arrange
-        var id = PlayerId.New();
         var country = new Country("Greece");
 
         // Act
-        var player = new Player(
-            id,
+        var player = Player.Create(
             "Manos",
             "Menioudakis",
             country);
 
         // Assert
-        Assert.Equal(id, player.Id);
+        Assert.NotEqual(default, player.Id);
         Assert.Equal("Manos", player.FirstName);
         Assert.Equal("Menioudakis", player.LastName);
         Assert.Equal(country, player.CountryOfOrigin);
     }
 
     [Fact]
-    public void Constructor_Should_Trim_Names()
+    public void Create_Should_Trim_Names()
     {
         // Arrange
-        var id = PlayerId.New();
         var country = new Country("Greece");
 
         // Act
-        var player = new Player(
-            id,
+        var player = Player.Create(
             "  Manos  ",
             "  Menioudakis  ",
             country);
@@ -50,31 +45,41 @@ public class PlayerTests
     }
 
     [Fact]
-    public void Constructor_Should_Throw_When_FirstName_Is_Empty()
+    public void Create_Should_Throw_When_FirstName_Is_Empty()
     {
-        var id = PlayerId.New();
+        // Arrange
         var country = new Country("Greece");
 
+        // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            new Player(id, "", "Menioudakis", country));
+            Player.Create(
+                "",
+                "Menioudakis",
+                country));
     }
 
     [Fact]
-    public void Constructor_Should_Throw_When_LastName_Is_Empty()
+    public void Create_Should_Throw_When_LastName_Is_Empty()
     {
-        var id = PlayerId.New();
+        // Arrange
         var country = new Country("Greece");
 
+        // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            new Player(id, "Manos", "", country));
+            Player.Create(
+                "Manos",
+                "",
+                country));
     }
 
     [Fact]
-    public void Constructor_Should_Throw_When_Country_Is_Null()
+    public void Create_Should_Throw_When_Country_Is_Null()
     {
-        var id = PlayerId.New();
-
+        // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
-            new Player(id, "Manos", "Menioudakis", null!));
+            Player.Create(
+                "Manos",
+                "Menioudakis",
+                null!));
     }
 }

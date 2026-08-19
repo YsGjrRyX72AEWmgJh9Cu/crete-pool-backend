@@ -40,6 +40,7 @@ public sealed class Venue : Entity<VenueId>
         Name = data.Name.Trim();
 
         Location = new VenueLocation(
+            Location.Country,
             data.City,
             data.Address);
     }

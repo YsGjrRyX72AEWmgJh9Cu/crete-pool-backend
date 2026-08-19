@@ -15,10 +15,19 @@ public static class UpdateTournamentEndpoint
             "/tournaments/{id:guid}",
             async Task<NoContent>(
                 Guid id,
-                UpdateTournamentCommand command,
+                UpdateTournamentRequest request,
                 UpdateTournamentHandler handler,
                 CancellationToken cancellationToken) =>
             {
+                var command = new UpdateTournamentCommand(
+                    request.Name,
+                    request.TournamentType,
+                    request.BracketType,
+                    request.GameSet,
+                    request.StartDate,
+                    request.EndDate,
+                    request.VenueId);
+
                 await handler.Handle(
                     id,
                     command,
@@ -26,7 +35,7 @@ public static class UpdateTournamentEndpoint
 
                 return TypedResults.NoContent();
             })
-            .AddEndpointFilter<ValidationFilter<UpdateTournamentCommand>>()
+            .AddEndpointFilter<ValidationFilter<UpdateTournamentRequest>>()
             .WithName("UpdateTournament")
             .WithSummary("Updates an existing tournament.")
             .WithDescription("Updates an existing tournament.")

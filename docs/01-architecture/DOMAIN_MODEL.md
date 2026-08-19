@@ -8,7 +8,7 @@
 
 The Hellenic American Pool History domain is responsible for preserving the historical record of pocket billiards competitions.
 
-The primary goal of the system is to accurately represent players, tournaments, venues, organizations, participations and match results while preserving historical integrity.
+The primary goal of the system is to accurately represent players, tournaments, venues, organizations, tournament series, participations and match results while preserving historical integrity.
 
 The domain is designed following Domain-Driven Design (DDD) principles using:
 
@@ -16,7 +16,7 @@ The domain is designed following Domain-Driven Design (DDD) principles using:
 - Entities
 - Value Objects
 - Strongly Typed Identifiers
-- Domain Events (future)
+- Domain Events (planned)
 
 This document is the authoritative description of the business domain.
 
@@ -24,13 +24,25 @@ This document is the authoritative description of the business domain.
 
 # Core Aggregates
 
-The domain is organized around the following aggregates.
+The domain is organized around the following aggregates:
+
+- Organization
+- Tournament Series
+- Tournament
+- Venue
+- Player
+- Participation
+- Match
+
+The following aggregates are planned for future implementation:
+
+- Bracket
+- Statistics
+- Rankings
 
 ---
 
 # Aggregate Relationships
-
-The aggregates are related as follows:
 
 ```text
 Organization
@@ -41,137 +53,205 @@ Tournament Series
       ▼
 Tournament ─────────────► Venue
       │
-      ├────────────► Participant ───────────► Player
-      │
       ▼
-Bracket
+Participation ──────────► Player
       │
       ▼
 Match
+
+            (Future)
+
+Match
+      │
+      ▼
+Statistics
+      │
+      ▼
+Rankings
 ```
 
-## Relationship Rules
+---
+
+# Relationship Rules
 
 - An Organization owns zero or more Tournament Series.
 - A Tournament Series contains zero or more Tournaments.
 - A Tournament is held at exactly one Venue.
-- A Tournament contains zero or more Participants.
-- A Participant references exactly one Player.
-- A Tournament owns exactly one Bracket.
-- A Bracket contains one or more Matches.
-- A Match is always part of a single Bracket.
+- A Tournament contains zero or more Participations.
+- A Participation references exactly one Player.
+- A Match references exactly two Participations.
+- Statistics are calculated from completed Matches.
+- Rankings are calculated from Statistics and Tournament Results.
 
 ---
 
-## Organization
+# Organization
 
 Represents an organization responsible for managing tournaments.
 
-Examples:
+Examples
 
 - Hellenic American Pool Association
 - Local Pool Club
 
-Responsibilities:
+Responsibilities
 
-- Owns tournament series.
-- Defines organizational context.
+- Owns Tournament Series.
+- Defines the organizational context.
+- Preserves organizational history.
 
 ---
 
-## Tournament Series
+# Tournament Series
 
 Represents a recurring collection of tournaments.
 
-Examples:
+Examples
 
 - Monthly Championship
 - Summer Open Series
 
-Responsibilities:
+Responsibilities
 
 - Groups related tournaments.
 - Provides historical continuity.
 
 ---
 
-## Tournament
+# Tournament
 
 Represents a single tournament event.
 
-Responsibilities:
+Responsibilities
 
-- Defines tournament rules.
-- References the venue.
-- Contains participants.
-- Produces the competition bracket.
+- Defines tournament information.
+- References a Venue.
+- Owns Participations.
+- Produces Matches.
+- Produces Tournament Results.
 
 ---
 
-## Venue
+# Venue
 
 Represents the physical location where tournaments are held.
 
-Responsibilities:
+Responsibilities
 
 - Stores venue information.
-- Defines geographical location.
+- Stores geographical information.
+- Hosts tournaments.
 
 ---
 
-## Player
+# Player
 
 Represents a person participating in tournaments.
 
-Responsibilities:
+Responsibilities
 
 - Stores player identity.
-- Maintains historical participation.
+- Stores personal information.
+
+Historical participation is derived from Participations.
 
 ---
 
-## Participant
+# Participation
 
-Represents a player's participation in a specific tournament.
+Represents a player's participation in a tournament.
 
-Responsibilities:
+This aggregate connects Players with Tournaments.
 
-- Connects a player with a tournament.
-- Stores tournament-specific information.
+Responsibilities
+
+- References one Player.
+- References one Tournament.
+- Stores Registration Date.
+- Stores Seed.
+- Stores Participation Status.
+
+Future responsibilities
+
+- Final Position.
+- Prize Money.
+- Notes.
 
 ---
 
-## Bracket
+# Match
+
+Represents a single played match.
+
+Responsibilities
+
+- References exactly two Participations.
+- Stores match result.
+- Determines Winner.
+- Determines Loser.
+
+A Match never references Players directly.
+
+---
+
+# Planned Aggregate — Bracket
 
 Represents the tournament bracket.
 
-Responsibilities:
+Responsibilities
 
-- Organizes matches.
+- Organizes Matches.
 - Determines tournament progression.
+- Supports multiple competition formats.
 
 ---
 
-## Match
+# Planned Aggregate — Statistics
 
-Represents a played match between participants.
+Represents calculated player statistics.
 
-Responsibilities:
+Statistics are derived from completed Matches.
 
-- Stores the result.
-- Determines winner and loser.
+Examples
+
+- Matches Played
+- Wins
+- Losses
+- Win Percentage
+- Finals
+- Titles
+
+Statistics are never stored manually.
+
+---
+
+# Planned Aggregate — Rankings
+
+Represents calculated player rankings.
+
+Rankings are derived from Tournament Results and Statistics.
+
+Examples
+
+- Historical Ranking
+- Seasonal Ranking
+- Organization Ranking
+
+Rankings are never stored manually.
 
 ---
 
 # Value Objects
 
-The domain uses Value Objects to model concepts that are identified by their values rather than by identity.
+The domain uses Value Objects to model concepts that are identified by value rather than identity.
+
+---
 
 ## VenueLocation
 
-Represents the physical location of a venue.
+Represents the physical location of a Venue.
 
-Properties:
+Properties
 
 - Country
 - City
@@ -183,7 +263,7 @@ Properties:
 
 Represents the discipline played during a tournament.
 
-Examples:
+Examples
 
 - 8-Ball
 - 9-Ball
@@ -196,7 +276,7 @@ Examples:
 
 Represents the type of tournament.
 
-Examples:
+Examples
 
 - Weekly
 - Monthly
@@ -213,7 +293,7 @@ Examples:
 
 Represents the lifecycle of a tournament.
 
-Examples:
+Examples
 
 - Draft
 - Published
@@ -228,8 +308,64 @@ Examples:
 
 Represents the competition format.
 
-Examples:
+Examples
 
 - Single Elimination
 - Double Elimination
 - Round Robin
+
+---
+
+# Architectural Decisions
+
+## ADR-0001
+
+Participation is the official aggregate representing a player's registration in a tournament.
+
+The terms Participant and TournamentEntry will not coexist within the domain.
+
+---
+
+## ADR-0002
+
+A Match references Participations instead of Players.
+
+This allows matches to belong to a specific tournament participation rather than directly to a player.
+
+---
+
+## ADR-0003
+
+Statistics are calculated.
+
+They are never stored manually.
+
+---
+
+## ADR-0004
+
+Rankings are calculated.
+
+They are never stored manually.
+
+---
+
+# Future Evolution
+
+The domain is designed to support future expansion without breaking the existing model.
+
+Planned future capabilities include:
+
+- Bracket generation
+- Double Elimination
+- Round Robin
+- Tournament Results
+- Historical Statistics
+- Historical Rankings
+- Hall of Fame
+- Awards
+- Head-to-Head Records
+
+---
+
+End of Document

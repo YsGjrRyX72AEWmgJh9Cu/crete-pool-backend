@@ -39,10 +39,21 @@ namespace HellenicAmericanPoolHistory.Infrastructure.Migrations
                     b.Property<int>("Participant2Score")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("WinnerParticipationId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Participant1Id");
+
+                    b.HasIndex("Participant2Id");
+
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("WinnerParticipationId");
 
                     b.ToTable("Matches", (string)null);
                 });
@@ -58,10 +69,21 @@ namespace HellenicAmericanPoolHistory.Infrastructure.Migrations
                     b.Property<DateOnly>("RegistrationDate")
                         .HasColumnType("date");
 
+                    b.Property<int?>("Seed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("TournamentId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("TournamentId", "PlayerId")
+                        .IsUnique();
 
                     b.ToTable("Participations", (string)null);
                 });
@@ -151,6 +173,60 @@ namespace HellenicAmericanPoolHistory.Infrastructure.Migrations
                     b.ToTable("Venues", (string)null);
                 });
 
+            modelBuilder.Entity("HellenicAmericanPoolHistory.Domain.Entities.Match", b =>
+                {
+                    b.HasOne("HellenicAmericanPoolHistory.Domain.Entities.Participation", "Participant1")
+                        .WithMany()
+                        .HasForeignKey("Participant1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HellenicAmericanPoolHistory.Domain.Entities.Participation", "Participant2")
+                        .WithMany()
+                        .HasForeignKey("Participant2Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HellenicAmericanPoolHistory.Domain.Tournament.Tournament", "Tournament")
+                        .WithMany("Matches")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HellenicAmericanPoolHistory.Domain.Entities.Participation", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerParticipationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Participant1");
+
+                    b.Navigation("Participant2");
+
+                    b.Navigation("Tournament");
+
+                    b.Navigation("Winner");
+                });
+
+            modelBuilder.Entity("HellenicAmericanPoolHistory.Domain.Entities.Participation", b =>
+                {
+                    b.HasOne("HellenicAmericanPoolHistory.Domain.Entities.Player", "Player")
+                        .WithMany("Participations")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HellenicAmericanPoolHistory.Domain.Tournament.Tournament", "Tournament")
+                        .WithMany("Participations")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Tournament");
+                });
+
             modelBuilder.Entity("HellenicAmericanPoolHistory.Domain.Tournament.Tournament", b =>
                 {
                     b.HasOne("HellenicAmericanPoolHistory.Domain.Venue.Venue", null)
@@ -194,6 +270,18 @@ namespace HellenicAmericanPoolHistory.Infrastructure.Migrations
 
                     b.Navigation("Location")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HellenicAmericanPoolHistory.Domain.Entities.Player", b =>
+                {
+                    b.Navigation("Participations");
+                });
+
+            modelBuilder.Entity("HellenicAmericanPoolHistory.Domain.Tournament.Tournament", b =>
+                {
+                    b.Navigation("Matches");
+
+                    b.Navigation("Participations");
                 });
 #pragma warning restore 612, 618
         }

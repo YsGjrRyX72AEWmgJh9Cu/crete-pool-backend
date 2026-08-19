@@ -1,5 +1,6 @@
 using HellenicAmericanPoolHistory.Application.Common.Exceptions;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.DeleteTournament;
+using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,14 @@ public sealed class DeleteTournamentPort : IDeleteTournamentPort
 
         _context.Tournaments.Remove(tournament);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException)
+        {
+            throw new ConflictException(
+                "Tournament cannot be deleted because it has participations.");
+        }
     }
 }
