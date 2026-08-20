@@ -133,6 +133,8 @@ app.MapCreateParticipationEndpoint();
 
 app.MapCreateMatchEndpoint();
 
+app.MapRecordMatchResultEndpoint();
+
 app.MapGetMatchEndpoint();
 
 app.MapGetMatchesEndpoint();

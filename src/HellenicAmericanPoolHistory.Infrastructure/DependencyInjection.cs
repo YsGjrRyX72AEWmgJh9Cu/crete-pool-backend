@@ -58,6 +58,8 @@ using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatches;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.GetMatches;
 using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.DeleteMatch;
+using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.RecordMatchResult;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -74,6 +76,7 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString));
 
         services.AddScoped<ICreatePlayerPort, CreatePlayerPort>();
+        services.AddScoped<IRecordMatchResultPort, RecordMatchResultPort>();
         services.AddScoped<ICreateParticipationPort, CreateParticipationPort>();
         services.AddScoped<IDeleteParticipationPort, DeleteParticipationPort>();
         services.AddScoped<IGetParticipationPort, GetParticipationPort>();
