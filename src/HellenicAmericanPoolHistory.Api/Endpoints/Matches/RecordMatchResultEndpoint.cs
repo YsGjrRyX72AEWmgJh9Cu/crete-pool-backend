@@ -1,9 +1,9 @@
+using HellenicAmericanPoolHistory.Api.Filters;
 using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using HellenicAmericanPoolHistory.Api.Filters;
 
 namespace HellenicAmericanPoolHistory.Api.Endpoints.Matches;
 
@@ -33,7 +33,7 @@ public static class RecordMatchResultEndpoint
                 return TypedResults.NoContent();
             })
             .AddEndpointFilter<
-                ValidationFilter<RecordMatchResultCommand>>()
+                ValidationFilter<RecordMatchResultRequest>>()
             .WithName("RecordMatchResult")
             .WithSummary("Records the result of a match.")
             .WithDescription(

@@ -34,6 +34,7 @@ using HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatches;
 using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
+using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +69,7 @@ builder.Services.AddScoped<CreateMatchHandler>();
 builder.Services.AddScoped<GetMatchHandler>();
 builder.Services.AddScoped<GetMatchesHandler>();
 builder.Services.AddScoped<DeleteMatchHandler>();
+builder.Services.AddScoped<RecordMatchResultHandler>();
 builder.Services.AddScoped<DeleteParticipationHandler>();
 builder.Services.AddScoped<GetParticipationHandler>();
 builder.Services.AddScoped<GetParticipationsHandler>();
