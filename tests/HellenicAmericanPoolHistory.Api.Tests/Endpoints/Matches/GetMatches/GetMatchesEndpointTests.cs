@@ -152,7 +152,9 @@ public sealed class GetMatchesEndpointTests
             MatchId.New(),
             tournament.Id,
             participant1.Id,
-            participant2.Id,
+            participant2.Id);
+
+        match.RecordResult(
             participant1.Id,
             5,
             3);

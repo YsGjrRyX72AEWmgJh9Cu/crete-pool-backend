@@ -17,7 +17,7 @@ public sealed class CreateMatchPortTests
         "Host=localhost;Port=5432;Database=HellenicAmericanPoolHistory_Test;Username=manos";
 
     [Fact]
-    public async Task CreateAsync_With_Valid_Match_Should_Persist_Match()
+    public async Task CreateAsync_With_Valid_Match_Should_Persist_Match_Without_Result()
     {
         await using var dbContext = CreateDbContext();
 
@@ -27,10 +27,7 @@ public sealed class CreateMatchPortTests
             MatchId.New(),
             data.Tournament.Id,
             data.Participant1.Id,
-            data.Participant2.Id,
-            data.Participant1.Id,
-            5,
-            3);
+            data.Participant2.Id);
 
         var port = new CreateMatchPort(dbContext);
 
@@ -44,11 +41,9 @@ public sealed class CreateMatchPortTests
         Assert.Equal(match.TournamentId, persistedMatch.TournamentId);
         Assert.Equal(match.Participant1Id, persistedMatch.Participant1Id);
         Assert.Equal(match.Participant2Id, persistedMatch.Participant2Id);
-        Assert.Equal(
-            match.WinnerParticipationId,
-            persistedMatch.WinnerParticipationId);
-        Assert.Equal(match.Participant1Score, persistedMatch.Participant1Score);
-        Assert.Equal(match.Participant2Score, persistedMatch.Participant2Score);
+        Assert.Null(persistedMatch.WinnerParticipationId);
+        Assert.Null(persistedMatch.Participant1Score);
+        Assert.Null(persistedMatch.Participant2Score);
     }
 
     [Fact]
@@ -64,10 +59,7 @@ public sealed class CreateMatchPortTests
             MatchId.New(),
             missingTournamentId,
             data.Participant1.Id,
-            data.Participant2.Id,
-            data.Participant1.Id,
-            5,
-            3);
+            data.Participant2.Id);
 
         var port = new CreateMatchPort(dbContext);
 
@@ -90,10 +82,7 @@ public sealed class CreateMatchPortTests
             MatchId.New(),
             data.Tournament.Id,
             data.Participant1.Id,
-            missingParticipationId,
-            data.Participant1.Id,
-            5,
-            3);
+            missingParticipationId);
 
         var port = new CreateMatchPort(dbContext);
 
@@ -116,10 +105,7 @@ public sealed class CreateMatchPortTests
             MatchId.New(),
             data.Tournament.Id,
             data.Participant1.Id,
-            data.OtherTournamentParticipant.Id,
-            data.Participant1.Id,
-            5,
-            3);
+            data.OtherTournamentParticipant.Id);
 
         var port = new CreateMatchPort(dbContext);
 

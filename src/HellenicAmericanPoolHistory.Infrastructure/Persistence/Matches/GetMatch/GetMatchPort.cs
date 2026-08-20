@@ -34,8 +34,12 @@ public sealed class GetMatchPort : IGetMatchPort
                 match.Participant1.Player.FullName,
                 match.Participant2Id.Value,
                 match.Participant2.Player.FullName,
-                match.WinnerParticipationId.Value,
-                match.Winner.Player.FullName,
+                match.WinnerParticipationId != null
+                    ? match.WinnerParticipationId.Value.Value
+                    : null,
+                match.WinnerParticipationId != null
+                    ? match.Winner.Player.FullName
+                    : null,
                 match.Participant1Score,
                 match.Participant2Score))
             .SingleOrDefaultAsync(cancellationToken);

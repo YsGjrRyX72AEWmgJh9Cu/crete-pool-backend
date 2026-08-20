@@ -17,28 +17,14 @@ public sealed class Match : Entity<MatchId>
     /// <param name="tournamentId">The tournament identifier.</param>
     /// <param name="participant1Id">The first participant.</param>
     /// <param name="participant2Id">The second participant.</param>
-    /// <param name="winnerParticipationId">The winning participant.</param>
-    /// <param name="participant1Score">The first participant's score.</param>
-    /// <param name="participant2Score">The second participant's score.</param>
     /// <exception cref="ArgumentException">
-    /// Thrown when:
-    /// <list type="bullet">
-    /// <item><description>The same participant is assigned twice.</description></item>
-    /// <item><description>The winner is not one of the participants.</description></item>
-    /// <item><description>The winner does not have the higher score.</description></item>
-    /// </list>
-    /// </exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown when a score is negative.
+    /// Thrown when the tournament is missing or the same participant is assigned twice.
     /// </exception>
     public Match(
         MatchId id,
         TournamentId tournamentId,
         ParticipationId participant1Id,
-        ParticipationId participant2Id,
-        ParticipationId winnerParticipationId,
-        int participant1Score,
-        int participant2Score)
+        ParticipationId participant2Id)
         : base(id)
     {
         if (tournamentId == default)
@@ -55,8 +41,40 @@ public sealed class Match : Entity<MatchId>
                 nameof(participant2Id));
         }
 
-        if (winnerParticipationId != participant1Id &&
-            winnerParticipationId != participant2Id)
+        TournamentId = tournamentId;
+        Participant1Id = participant1Id;
+        Participant2Id = participant2Id;
+    }
+
+    /// <summary>
+    /// Records the result of the match.
+    /// </summary>
+    /// <param name="winnerParticipationId">The winning participant.</param>
+    /// <param name="participant1Score">The first participant's score.</param>
+    /// <param name="participant2Score">The second participant's score.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when a result has already been recorded.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the winner is not one of the match participants or
+    /// does not have the higher score.
+    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when a score is negative.
+    /// </exception>
+    public void RecordResult(
+        ParticipationId winnerParticipationId,
+        int participant1Score,
+        int participant2Score)
+    {
+        if (WinnerParticipationId.HasValue)
+        {
+            throw new InvalidOperationException(
+                "Match result has already been recorded.");
+        }
+
+        if (winnerParticipationId != Participant1Id &&
+            winnerParticipationId != Participant2Id)
         {
             throw new ArgumentException(
                 "Winner must be one of the match participants.",
@@ -76,7 +94,7 @@ public sealed class Match : Entity<MatchId>
         }
 
         var winnerHasHigherScore =
-            winnerParticipationId == participant1Id
+            winnerParticipationId == Participant1Id
                 ? participant1Score > participant2Score
                 : participant2Score > participant1Score;
 
@@ -87,9 +105,6 @@ public sealed class Match : Entity<MatchId>
                 nameof(winnerParticipationId));
         }
 
-        TournamentId = tournamentId;
-        Participant1Id = participant1Id;
-        Participant2Id = participant2Id;
         WinnerParticipationId = winnerParticipationId;
         Participant1Score = participant1Score;
         Participant2Score = participant2Score;
@@ -111,24 +126,24 @@ public sealed class Match : Entity<MatchId>
     public ParticipationId Participant2Id { get; }
 
     /// <summary>
-    /// Gets the winning participant identifier.
+    /// Gets the winning participant identifier, when a result has been recorded.
     /// </summary>
-    public ParticipationId WinnerParticipationId { get; }
+    public ParticipationId? WinnerParticipationId { get; private set; }
 
     /// <summary>
-    /// Gets the first participant's score.
+    /// Gets the first participant's score, when a result has been recorded.
     /// </summary>
-    public int Participant1Score { get; }
+    public int? Participant1Score { get; private set; }
 
     /// <summary>
-    /// Gets the second participant's score.
+    /// Gets the second participant's score, when a result has been recorded.
     /// </summary>
-    public int Participant2Score { get; }
+    public int? Participant2Score { get; private set; }
 
     /// <summary>
     /// Gets the tournament.
     /// </summary>
-  public TournamentEntity Tournament { get; private set; } = default!;
+    public TournamentEntity Tournament { get; private set; } = default!;
 
     /// <summary>
     /// Gets the first participant.

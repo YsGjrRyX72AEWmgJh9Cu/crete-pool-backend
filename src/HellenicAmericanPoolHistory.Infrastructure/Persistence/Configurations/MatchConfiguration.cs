@@ -1,6 +1,5 @@
 using HellenicAmericanPoolHistory.Domain.Entities;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
-using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -54,13 +53,13 @@ public sealed class MatchConfiguration
 
         builder.Property(match => match.WinnerParticipationId)
             .HasConversion(new StronglyTypedIdConverter<ParticipationId>())
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(match => match.Participant1Score)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(match => match.Participant2Score)
-            .IsRequired();
+            .IsRequired(false);
     }
 
     private static void ConfigureRelationships(
@@ -84,6 +83,7 @@ public sealed class MatchConfiguration
         builder.HasOne(match => match.Winner)
             .WithMany()
             .HasForeignKey(match => match.WinnerParticipationId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

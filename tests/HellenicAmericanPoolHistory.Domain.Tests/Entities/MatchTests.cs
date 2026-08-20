@@ -21,20 +21,15 @@ public class MatchTests
             MatchId.New(),
             tournamentId,
             participant1Id,
-            participant2Id,
-            participant1Id,
-            9,
-            5);
+            participant2Id);
 
         // Assert
         Assert.Equal(tournamentId, match.TournamentId);
         Assert.Equal(participant1Id, match.Participant1Id);
         Assert.Equal(participant2Id, match.Participant2Id);
-        Assert.Equal(
-            participant1Id,
-            match.WinnerParticipationId);
-        Assert.Equal(9, match.Participant1Score);
-        Assert.Equal(5, match.Participant2Score);
+        Assert.Null(match.WinnerParticipationId);
+        Assert.Null(match.Participant1Score);
+        Assert.Null(match.Participant2Score);
     }
 
     [Fact]
@@ -50,10 +45,7 @@ public class MatchTests
                 MatchId.New(),
                 default,
                 participant1Id,
-                participant2Id,
-                participant1Id,
-                9,
-                5));
+                participant2Id));
     }
 
     [Fact]
@@ -69,87 +61,124 @@ public class MatchTests
                 MatchId.New(),
                 tournamentId,
                 participantId,
-                participantId,
-                participantId,
-                9,
-                0));
+                participantId));
     }
 
     [Fact]
-    public void Constructor_With_Winner_Not_In_Match_Should_Throw()
+    public void RecordResult_With_Valid_Result_Should_Record_Result()
     {
         // Arrange
-        var tournamentId = TournamentId.New();
+        var match = CreateMatch();
+
+        // Act
+        match.RecordResult(
+            match.Participant1Id,
+            9,
+            5);
+
+        // Assert
+        Assert.Equal(
+            match.Participant1Id,
+            match.WinnerParticipationId);
+        Assert.Equal(9, match.Participant1Score);
+        Assert.Equal(5, match.Participant2Score);
+    }
+
+    [Fact]
+    public void RecordResult_With_Winner_Not_In_Match_Should_Throw()
+    {
+        // Arrange
+        var match = CreateMatch();
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            new Match(
-                MatchId.New(),
-                tournamentId,
-                ParticipationId.New(),
-                ParticipationId.New(),
+            match.RecordResult(
                 ParticipationId.New(),
                 9,
                 5));
     }
 
     [Fact]
-    public void Constructor_With_Negative_Participant1Score_Should_Throw()
+    public void RecordResult_With_Negative_Participant1Score_Should_Throw()
     {
         // Arrange
-        var tournamentId = TournamentId.New();
-        var participant1Id = ParticipationId.New();
-        var participant2Id = ParticipationId.New();
+        var match = CreateMatch();
 
         // Act & Assert
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            new Match(
-                MatchId.New(),
-                tournamentId,
-                participant1Id,
-                participant2Id,
-                participant1Id,
+            match.RecordResult(
+                match.Participant1Id,
                 -1,
                 5));
     }
 
     [Fact]
-    public void Constructor_With_Negative_Participant2Score_Should_Throw()
+    public void RecordResult_With_Negative_Participant2Score_Should_Throw()
     {
         // Arrange
-        var tournamentId = TournamentId.New();
-        var participant1Id = ParticipationId.New();
-        var participant2Id = ParticipationId.New();
+        var match = CreateMatch();
 
         // Act & Assert
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            new Match(
-                MatchId.New(),
-                tournamentId,
-                participant1Id,
-                participant2Id,
-                participant1Id,
+            match.RecordResult(
+                match.Participant1Id,
                 5,
                 -1));
     }
 
     [Fact]
-    public void Constructor_When_Winner_Does_Not_Have_Higher_Score_Should_Throw()
+    public void RecordResult_When_Winner_Does_Not_Have_Higher_Score_Should_Throw()
     {
         // Arrange
-        var tournamentId = TournamentId.New();
-        var participant1Id = ParticipationId.New();
-        var participant2Id = ParticipationId.New();
+        var match = CreateMatch();
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            new Match(
-                MatchId.New(),
-                tournamentId,
-                participant1Id,
-                participant2Id,
-                participant1Id,
+            match.RecordResult(
+                match.Participant1Id,
+                5,
+                5));
+    }
+
+    [Fact]
+    public void RecordResult_When_Winner_Has_Lower_Score_Should_Throw()
+    {
+        // Arrange
+        var match = CreateMatch();
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() =>
+            match.RecordResult(
+                match.Participant1Id,
                 5,
                 9));
+    }
+
+    [Fact]
+    public void RecordResult_When_Result_Already_Exists_Should_Throw()
+    {
+        // Arrange
+        var match = CreateMatch();
+
+        match.RecordResult(
+            match.Participant1Id,
+            9,
+            5);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() =>
+            match.RecordResult(
+                match.Participant1Id,
+                9,
+                5));
+    }
+
+    private static Match CreateMatch()
+    {
+        return new Match(
+            MatchId.New(),
+            TournamentId.New(),
+            ParticipationId.New(),
+            ParticipationId.New());
     }
 }

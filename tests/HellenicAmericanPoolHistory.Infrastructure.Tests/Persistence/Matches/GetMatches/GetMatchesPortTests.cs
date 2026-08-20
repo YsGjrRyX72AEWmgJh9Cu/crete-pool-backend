@@ -111,6 +111,27 @@ public sealed class GetMatchesPortTests
         Assert.True(alphaIndex < betaIndex);
     }
 
+    [Fact]
+    public async Task GetAllAsync_Should_Return_Matches_Without_Result()
+    {
+        await using var dbContext = CreateDbContext();
+
+        var data = await CreateTestDataWithoutResultAsync(dbContext);
+
+        var port = new GetMatchesPort(dbContext);
+
+        var response = await port.GetAllAsync(
+            CancellationToken.None);
+
+        var match = response.Single(
+            item => item.Id == data.Match.Id.Value);
+
+        Assert.Null(match.WinnerParticipationId);
+        Assert.Null(match.WinnerPlayerName);
+        Assert.Null(match.Participant1Score);
+        Assert.Null(match.Participant2Score);
+    }
+
     private static ApplicationDbContext CreateDbContext()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -205,7 +226,9 @@ public sealed class GetMatchesPortTests
             MatchId.New(),
             tournament1.Id,
             participant1.Id,
-            participant2.Id,
+            participant2.Id);
+
+        match1.RecordResult(
             participant1.Id,
             5,
             3);
@@ -214,7 +237,9 @@ public sealed class GetMatchesPortTests
             MatchId.New(),
             tournament2.Id,
             participant3.Id,
-            participant4.Id,
+            participant4.Id);
+
+        match2.RecordResult(
             participant3.Id,
             5,
             4);
@@ -256,6 +281,69 @@ public sealed class GetMatchesPortTests
             match2);
     }
 
+    private static async Task<TestDataWithoutResult> CreateTestDataWithoutResultAsync(
+        ApplicationDbContext dbContext)
+    {
+        var venue = Venue.Create(
+            "Get Matches No Result Venue",
+            new VenueLocation(
+                "Greece",
+                "Heraklion",
+                "Get Matches No Result Address"));
+
+        var tournament = Tournament.Create(
+            new TournamentData(
+                "Get Matches No Result Tournament",
+                TournamentType.Individual,
+                BracketType.SingleElimination,
+                GameSet.RaceTo5,
+                new DateOnly(2026, 8, 16),
+                new DateOnly(2026, 8, 16),
+                venue.Id));
+
+        var player1 = Player.Create(
+            "Test",
+            "Player Five",
+            new Country("Greece"));
+
+        var player2 = Player.Create(
+            "Test",
+            "Player Six",
+            new Country("Greece"));
+
+        var participant1 = Participation.Create(
+            player1.Id,
+            tournament.Id,
+            new DateOnly(2026, 8, 16),
+            1);
+
+        var participant2 = Participation.Create(
+            player2.Id,
+            tournament.Id,
+            new DateOnly(2026, 8, 16),
+            2);
+
+        var match = new Match(
+            MatchId.New(),
+            tournament.Id,
+            participant1.Id,
+            participant2.Id);
+
+        dbContext.Venues.Add(venue);
+        dbContext.Tournaments.Add(tournament);
+        dbContext.Players.AddRange(
+            player1,
+            player2);
+        dbContext.Participations.AddRange(
+            participant1,
+            participant2);
+        dbContext.Matches.Add(match);
+
+        await dbContext.SaveChangesAsync();
+
+        return new TestDataWithoutResult(match);
+    }
+
     private sealed record TestData(
         Tournament Tournament1,
         Tournament Tournament2,
@@ -265,4 +353,7 @@ public sealed class GetMatchesPortTests
         Participation Participant4,
         Match Match1,
         Match Match2);
+
+    private sealed record TestDataWithoutResult(
+        Match Match);
 }

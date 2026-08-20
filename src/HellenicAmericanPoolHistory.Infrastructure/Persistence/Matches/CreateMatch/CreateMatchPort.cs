@@ -41,10 +41,11 @@ public sealed class CreateMatchPort : ICreateMatchPort
             .Where(participation =>
                 participation.Id == match.Participant1Id ||
                 participation.Id == match.Participant2Id ||
-                participation.Id == match.WinnerParticipationId)
+                (match.WinnerParticipationId.HasValue &&
+                 participation.Id == match.WinnerParticipationId.Value))
             .ToListAsync(cancellationToken);
 
-        if (participations.Count != 2)
+        if (participations.Count < 2)
         {
             throw new NotFoundException(
                 "One or more match participations were not found.");
@@ -58,10 +59,6 @@ public sealed class CreateMatchPort : ICreateMatchPort
             .Single(participation =>
                 participation.Id == match.Participant2Id);
 
-        var winner = participations
-            .Single(participation =>
-                participation.Id == match.WinnerParticipationId);
-
         if (participant1.TournamentId != match.TournamentId)
         {
             throw new ConflictException(
@@ -74,10 +71,17 @@ public sealed class CreateMatchPort : ICreateMatchPort
                 "Participant 2 does not belong to the specified tournament.");
         }
 
-        if (winner.TournamentId != match.TournamentId)
+        if (match.WinnerParticipationId.HasValue)
         {
-            throw new ConflictException(
-                "Winner does not belong to the specified tournament.");
+            var winner = participations
+                .Single(participation =>
+                    participation.Id == match.WinnerParticipationId.Value);
+
+            if (winner.TournamentId != match.TournamentId)
+            {
+                throw new ConflictException(
+                    "Winner does not belong to the specified tournament.");
+            }
         }
 
         _dbContext.Matches.Add(match);

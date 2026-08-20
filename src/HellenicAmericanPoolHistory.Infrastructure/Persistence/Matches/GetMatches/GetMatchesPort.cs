@@ -21,10 +21,20 @@ public sealed class GetMatchesPort : IGetMatchesPort
     public async Task<IReadOnlyCollection<GetMatchesResponse>> GetAllAsync(
         CancellationToken cancellationToken)
     {
-        return await _dbContext.Matches
+        var matches = await _dbContext.Matches
             .AsNoTracking()
-            .OrderBy(match => match.Tournament.Name)
-            .ThenBy(match => match.Tournament.StartDate)
+            .Include(x => x.Tournament)
+            .Include(x => x.Participant1)
+                .ThenInclude(x => x.Player)
+            .Include(x => x.Participant2)
+                .ThenInclude(x => x.Player)
+            .Include(x => x.Winner)
+                .ThenInclude(x => x.Player)
+            .OrderBy(x => x.Tournament.Name)
+            .ThenBy(x => x.Tournament.StartDate)
+            .ToListAsync(cancellationToken);
+
+        return matches
             .Select(match => new GetMatchesResponse(
                 match.Id.Value,
                 match.TournamentId.Value,
@@ -33,10 +43,10 @@ public sealed class GetMatchesPort : IGetMatchesPort
                 match.Participant1.Player.FullName,
                 match.Participant2Id.Value,
                 match.Participant2.Player.FullName,
-                match.WinnerParticipationId.Value,
-                match.Winner.Player.FullName,
+                match.WinnerParticipationId?.Value,
+                match.Winner?.Player.FullName,
                 match.Participant1Score,
                 match.Participant2Score))
-            .ToListAsync(cancellationToken);
+            .ToList();
     }
 }

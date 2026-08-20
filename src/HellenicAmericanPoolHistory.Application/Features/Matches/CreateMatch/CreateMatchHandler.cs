@@ -38,10 +38,17 @@ public sealed class CreateMatchHandler
             MatchId.New(),
             new TournamentId(command.TournamentId),
             new ParticipationId(command.Participant1Id),
-            new ParticipationId(command.Participant2Id),
-            new ParticipationId(command.WinnerParticipationId),
-            command.Participant1Score,
-            command.Participant2Score);
+            new ParticipationId(command.Participant2Id));
+
+        if (command.WinnerParticipationId.HasValue &&
+            command.Participant1Score.HasValue &&
+            command.Participant2Score.HasValue)
+        {
+            match.RecordResult(
+                new ParticipationId(command.WinnerParticipationId.Value),
+                command.Participant1Score.Value,
+                command.Participant2Score.Value);
+        }
 
         var createdMatchId =
             await _port.CreateAsync(

@@ -10,10 +10,18 @@ namespace HellenicAmericanPoolHistory.Application.Features.Matches.GetMatch;
 /// <param name="Participant1PlayerName">The first player's name.</param>
 /// <param name="Participant2Id">The second participation identifier.</param>
 /// <param name="Participant2PlayerName">The second player's name.</param>
-/// <param name="WinnerParticipationId">The winning participation identifier.</param>
-/// <param name="WinnerPlayerName">The winner's name.</param>
-/// <param name="Participant1Score">The first participant's score.</param>
-/// <param name="Participant2Score">The second participant's score.</param>
+/// <param name="WinnerParticipationId">
+/// The winning participation identifier, when a result exists.
+/// </param>
+/// <param name="WinnerPlayerName">
+/// The winner's name, when a result exists.
+/// </param>
+/// <param name="Participant1Score">
+/// The first participant's score, when a result exists.
+/// </param>
+/// <param name="Participant2Score">
+/// The second participant's score, when a result exists.
+/// </param>
 public sealed record GetMatchResponse(
     Guid Id,
     Guid TournamentId,
@@ -22,7 +30,7 @@ public sealed record GetMatchResponse(
     string Participant1PlayerName,
     Guid Participant2Id,
     string Participant2PlayerName,
-    Guid WinnerParticipationId,
-    string WinnerPlayerName,
-    int Participant1Score,
-    int Participant2Score);
+    Guid? WinnerParticipationId,
+    string? WinnerPlayerName,
+    int? Participant1Score,
+    int? Participant2Score);

@@ -27,7 +27,9 @@ public sealed class DeleteMatchPortTests
             MatchId.New(),
             data.Tournament.Id,
             data.Participant1.Id,
-            data.Participant2.Id,
+            data.Participant2.Id);
+
+        match.RecordResult(
             data.Participant1.Id,
             5,
             3);
@@ -120,7 +122,10 @@ public sealed class DeleteMatchPortTests
 
         dbContext.Venues.Add(venue);
         dbContext.Tournaments.Add(tournament);
-        dbContext.Players.AddRange(player1, player2);
+        dbContext.Players.AddRange(
+            player1,
+            player2);
+
         dbContext.Participations.AddRange(
             participant1,
             participant2);

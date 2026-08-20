@@ -36,7 +36,9 @@ public sealed class DeleteMatchEndpointTests
             MatchId.New(),
             data.Tournament.Id,
             data.Participant1.Id,
-            data.Participant2.Id,
+            data.Participant2.Id);
+
+        match.RecordResult(
             data.Participant1.Id,
             5,
             3);

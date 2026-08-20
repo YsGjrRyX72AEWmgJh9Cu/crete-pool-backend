@@ -2,13 +2,13 @@ using System.Net;
 using System.Net.Http.Json;
 using HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
 using HellenicAmericanPoolHistory.Domain.Entities;
+using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using HellenicAmericanPoolHistory.Domain.Identifiers;
 
 namespace HellenicAmericanPoolHistory.Api.Tests.Endpoints.Matches.CreateMatch;
 
@@ -24,7 +24,62 @@ public sealed class CreateMatchEndpointTests
     }
 
     [Fact]
-    public async Task CreateMatch_Should_Return_Created_And_Persist_Match()
+    public async Task CreateMatch_Should_Return_Created_And_Persist_Match_Without_Result()
+    {
+        using var scope = _factory.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
+
+        var data = await CreateTestDataAsync(dbContext);
+
+        var client = _factory.CreateClient();
+
+        var command = new CreateMatchCommand(
+            data.Tournament.Id.Value,
+            data.Participant1.Id.Value,
+            data.Participant2.Id.Value,
+            null,
+            null,
+            null);
+
+        var response = await client.PostAsJsonAsync(
+            "/matches",
+            command);
+
+        Assert.Equal(
+            HttpStatusCode.Created,
+            response.StatusCode);
+
+        var result =
+            await response.Content.ReadFromJsonAsync<CreateMatchResponse>();
+
+        Assert.NotNull(result);
+
+        var match = await dbContext.Matches.FindAsync(
+            new MatchId(result!.Id));
+
+        Assert.NotNull(match);
+
+        Assert.Equal(
+            data.Tournament.Id,
+            match!.TournamentId);
+
+        Assert.Equal(
+            data.Participant1.Id,
+            match.Participant1Id);
+
+        Assert.Equal(
+            data.Participant2.Id,
+            match.Participant2Id);
+
+        Assert.Null(match.WinnerParticipationId);
+        Assert.Null(match.Participant1Score);
+        Assert.Null(match.Participant2Score);
+    }
+
+    [Fact]
+    public async Task CreateMatch_Should_Return_Created_And_Persist_Match_With_Result()
     {
         using var scope = _factory.Services.CreateScope();
 
@@ -85,7 +140,7 @@ public sealed class CreateMatchEndpointTests
             3,
             match.Participant2Score);
     }
-    
+
     [Fact]
     public async Task CreateMatch_Should_Return_BadRequest_When_Score_Is_Negative()
     {
