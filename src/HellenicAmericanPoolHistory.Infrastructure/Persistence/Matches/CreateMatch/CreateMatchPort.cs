@@ -2,6 +2,7 @@ using HellenicAmericanPoolHistory.Application.Common.Exceptions;
 using HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
 using HellenicAmericanPoolHistory.Domain.Entities;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
+using HellenicAmericanPoolHistory.Domain.Tournament;
 using Microsoft.EntityFrameworkCore;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.CreateMatch;
@@ -27,14 +28,20 @@ public sealed class CreateMatchPort : ICreateMatchPort
     {
         ArgumentNullException.ThrowIfNull(match);
 
-        var tournamentExists = await _dbContext.Tournaments
-            .AnyAsync(
+        var tournament = await _dbContext.Tournaments
+            .FirstOrDefaultAsync(
                 tournament => tournament.Id == match.TournamentId,
                 cancellationToken);
 
-        if (!tournamentExists)
+        if (tournament is null)
         {
             throw new NotFoundException("Tournament not found.");
+        }
+
+        if (tournament.TournamentStatus != TournamentStatus.InProgress)
+        {
+            throw new ConflictException(
+                "Match can only be created while the tournament is in progress.");
         }
 
         var participations = await _dbContext.Participations

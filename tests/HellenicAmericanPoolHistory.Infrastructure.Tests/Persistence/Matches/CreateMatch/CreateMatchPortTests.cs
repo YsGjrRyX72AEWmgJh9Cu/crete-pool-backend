@@ -7,7 +7,6 @@ using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.CreateMatch;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Tests.Persistence.Matches.CreateMatch;
 
@@ -21,7 +20,9 @@ public sealed class CreateMatchPortTests
     {
         await using var dbContext = CreateDbContext();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var match = new Match(
             MatchId.New(),
@@ -47,11 +48,38 @@ public sealed class CreateMatchPortTests
     }
 
     [Fact]
+    public async Task CreateAsync_When_Tournament_Is_Not_InProgress_Should_Throw_ConflictException()
+    {
+        await using var dbContext = CreateDbContext();
+
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: false);
+
+        var match = new Match(
+            MatchId.New(),
+            data.Tournament.Id,
+            data.Participant1.Id,
+            data.Participant2.Id);
+
+        var port = new CreateMatchPort(dbContext);
+
+        var exception = await Assert.ThrowsAsync<ConflictException>(
+            () => port.CreateAsync(match));
+
+        Assert.Equal(
+            "Match can only be created while the tournament is in progress.",
+            exception.Message);
+    }
+
+    [Fact]
     public async Task CreateAsync_When_Tournament_Does_Not_Exist_Should_Throw_NotFoundException()
     {
         await using var dbContext = CreateDbContext();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var missingTournamentId = TournamentId.New();
 
@@ -66,7 +94,9 @@ public sealed class CreateMatchPortTests
         var exception = await Assert.ThrowsAsync<NotFoundException>(
             () => port.CreateAsync(match));
 
-        Assert.Equal("Tournament not found.", exception.Message);
+        Assert.Equal(
+            "Tournament not found.",
+            exception.Message);
     }
 
     [Fact]
@@ -74,7 +104,9 @@ public sealed class CreateMatchPortTests
     {
         await using var dbContext = CreateDbContext();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var missingParticipationId = ParticipationId.New();
 
@@ -99,7 +131,9 @@ public sealed class CreateMatchPortTests
     {
         await using var dbContext = CreateDbContext();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var match = new Match(
             MatchId.New(),
@@ -127,25 +161,26 @@ public sealed class CreateMatchPortTests
     }
 
     private static async Task<TestData> CreateTestDataAsync(
-        ApplicationDbContext dbContext)
+        ApplicationDbContext dbContext,
+        bool startTournament)
     {
         var venue = Venue.Create(
-            "Infrastructure Test Venue",
+            $"Infrastructure Test Venue {Guid.NewGuid():N}",
             new VenueLocation(
                 "Greece",
                 "Heraklion",
-                "Test Address 1"));
+                $"Test Address {Guid.NewGuid():N}"));
 
         var otherVenue = Venue.Create(
-            "Infrastructure Test Other Venue",
+            $"Infrastructure Test Other Venue {Guid.NewGuid():N}",
             new VenueLocation(
                 "Greece",
                 "Heraklion",
-                "Test Address 2"));
+                $"Test Address {Guid.NewGuid():N}"));
 
         var tournament = Tournament.Create(
             new TournamentData(
-                "Infrastructure Test Tournament",
+                $"Infrastructure Test Tournament {Guid.NewGuid():N}",
                 TournamentType.Individual,
                 BracketType.SingleElimination,
                 GameSet.RaceTo5,
@@ -155,13 +190,19 @@ public sealed class CreateMatchPortTests
 
         var otherTournament = Tournament.Create(
             new TournamentData(
-                "Infrastructure Test Other Tournament",
+                $"Infrastructure Test Other Tournament {Guid.NewGuid():N}",
                 TournamentType.Individual,
                 BracketType.SingleElimination,
                 GameSet.RaceTo5,
                 DateOnly.FromDateTime(DateTime.UtcNow),
                 DateOnly.FromDateTime(DateTime.UtcNow),
                 otherVenue.Id));
+
+        if (startTournament)
+        {
+            tournament.Schedule();
+            tournament.Start();
+        }
 
         var player1 = Player.Create(
             "Test",
@@ -196,9 +237,19 @@ public sealed class CreateMatchPortTests
             DateOnly.FromDateTime(DateTime.UtcNow),
             1);
 
-        dbContext.Venues.AddRange(venue, otherVenue);
-        dbContext.Tournaments.AddRange(tournament, otherTournament);
-        dbContext.Players.AddRange(player1, player2, player3);
+        dbContext.Venues.AddRange(
+            venue,
+            otherVenue);
+
+        dbContext.Tournaments.AddRange(
+            tournament,
+            otherTournament);
+
+        dbContext.Players.AddRange(
+            player1,
+            player2,
+            player3);
+
         dbContext.Participations.AddRange(
             participant1,
             participant2,

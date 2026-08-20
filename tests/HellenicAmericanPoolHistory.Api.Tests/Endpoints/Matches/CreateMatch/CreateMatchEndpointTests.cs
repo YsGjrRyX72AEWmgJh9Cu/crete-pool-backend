@@ -31,7 +31,9 @@ public sealed class CreateMatchEndpointTests
         var dbContext = scope.ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var client = _factory.CreateClient();
 
@@ -86,7 +88,9 @@ public sealed class CreateMatchEndpointTests
         var dbContext = scope.ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var client = _factory.CreateClient();
 
@@ -142,6 +146,37 @@ public sealed class CreateMatchEndpointTests
     }
 
     [Fact]
+    public async Task CreateMatch_Should_Return_Conflict_When_Tournament_Is_Not_InProgress()
+    {
+        using var scope = _factory.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
+
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: false);
+
+        var client = _factory.CreateClient();
+
+        var command = new CreateMatchCommand(
+            data.Tournament.Id.Value,
+            data.Participant1.Id.Value,
+            data.Participant2.Id.Value,
+            null,
+            null,
+            null);
+
+        var response = await client.PostAsJsonAsync(
+            "/matches",
+            command);
+
+        Assert.Equal(
+            HttpStatusCode.Conflict,
+            response.StatusCode);
+    }
+
+    [Fact]
     public async Task CreateMatch_Should_Return_BadRequest_When_Score_Is_Negative()
     {
         var command = new CreateMatchCommand(
@@ -171,7 +206,9 @@ public sealed class CreateMatchEndpointTests
         var dbContext = scope.ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var client = _factory.CreateClient();
 
@@ -200,7 +237,9 @@ public sealed class CreateMatchEndpointTests
         var dbContext = scope.ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var client = _factory.CreateClient();
 
@@ -229,7 +268,9 @@ public sealed class CreateMatchEndpointTests
         var dbContext = scope.ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        var data = await CreateTestDataAsync(dbContext);
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
 
         var client = _factory.CreateClient();
 
@@ -251,7 +292,8 @@ public sealed class CreateMatchEndpointTests
     }
 
     private static async Task<TestData> CreateTestDataAsync(
-        ApplicationDbContext dbContext)
+        ApplicationDbContext dbContext,
+        bool startTournament)
     {
         var venue = Venue.Create(
             $"Create Match API Venue {Guid.NewGuid():N}",
@@ -286,6 +328,12 @@ public sealed class CreateMatchEndpointTests
                 new DateOnly(2026, 8, 20),
                 new DateOnly(2026, 8, 20),
                 otherVenue.Id));
+
+        if (startTournament)
+        {
+            tournament.Schedule();
+            tournament.Start();
+        }
 
         var player1 = Player.Create(
             "Create Match API",
