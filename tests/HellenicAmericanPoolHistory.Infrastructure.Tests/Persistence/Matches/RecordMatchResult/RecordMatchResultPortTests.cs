@@ -47,6 +47,26 @@ public sealed class RecordMatchResultPortTests
     }
 
     [Fact]
+    public async Task RecordAsync_Should_Throw_ConflictException_When_Tournament_Is_Not_InProgress()
+    {
+        await using var dbContext = CreateDbContext();
+
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: false);
+
+        var port = new RecordMatchResultPort(dbContext);
+
+        await Assert.ThrowsAsync<ConflictException>(
+            () => port.RecordAsync(
+                data.Match.Id,
+                data.Participant1.Id,
+                5,
+                3,
+                CancellationToken.None));
+    }
+
+    [Fact]
     public async Task RecordAsync_Should_Throw_NotFoundException_When_Match_Does_Not_Exist()
     {
         await using var dbContext = CreateDbContext();
@@ -133,7 +153,8 @@ public sealed class RecordMatchResultPortTests
     }
 
     private static async Task<TestData> CreateTestDataAsync(
-        ApplicationDbContext dbContext)
+        ApplicationDbContext dbContext,
+        bool startTournament = true)
     {
         var venue = Venue.Create(
             $"Record Match Result Venue {Guid.NewGuid():N}",
@@ -151,6 +172,12 @@ public sealed class RecordMatchResultPortTests
                 new DateOnly(2026, 8, 20),
                 new DateOnly(2026, 8, 20),
                 venue.Id));
+
+        if (startTournament)
+        {
+            tournament.Schedule();
+            tournament.Start();
+        }
 
         var player1 = Player.Create(
             "Record Match Result",

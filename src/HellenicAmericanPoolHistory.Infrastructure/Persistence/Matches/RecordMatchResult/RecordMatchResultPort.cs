@@ -1,6 +1,7 @@
 using HellenicAmericanPoolHistory.Application.Common.Exceptions;
 using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
+using HellenicAmericanPoolHistory.Domain.Tournament;
 using Microsoft.EntityFrameworkCore;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.RecordMatchResult;
@@ -27,6 +28,7 @@ public sealed class RecordMatchResultPort : IRecordMatchResultPort
         CancellationToken cancellationToken)
     {
         var match = await _dbContext.Matches
+            .Include(match => match.Tournament)
             .FirstOrDefaultAsync(
                 match => match.Id == matchId,
                 cancellationToken);
@@ -34,6 +36,13 @@ public sealed class RecordMatchResultPort : IRecordMatchResultPort
         if (match is null)
         {
             throw new NotFoundException("Match not found.");
+        }
+
+        if (match.Tournament.TournamentStatus !=
+            TournamentStatus.InProgress)
+        {
+            throw new ConflictException(
+                "Match result can only be recorded while the tournament is in progress.");
         }
 
         try
