@@ -30,6 +30,7 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.ScheduleTourn
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.StartTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.CompleteTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.CancelTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.AdvanceTournamentBracket;
 using HellenicAmericanPoolHistory.Api.Endpoints.Matches;
 using HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatch;
@@ -78,6 +79,7 @@ builder.Services.AddScoped<GetParticipationsHandler>();
 builder.Services.AddScoped<UpdateParticipationHandler>();
 builder.Services.AddScoped<GenerateTournamentBracketHandler>();
 builder.Services.AddScoped<GetTournamentBracketHandler>();
+builder.Services.AddScoped<AdvanceTournamentBracketHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -134,6 +136,8 @@ app.MapScheduleTournamentEndpoint();
 app.MapStartTournamentEndpoint();
 
 app.MapGenerateTournamentBracketEndpoint();
+
+app.MapAdvanceTournamentBracketEndpoint();
 
 app.MapUpdateVenueEndpoint();
 
