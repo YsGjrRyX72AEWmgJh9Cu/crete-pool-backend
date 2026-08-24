@@ -64,6 +64,8 @@ using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.DeleteMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.RecordMatchResult;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournamentBracket;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournamentBracket;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -127,6 +129,10 @@ public static class DependencyInjection
         services.AddScoped<
             IAdvanceTournamentBracketPort,
             AdvanceTournamentBracketPort>();
+
+        services.AddScoped<
+            IGetTournamentBracketPort,
+            GetTournamentBracketPort>();
 
         return services;
     }
