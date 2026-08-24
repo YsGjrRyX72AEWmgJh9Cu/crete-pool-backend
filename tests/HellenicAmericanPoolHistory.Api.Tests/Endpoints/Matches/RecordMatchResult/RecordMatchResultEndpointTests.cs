@@ -6,6 +6,7 @@ using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
+using HellenicAmericanPoolHistory.Domain.Enums;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -146,7 +147,7 @@ public sealed class RecordMatchResultEndpointTests
             new TournamentData(
                 $"Record Match Result API Tournament {Guid.NewGuid():N}",
                 TournamentType.Individual,
-                BracketType.SingleElimination,
+                HellenicAmericanPoolHistory.Domain.Tournament.BracketType.SingleElimination,
                 GameSet.RaceTo5,
                 new DateOnly(2026, 8, 20),
                 new DateOnly(2026, 8, 20),
@@ -180,9 +181,19 @@ public sealed class RecordMatchResultEndpointTests
             new DateOnly(2026, 8, 18),
             2);
 
+        participant1.Update(
+            1,
+            ParticipationStatus.CheckedIn);
+
+        participant2.Update(
+            2,
+            ParticipationStatus.CheckedIn);
+
         var match = new Match(
             MatchId.New(),
             tournament.Id,
+            1,
+            1,
             participant1.Id,
             participant2.Id);
 

@@ -171,6 +171,8 @@ public sealed class GetMatchPortTests
         var match = new Match(
             MatchId.New(),
             tournament.Id,
+            1,
+            1,
             participant1.Id,
             participant2.Id);
 
@@ -241,6 +243,8 @@ public sealed class GetMatchPortTests
         var match = new Match(
             MatchId.New(),
             tournament.Id,
+            1,
+            1,
             participant1.Id,
             participant2.Id);
 

@@ -35,6 +35,8 @@ public sealed class DeleteMatchEndpointTests
         var match = new Match(
             MatchId.New(),
             data.Tournament.Id,
+            1,
+            1,
             data.Participant1.Id,
             data.Participant2.Id);
 

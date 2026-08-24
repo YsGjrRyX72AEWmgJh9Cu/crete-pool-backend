@@ -35,6 +35,7 @@ using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatches;
 using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.GenerateTournamentBracket;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +75,7 @@ builder.Services.AddScoped<DeleteParticipationHandler>();
 builder.Services.AddScoped<GetParticipationHandler>();
 builder.Services.AddScoped<GetParticipationsHandler>();
 builder.Services.AddScoped<UpdateParticipationHandler>();
+builder.Services.AddScoped<GenerateTournamentBracketHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -126,6 +128,8 @@ app.MapDeleteTournamentEndpoint();
 app.MapScheduleTournamentEndpoint();
 
 app.MapStartTournamentEndpoint();
+
+app.MapGenerateTournamentBracketEndpoint();
 
 app.MapUpdateVenueEndpoint();
 

@@ -10,6 +10,12 @@ public sealed class CreateMatchValidator
         RuleFor(x => x.TournamentId)
             .NotEmpty();
 
+        RuleFor(x => x.Round)
+            .GreaterThan(0);
+
+        RuleFor(x => x.BracketPosition)
+            .GreaterThan(0);
+
         RuleFor(x => x.Participant1Id)
             .NotEmpty();
 
@@ -29,8 +35,8 @@ public sealed class CreateMatchValidator
                 (!x.WinnerParticipationId.HasValue &&
                  !x.Participant1Score.HasValue &&
                  !x.Participant2Score.HasValue)
-                 ||
-                 (x.WinnerParticipationId.HasValue &&
+                ||
+                (x.WinnerParticipationId.HasValue &&
                  x.Participant1Score.HasValue &&
                  x.Participant2Score.HasValue))
             .WithMessage(

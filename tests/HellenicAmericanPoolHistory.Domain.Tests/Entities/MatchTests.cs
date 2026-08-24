@@ -20,11 +20,15 @@ public class MatchTests
         var match = new Match(
             MatchId.New(),
             tournamentId,
+            1,
+            1,
             participant1Id,
             participant2Id);
 
         // Assert
         Assert.Equal(tournamentId, match.TournamentId);
+        Assert.Equal(1, match.Round);
+        Assert.Equal(1, match.BracketPosition);
         Assert.Equal(participant1Id, match.Participant1Id);
         Assert.Equal(participant2Id, match.Participant2Id);
         Assert.Null(match.WinnerParticipationId);
@@ -44,6 +48,84 @@ public class MatchTests
             new Match(
                 MatchId.New(),
                 default,
+                1,
+                1,
+                participant1Id,
+                participant2Id));
+    }
+
+    [Fact]
+    public void Constructor_With_Zero_Round_Should_Throw()
+    {
+        // Arrange
+        var tournamentId = TournamentId.New();
+        var participant1Id = ParticipationId.New();
+        var participant2Id = ParticipationId.New();
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new Match(
+                MatchId.New(),
+                tournamentId,
+                0,
+                1,
+                participant1Id,
+                participant2Id));
+    }
+
+    [Fact]
+    public void Constructor_With_Negative_Round_Should_Throw()
+    {
+        // Arrange
+        var tournamentId = TournamentId.New();
+        var participant1Id = ParticipationId.New();
+        var participant2Id = ParticipationId.New();
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new Match(
+                MatchId.New(),
+                tournamentId,
+                -1,
+                1,
+                participant1Id,
+                participant2Id));
+    }
+
+    [Fact]
+    public void Constructor_With_Zero_BracketPosition_Should_Throw()
+    {
+        // Arrange
+        var tournamentId = TournamentId.New();
+        var participant1Id = ParticipationId.New();
+        var participant2Id = ParticipationId.New();
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new Match(
+                MatchId.New(),
+                tournamentId,
+                1,
+                0,
+                participant1Id,
+                participant2Id));
+    }
+
+    [Fact]
+    public void Constructor_With_Negative_BracketPosition_Should_Throw()
+    {
+        // Arrange
+        var tournamentId = TournamentId.New();
+        var participant1Id = ParticipationId.New();
+        var participant2Id = ParticipationId.New();
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            new Match(
+                MatchId.New(),
+                tournamentId,
+                1,
+                -1,
                 participant1Id,
                 participant2Id));
     }
@@ -60,6 +142,8 @@ public class MatchTests
             new Match(
                 MatchId.New(),
                 tournamentId,
+                1,
+                1,
                 participantId,
                 participantId));
     }
@@ -178,6 +262,8 @@ public class MatchTests
         return new Match(
             MatchId.New(),
             TournamentId.New(),
+            1,
+            1,
             ParticipationId.New(),
             ParticipationId.New());
     }

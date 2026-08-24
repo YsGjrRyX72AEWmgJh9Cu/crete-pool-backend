@@ -37,6 +37,8 @@ public sealed class CreateMatchHandler
         var match = new Match(
             MatchId.New(),
             new TournamentId(command.TournamentId),
+            command.Round,
+            command.BracketPosition,
             new ParticipationId(command.Participant1Id),
             new ParticipationId(command.Participant2Id));
 

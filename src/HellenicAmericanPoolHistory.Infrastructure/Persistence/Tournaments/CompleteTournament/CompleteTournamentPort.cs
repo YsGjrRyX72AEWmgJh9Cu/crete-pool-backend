@@ -33,6 +33,25 @@ public sealed class CompleteTournamentPort : ICompleteTournamentPort
             throw new NotFoundException("Tournament not found.");
         }
 
+        var finalMatch = await _context.Matches
+            .Where(match =>
+                match.TournamentId == tournamentId)
+            .OrderByDescending(match => match.Round)
+            .ThenByDescending(match => match.BracketPosition)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (finalMatch is null)
+        {
+            throw new ConflictException(
+                "Tournament final has not been generated.");
+        }
+
+        if (!finalMatch.WinnerParticipationId.HasValue)
+        {
+            throw new ConflictException(
+                "Tournament final must be completed before the tournament can be completed.");
+        }
+
         try
         {
             tournament.Complete();

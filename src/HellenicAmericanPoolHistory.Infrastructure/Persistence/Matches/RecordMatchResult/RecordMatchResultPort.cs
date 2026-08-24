@@ -1,5 +1,6 @@
 using HellenicAmericanPoolHistory.Application.Common.Exceptions;
 using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.AdvanceTournamentBracket;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +13,20 @@ namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.RecordM
 public sealed class RecordMatchResultPort : IRecordMatchResultPort
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly IAdvanceTournamentBracketPort
+        _advanceTournamentBracketPort;
 
-    public RecordMatchResultPort(ApplicationDbContext dbContext)
+    public RecordMatchResultPort(
+        ApplicationDbContext dbContext,
+        IAdvanceTournamentBracketPort advanceTournamentBracketPort)
     {
         ArgumentNullException.ThrowIfNull(dbContext);
+        ArgumentNullException.ThrowIfNull(
+            advanceTournamentBracketPort);
 
         _dbContext = dbContext;
+        _advanceTournamentBracketPort =
+            advanceTournamentBracketPort;
     }
 
     public async Task RecordAsync(
@@ -62,5 +71,25 @@ public sealed class RecordMatchResultPort : IRecordMatchResultPort
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        var currentRoundMatches = await _dbContext.Matches
+            .Where(currentMatch =>
+                currentMatch.TournamentId ==
+                    match.TournamentId &&
+                currentMatch.Round == match.Round)
+            .ToListAsync(cancellationToken);
+
+        var allMatchesCompleted = currentRoundMatches.All(
+            currentMatch =>
+                currentMatch.WinnerParticipationId.HasValue);
+
+        if (!allMatchesCompleted)
+        {
+            return;
+        }
+
+        await _advanceTournamentBracketPort.AdvanceAsync(
+            match.TournamentId,
+            cancellationToken);
     }
 }

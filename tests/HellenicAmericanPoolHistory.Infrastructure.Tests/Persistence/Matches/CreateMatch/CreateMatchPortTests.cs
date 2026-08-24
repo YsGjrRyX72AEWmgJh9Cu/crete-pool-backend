@@ -27,6 +27,8 @@ public sealed class CreateMatchPortTests
         var match = new Match(
             MatchId.New(),
             data.Tournament.Id,
+            1,
+            1,
             data.Participant1.Id,
             data.Participant2.Id);
 
@@ -59,6 +61,8 @@ public sealed class CreateMatchPortTests
         var match = new Match(
             MatchId.New(),
             data.Tournament.Id,
+            1,
+            1,
             data.Participant1.Id,
             data.Participant2.Id);
 
@@ -86,6 +90,8 @@ public sealed class CreateMatchPortTests
         var match = new Match(
             MatchId.New(),
             missingTournamentId,
+            1,
+            1,
             data.Participant1.Id,
             data.Participant2.Id);
 
@@ -113,6 +119,8 @@ public sealed class CreateMatchPortTests
         var match = new Match(
             MatchId.New(),
             data.Tournament.Id,
+            1,
+            1,
             data.Participant1.Id,
             missingParticipationId);
 
@@ -138,6 +146,8 @@ public sealed class CreateMatchPortTests
         var match = new Match(
             MatchId.New(),
             data.Tournament.Id,
+            1,
+            1,
             data.Participant1.Id,
             data.OtherTournamentParticipant.Id);
 

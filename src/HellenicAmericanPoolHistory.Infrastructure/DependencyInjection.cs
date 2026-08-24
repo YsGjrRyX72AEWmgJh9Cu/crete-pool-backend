@@ -54,6 +54,10 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.CompleteTourn
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CompleteTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.CancelTournament;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CancelTournament;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.GenerateTournamentBracket;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GenerateTournamentBracket;
+using HellenicAmericanPoolHistory.Application.Features.Tournaments.AdvanceTournamentBracket;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.AdvanceTournamentBracket;
 using HellenicAmericanPoolHistory.Application.Features.Matches.GetMatches;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.GetMatches;
 using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
@@ -115,6 +119,14 @@ public static class DependencyInjection
         services.AddScoped<IStartTournamentPort, StartTournamentPort>();
         services.AddScoped<ICompleteTournamentPort, CompleteTournamentPort>();
         services.AddScoped<ICancelTournamentPort, CancelTournamentPort>();
+
+        services.AddScoped<
+            IGenerateTournamentBracketPort,
+            GenerateTournamentBracketPort>();
+
+        services.AddScoped<
+            IAdvanceTournamentBracketPort,
+            AdvanceTournamentBracketPort>();
 
         return services;
     }

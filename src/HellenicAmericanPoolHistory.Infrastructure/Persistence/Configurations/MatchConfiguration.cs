@@ -47,6 +47,12 @@ public sealed class MatchConfiguration
             .HasConversion(new StronglyTypedIdConverter<ParticipationId>())
             .IsRequired();
 
+        builder.Property(match => match.Round)
+            .IsRequired();
+
+        builder.Property(match => match.BracketPosition)
+            .IsRequired();
+
         builder.Property(match => match.Participant2Id)
             .HasConversion(new StronglyTypedIdConverter<ParticipationId>())
             .IsRequired();

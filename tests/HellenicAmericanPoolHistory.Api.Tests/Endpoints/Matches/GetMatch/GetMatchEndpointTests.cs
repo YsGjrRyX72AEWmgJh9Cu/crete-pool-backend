@@ -145,6 +145,8 @@ public sealed class GetMatchEndpointTests
         var match = new Match(
             MatchId.New(),
             tournament.Id,
+            1,
+            1,
             participant1.Id,
             participant2.Id);
 

@@ -1,11 +1,16 @@
 using HellenicAmericanPoolHistory.Application.Common.Exceptions;
+using HellenicAmericanPoolHistory.Domain.Entities;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
+using HellenicAmericanPoolHistory.Domain.Enums;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CompleteTournament;
 using Microsoft.EntityFrameworkCore;
+
+using TournamentStatus =
+    HellenicAmericanPoolHistory.Domain.Tournament.TournamentStatus;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Tests.Persistence.Tournaments.CompleteTournament;
 
@@ -15,23 +20,42 @@ public sealed class CompleteTournamentPortTests
         "Host=localhost;Port=5432;Database=HellenicAmericanPoolHistory_Test;Username=manos";
 
     [Fact]
-    public async Task CompleteAsync_Should_Complete_InProgress_Tournament()
+    public async Task CompleteAsync_Should_Complete_InProgress_Tournament_When_Final_Is_Completed()
     {
         await using var dbContext = CreateDbContext();
 
-        var tournament = await CreateInProgressTournamentAsync(dbContext);
+        var data = await CreateInProgressTournamentWithFinalAsync(
+            dbContext,
+            finalCompleted: true);
 
         var port = new CompleteTournamentPort(dbContext);
 
         await port.CompleteAsync(
-            tournament.Id,
+            data.Tournament.Id,
             CancellationToken.None);
 
-        await dbContext.Entry(tournament).ReloadAsync();
+        await dbContext.Entry(data.Tournament).ReloadAsync();
 
         Assert.Equal(
             TournamentStatus.Completed,
-            tournament.TournamentStatus);
+            data.Tournament.TournamentStatus);
+    }
+
+    [Fact]
+    public async Task CompleteAsync_Should_Throw_ConflictException_When_Final_Is_Not_Completed()
+    {
+        await using var dbContext = CreateDbContext();
+
+        var data = await CreateInProgressTournamentWithFinalAsync(
+            dbContext,
+            finalCompleted: false);
+
+        var port = new CompleteTournamentPort(dbContext);
+
+        await Assert.ThrowsAsync<ConflictException>(
+            () => port.CompleteAsync(
+                data.Tournament.Id,
+                CancellationToken.None));
     }
 
     [Fact]
@@ -85,7 +109,7 @@ public sealed class CompleteTournamentPortTests
             new TournamentData(
                 "Complete Tournament Test",
                 TournamentType.Individual,
-                BracketType.SingleElimination,
+                HellenicAmericanPoolHistory.Domain.Tournament.BracketType.SingleElimination,
                 GameSet.RaceTo5,
                 new DateOnly(2026, 8, 14),
                 new DateOnly(2026, 8, 14),
@@ -99,16 +123,83 @@ public sealed class CompleteTournamentPortTests
         return tournament;
     }
 
-    private static async Task<Tournament> CreateInProgressTournamentAsync(
-        ApplicationDbContext dbContext)
+    private static async Task<TestData> CreateInProgressTournamentWithFinalAsync(
+        ApplicationDbContext dbContext,
+        bool finalCompleted)
     {
         var tournament = await CreateTournamentAsync(dbContext);
 
         tournament.Schedule();
         tournament.Start();
 
+        var player1 = Player.Create(
+            "Final Player 1",
+            "final1@test.com",
+            new Country("Greece"));
+
+        var player2 = Player.Create(
+            "Final Player 2",
+            "final2@test.com",
+            new Country("Greece"));
+
+        var participant1 = Participation.Create(
+            player1.Id,
+            tournament.Id,
+            new DateOnly(2026, 8, 14),
+            1);
+
+        var participant2 = Participation.Create(
+            player2.Id,
+            tournament.Id,
+            new DateOnly(2026, 8, 14),
+            2);
+
+        participant1.Update(
+            1,
+            ParticipationStatus.CheckedIn);
+
+        participant2.Update(
+            2,
+            ParticipationStatus.CheckedIn);
+
+        var final = new Match(
+            MatchId.New(),
+            tournament.Id,
+            1,
+            1,
+            participant1.Id,
+            participant2.Id);
+
+        if (finalCompleted)
+        {
+            final.RecordResult(
+                participant1.Id,
+                5,
+                3);
+        }
+
+        dbContext.Players.AddRange(
+            player1,
+            player2);
+
+        dbContext.Participations.AddRange(
+            participant1,
+            participant2);
+
+        dbContext.Matches.Add(final);
+
         await dbContext.SaveChangesAsync();
 
-        return tournament;
+        return new TestData(
+            tournament,
+            final,
+            participant1,
+            participant2);
     }
+
+    private sealed record TestData(
+        Tournament Tournament,
+        Match Final,
+        Participation Participant1,
+        Participation Participant2);
 }

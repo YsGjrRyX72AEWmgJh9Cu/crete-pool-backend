@@ -18,6 +18,8 @@ public sealed class CreateMatchHandlerTests
 
         var command = new CreateMatchCommand(
             tournamentId,
+            1,
+            1,
             participant1Id,
             participant2Id,
             participant1Id,
@@ -32,6 +34,14 @@ public sealed class CreateMatchHandlerTests
         Assert.Equal(
             tournamentId,
             port.CreatedMatch!.TournamentId.Value);
+
+        Assert.Equal(
+            1,
+            port.CreatedMatch.Round);
+
+        Assert.Equal(
+            1,
+            port.CreatedMatch.BracketPosition);
 
         Assert.Equal(
             participant1Id,
@@ -63,6 +73,8 @@ public sealed class CreateMatchHandlerTests
 
         var command = new CreateMatchCommand(
             tournamentId,
+            1,
+            1,
             participant1Id,
             participant2Id,
             participant1Id,
@@ -86,6 +98,8 @@ public sealed class CreateMatchHandlerTests
 
         var command = new CreateMatchCommand(
             tournamentId,
+            1,
+            1,
             participant1Id,
             participant2Id,
             null,
@@ -100,6 +114,14 @@ public sealed class CreateMatchHandlerTests
         Assert.Equal(
             tournamentId,
             port.CreatedMatch!.TournamentId.Value);
+
+        Assert.Equal(
+            1,
+            port.CreatedMatch.Round);
+
+        Assert.Equal(
+            1,
+            port.CreatedMatch.BracketPosition);
 
         Assert.Equal(
             participant1Id,

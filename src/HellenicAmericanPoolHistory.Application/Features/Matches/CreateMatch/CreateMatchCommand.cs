@@ -4,6 +4,10 @@ namespace HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
 /// Represents the request to create a new match.
 /// </summary>
 /// <param name="TournamentId">The tournament identifier.</param>
+/// <param name="Round">The tournament round number.</param>
+/// <param name="BracketPosition">
+/// The match position within the tournament round.
+/// </param>
 /// <param name="Participant1Id">The first participation identifier.</param>
 /// <param name="Participant2Id">The second participation identifier.</param>
 /// <param name="WinnerParticipationId">
@@ -17,6 +21,8 @@ namespace HellenicAmericanPoolHistory.Application.Features.Matches.CreateMatch;
 /// </param>
 public sealed record CreateMatchCommand(
     Guid TournamentId,
+    int Round,
+    int BracketPosition,
     Guid Participant1Id,
     Guid Participant2Id,
     Guid? WinnerParticipationId,

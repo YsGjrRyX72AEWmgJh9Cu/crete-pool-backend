@@ -39,6 +39,8 @@ public sealed class CreateMatchEndpointTests
 
         var command = new CreateMatchCommand(
             data.Tournament.Id.Value,
+            1,
+            1,
             data.Participant1.Id.Value,
             data.Participant2.Id.Value,
             null,
@@ -66,6 +68,14 @@ public sealed class CreateMatchEndpointTests
         Assert.Equal(
             data.Tournament.Id,
             match!.TournamentId);
+
+        Assert.Equal(
+            1,
+            match.Round);
+
+        Assert.Equal(
+            1,
+            match.BracketPosition);
 
         Assert.Equal(
             data.Participant1.Id,
@@ -96,6 +106,8 @@ public sealed class CreateMatchEndpointTests
 
         var command = new CreateMatchCommand(
             data.Tournament.Id.Value,
+            1,
+            1,
             data.Participant1.Id.Value,
             data.Participant2.Id.Value,
             data.Participant1.Id.Value,
@@ -123,6 +135,14 @@ public sealed class CreateMatchEndpointTests
         Assert.Equal(
             data.Tournament.Id,
             match!.TournamentId);
+
+        Assert.Equal(
+            1,
+            match.Round);
+
+        Assert.Equal(
+            1,
+            match.BracketPosition);
 
         Assert.Equal(
             data.Participant1.Id,
@@ -161,6 +181,8 @@ public sealed class CreateMatchEndpointTests
 
         var command = new CreateMatchCommand(
             data.Tournament.Id.Value,
+            1,
+            1,
             data.Participant1.Id.Value,
             data.Participant2.Id.Value,
             null,
@@ -181,6 +203,8 @@ public sealed class CreateMatchEndpointTests
     {
         var command = new CreateMatchCommand(
             Guid.NewGuid(),
+            1,
+            1,
             Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
@@ -214,6 +238,8 @@ public sealed class CreateMatchEndpointTests
 
         var command = new CreateMatchCommand(
             Guid.NewGuid(),
+            1,
+            1,
             data.Participant1.Id.Value,
             data.Participant2.Id.Value,
             data.Participant1.Id.Value,
@@ -245,6 +271,8 @@ public sealed class CreateMatchEndpointTests
 
         var command = new CreateMatchCommand(
             data.Tournament.Id.Value,
+            1,
+            1,
             data.Participant1.Id.Value,
             Guid.NewGuid(),
             data.Participant1.Id.Value,
@@ -276,6 +304,8 @@ public sealed class CreateMatchEndpointTests
 
         var command = new CreateMatchCommand(
             data.Tournament.Id.Value,
+            1,
+            1,
             data.Participant1.Id.Value,
             data.OtherTournamentParticipant.Id.Value,
             data.Participant1.Id.Value,
