@@ -41,6 +41,8 @@ using HellenicAmericanPoolHistory.Application.Features.Matches.DeleteMatch;
 using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.GenerateTournamentBracket;
 using HellenicAmericanPoolHistory.Application.Features.TournamentSeries.CreateTournamentSeries;
+using HellenicAmericanPoolHistory.Application.Features.TournamentSeries.GetTournamentSeriesByOrganization;
+using HellenicAmericanPoolHistory.Api.Endpoints.TournamentSeries.GetTournamentSeriesByOrganization;
 using HellenicAmericanPoolHistory.Api.Endpoints.TournamentSeries;
 using HellenicAmericanPoolHistory.Application.Features.Organizations.CreateOrganization;
 using HellenicAmericanPoolHistory.Api.Endpoints.Organizations;
@@ -67,6 +69,7 @@ builder.Services.AddScoped<GetVenuesHandler>();
 builder.Services.AddScoped<GetTournamentHandler>();
 builder.Services.AddScoped<GetTournamentsHandler>();
 builder.Services.AddScoped<GetTournamentSeriesHandler>();
+builder.Services.AddScoped<GetTournamentSeriesByOrganizationHandler>();
 builder.Services.AddScoped<UpdateTournamentHandler>();
 builder.Services.AddScoped<DeleteTournamentHandler>();
 builder.Services.AddScoped<ScheduleTournamentHandler>();
@@ -164,6 +167,8 @@ app.MapCreateOrganizationEndpoint();
 app.MapGetOrganizationsEndpoint();
 
 app.MapGetTournamentSeriesEndpoint();
+
+app.MapGetTournamentSeriesByOrganizationEndpoint();
 
 app.MapRecordMatchResultEndpoint();
 

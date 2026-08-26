@@ -30,6 +30,8 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournament
 using HellenicAmericanPoolHistory.Application.Features.TournamentSeries.GetTournamentSeries;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.TournamentSeries.GetTournamentSeries;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournaments;
+using HellenicAmericanPoolHistory.Application.Features.TournamentSeries.GetTournamentSeriesByOrganization;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.TournamentSeries.GetTournamentSeriesByOrganization;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.UpdateTournament;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.UpdateTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.DeleteTournament;
@@ -100,6 +102,9 @@ public static class DependencyInjection
         services.AddScoped<
             IGetTournamentSeriesPort,
             GetTournamentSeriesPort>();
+        services.AddScoped<
+            IGetTournamentSeriesByOrganizationPort,
+            GetTournamentSeriesByOrganizationPort>();
         services.AddScoped<
             IGetOrganizationsPort,
             GetOrganizationsPort>();
