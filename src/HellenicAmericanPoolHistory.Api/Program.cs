@@ -25,6 +25,7 @@ using HellenicAmericanPoolHistory.Application.Features.Participations.CreatePart
 using HellenicAmericanPoolHistory.Application.Features.Participations.DeleteParticipation;
 using HellenicAmericanPoolHistory.Application.Features.Participations.GetParticipation;
 using HellenicAmericanPoolHistory.Application.Features.Participations.GetParticipations;
+using HellenicAmericanPoolHistory.Application.Features.Organizations.GetOrganizations;
 using HellenicAmericanPoolHistory.Application.Features.Participations.UpdateParticipation;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.ScheduleTournament;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.StartTournament;
@@ -58,6 +59,7 @@ builder.Services.AddScoped<DeletePlayerHandler>();
 builder.Services.AddScoped<CreateTournamentHandler>();
 builder.Services.AddScoped<CreateOrganizationHandler>();
 builder.Services.AddScoped<CreateTournamentSeriesHandler>();
+builder.Services.AddScoped<GetOrganizationsHandler>();
 builder.Services.AddScoped<CreateVenueHandler>();
 builder.Services.AddScoped<GetVenueHandler>();
 builder.Services.AddScoped<GetVenuesHandler>();
@@ -156,6 +158,8 @@ app.MapCreateParticipationEndpoint();
 app.MapCreateMatchEndpoint();
 
 app.MapCreateOrganizationEndpoint();
+
+app.MapGetOrganizationsEndpoint();
 
 app.MapRecordMatchResultEndpoint();
 

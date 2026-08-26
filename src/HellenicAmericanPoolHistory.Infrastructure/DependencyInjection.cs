@@ -70,6 +70,8 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournament
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournamentBracket;
 using HellenicAmericanPoolHistory.Application.Features.Organizations.CreateOrganization;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Organizations.CreateOrganization;
+using HellenicAmericanPoolHistory.Application.Features.Organizations.GetOrganizations;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Organizations.GetOrganizations;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -93,6 +95,9 @@ public static class DependencyInjection
         services.AddScoped<
             ICreateOrganizationPort,
             CreateOrganizationPort>();
+        services.AddScoped<
+            IGetOrganizationsPort,
+            GetOrganizationsPort>();
         services.AddScoped<ICreateParticipationPort, CreateParticipationPort>();
         services.AddScoped<IDeleteParticipationPort, DeleteParticipationPort>();
         services.AddScoped<IGetParticipationPort, GetParticipationPort>();
