@@ -1,5 +1,6 @@
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,8 @@ namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Configurations;
 /// <summary>
 /// Configures the persistence mapping for <see cref="Tournament"/>.
 /// </summary>
-public sealed class TournamentConfiguration : IEntityTypeConfiguration<Tournament>
+public sealed class TournamentConfiguration
+    : IEntityTypeConfiguration<Tournament>
 {
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Tournament> builder)
@@ -33,11 +35,13 @@ public sealed class TournamentConfiguration : IEntityTypeConfiguration<Tournamen
         builder.HasKey(tournament => tournament.Id);
 
         builder.Property(tournament => tournament.Id)
-            .HasConversion(new StronglyTypedIdConverter<TournamentId>())
+            .HasConversion(
+                new StronglyTypedIdConverter<TournamentId>())
             .ValueGeneratedNever();
     }
 
-    private static void ConfigureProperties(EntityTypeBuilder<Tournament> builder)
+    private static void ConfigureProperties(
+        EntityTypeBuilder<Tournament> builder)
     {
         builder.Property(tournament => tournament.Name)
             .IsRequired()
@@ -66,15 +70,27 @@ public sealed class TournamentConfiguration : IEntityTypeConfiguration<Tournamen
             .IsRequired();
 
         builder.Property(tournament => tournament.VenueId)
-            .HasConversion(new StronglyTypedIdConverter<VenueId>())
+            .HasConversion(
+                new StronglyTypedIdConverter<VenueId>())
             .IsRequired();
+
+        builder.Property(tournament => tournament.TournamentSeriesId)
+            .HasConversion(
+                new StronglyTypedIdConverter<TournamentSeriesId>())
+            .IsRequired(false);
     }
 
-    private static void ConfigureRelationships(EntityTypeBuilder<Tournament> builder)
+    private static void ConfigureRelationships(
+        EntityTypeBuilder<Tournament> builder)
     {
         builder.HasOne<Venue>()
             .WithMany()
             .HasForeignKey(tournament => tournament.VenueId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<TournamentSeries>()
+            .WithMany()
+            .HasForeignKey(tournament => tournament.TournamentSeriesId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

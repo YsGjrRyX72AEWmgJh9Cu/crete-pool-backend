@@ -1,5 +1,6 @@
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using Xunit;
 

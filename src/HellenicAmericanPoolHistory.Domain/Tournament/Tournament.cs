@@ -2,6 +2,7 @@ using HellenicAmericanPoolHistory.Domain.Common.Abstractions;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Domain.Entities;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 
 namespace HellenicAmericanPoolHistory.Domain.Tournament;
 
@@ -16,13 +17,15 @@ public sealed class Tournament : Entity<TournamentId>
         GameSet gameSet,
         DateOnly startDate,
         DateOnly endDate,
-        VenueId venueId)
+        VenueId venueId,
+        TournamentSeriesId? tournamentSeriesId)
         : base(id)
     {
         Rename(name);
 
         if (endDate < startDate)
-            throw new ArgumentException("End date cannot be before start date.");
+            throw new ArgumentException(
+                "End date cannot be before start date.");
 
         TournamentType = tournamentType;
         TournamentStatus = tournamentStatus;
@@ -31,6 +34,7 @@ public sealed class Tournament : Entity<TournamentId>
         StartDate = startDate;
         EndDate = endDate;
         VenueId = venueId;
+        TournamentSeriesId = tournamentSeriesId;
     }
 
     public string Name { get; private set; } = null!;
@@ -49,6 +53,8 @@ public sealed class Tournament : Entity<TournamentId>
 
     public VenueId VenueId { get; private set; }
 
+    public TournamentSeriesId? TournamentSeriesId { get; private set; }
+
     public static Tournament Create(TournamentData data)
         => new(
             TournamentId.New(),
@@ -59,7 +65,8 @@ public sealed class Tournament : Entity<TournamentId>
             data.GameSet,
             data.StartDate,
             data.EndDate,
-            data.VenueId);
+            data.VenueId,
+            data.TournamentSeriesId);
 
     public void Rename(string name)
     {

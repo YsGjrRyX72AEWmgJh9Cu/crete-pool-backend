@@ -28,8 +28,8 @@ public static class UpdateTournamentEndpoint
                     request.EndDate,
                     request.VenueId);
 
-                await handler.Handle(
-                    id,
+                await handler.HandleAsync(
+                    new HellenicAmericanPoolHistory.Domain.Identifiers.TournamentId(id),
                     command,
                     cancellationToken);
 

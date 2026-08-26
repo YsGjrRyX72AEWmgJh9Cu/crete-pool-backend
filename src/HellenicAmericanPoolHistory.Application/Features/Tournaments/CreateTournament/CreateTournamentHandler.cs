@@ -30,7 +30,8 @@ public sealed class CreateTournamentHandler
             command.GameSet,
             command.StartDate,
             command.EndDate,
-            new VenueId(command.VenueId));
+            new VenueId(command.VenueId),
+            null);
 
         var tournament = Tournament.Create(tournamentData);
 

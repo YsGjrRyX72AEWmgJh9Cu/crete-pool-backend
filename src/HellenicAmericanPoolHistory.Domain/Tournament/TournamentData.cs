@@ -1,3 +1,4 @@
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Venue;
 
 namespace HellenicAmericanPoolHistory.Domain.Tournament;
@@ -9,4 +10,5 @@ public sealed record TournamentData(
     GameSet GameSet,
     DateOnly StartDate,
     DateOnly EndDate,
-    VenueId VenueId);
+    VenueId VenueId,
+    TournamentSeriesId? TournamentSeriesId = null);

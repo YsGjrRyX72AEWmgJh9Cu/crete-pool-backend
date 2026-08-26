@@ -1,5 +1,7 @@
 using HellenicAmericanPoolHistory.Application.Common.Exceptions;
+using HellenicAmericanPoolHistory.Domain.Organization;
 using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
@@ -18,6 +20,13 @@ public sealed class UpdateTournamentPortTests
     {
         await using var dbContext = CreateDbContext();
 
+        var organization = Organization.Create(
+            "Update Tournament Organization");
+
+        var tournamentSeries = TournamentSeries.Create(
+            organization.Id,
+            "Update Tournament Series");
+
         var venue = Venue.Create(
             "Update Tournament Original Venue",
             new VenueLocation(
@@ -33,8 +42,11 @@ public sealed class UpdateTournamentPortTests
                 GameSet.RaceTo5,
                 new DateOnly(2026, 8, 20),
                 new DateOnly(2026, 8, 20),
-                venue.Id));
+                venue.Id,
+                tournamentSeries.Id));
 
+        dbContext.Organizations.Add(organization);
+        dbContext.TournamentSeries.Add(tournamentSeries);
         dbContext.Venues.Add(venue);
         dbContext.Tournaments.Add(tournament);
 
@@ -47,7 +59,8 @@ public sealed class UpdateTournamentPortTests
             GameSet.RaceTo7,
             new DateOnly(2026, 8, 21),
             new DateOnly(2026, 8, 22),
-            venue.Id);
+            venue.Id,
+            tournamentSeries.Id);
 
         var port = new UpdateTournamentPort(dbContext);
 
@@ -77,6 +90,10 @@ public sealed class UpdateTournamentPortTests
             updatedTournament.EndDate);
 
         Assert.Equal(
+            tournamentSeries.Id,
+            updatedTournament.TournamentSeriesId);
+
+        Assert.Equal(
             TournamentStatus.Draft,
             updatedTournament.TournamentStatus);
     }
@@ -88,7 +105,8 @@ public sealed class UpdateTournamentPortTests
 
         var port = new UpdateTournamentPort(dbContext);
 
-        var tournamentId = HellenicAmericanPoolHistory.Domain.Identifiers.TournamentId.New();
+        var tournamentId =
+            HellenicAmericanPoolHistory.Domain.Identifiers.TournamentId.New();
 
         var venue = Venue.Create(
             "Update Tournament Not Found Venue",
@@ -104,7 +122,8 @@ public sealed class UpdateTournamentPortTests
             GameSet.RaceTo5,
             new DateOnly(2026, 8, 20),
             new DateOnly(2026, 8, 20),
-            venue.Id);
+            venue.Id,
+            null);
 
         var exception = await Assert.ThrowsAsync<NotFoundException>(
             () => port.UpdateAsync(
@@ -137,7 +156,8 @@ public sealed class UpdateTournamentPortTests
                 GameSet.RaceTo5,
                 new DateOnly(2026, 8, 23),
                 new DateOnly(2026, 8, 23),
-                venue.Id));
+                venue.Id,
+                null));
 
         tournament.Schedule();
 
@@ -153,7 +173,8 @@ public sealed class UpdateTournamentPortTests
             GameSet.RaceTo7,
             new DateOnly(2026, 8, 24),
             new DateOnly(2026, 8, 24),
-            venue.Id);
+            venue.Id,
+            null);
 
         var port = new UpdateTournamentPort(dbContext);
 

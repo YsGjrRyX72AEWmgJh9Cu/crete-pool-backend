@@ -1,11 +1,12 @@
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Venue;
 
 namespace HellenicAmericanPoolHistory.Application.Features.Tournaments.UpdateTournament;
 
 /// <summary>
-/// Handles tournament update requests.
+/// Handles tournament updates.
 /// </summary>
 public sealed class UpdateTournamentHandler
 {
@@ -18,25 +19,26 @@ public sealed class UpdateTournamentHandler
         _port = port;
     }
 
-    public async Task Handle(
-        Guid tournamentId,
+    public async Task HandleAsync(
+        TournamentId tournamentId,
         UpdateTournamentCommand command,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var data = new TournamentData(
+        var tournamentData = new TournamentData(
             command.Name,
             command.TournamentType,
             command.BracketType,
             command.GameSet,
             command.StartDate,
             command.EndDate,
-            new VenueId(command.VenueId));
+            new VenueId(command.VenueId),
+            null);
 
         await _port.UpdateAsync(
-            new TournamentId(tournamentId),
-            data,
+            tournamentId,
+            tournamentData,
             cancellationToken);
     }
 }
