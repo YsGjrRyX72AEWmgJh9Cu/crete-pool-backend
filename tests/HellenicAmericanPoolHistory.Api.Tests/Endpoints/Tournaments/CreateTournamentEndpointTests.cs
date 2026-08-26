@@ -4,7 +4,8 @@ using HellenicAmericanPoolHistory.Application.Features.Tournaments.CreateTournam
 using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Organization;
 using HellenicAmericanPoolHistory.Domain.Tournament;
-using HellenicAmericanPoolHistory.Domain.TournamentSeries;
+using TournamentSeriesEntity =
+    HellenicAmericanPoolHistory.Domain.TournamentSeries.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
@@ -43,7 +44,7 @@ public sealed class CreateTournamentEndpointTests
         var organization = Organization.Create(
             $"API Create Tournament Organization {Guid.NewGuid():N}");
 
-        var tournamentSeries = TournamentSeries.Create(
+        var tournamentSeries = TournamentSeriesEntity.Create(
             organization.Id,
             $"API Create Tournament Series {Guid.NewGuid():N}");
 
