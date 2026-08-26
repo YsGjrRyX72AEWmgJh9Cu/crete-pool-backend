@@ -4,6 +4,8 @@ using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
+using TournamentSeriesEntity =
+    HellenicAmericanPoolHistory.Domain.TournamentSeries.TournamentSeries;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.UpdateTournament;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +25,7 @@ public sealed class UpdateTournamentPortTests
         var organization = Organization.Create(
             "Update Tournament Organization");
 
-        var tournamentSeries = TournamentSeries.Create(
+        var tournamentSeries = TournamentSeriesEntity.Create(
             organization.Id,
             "Update Tournament Series");
 

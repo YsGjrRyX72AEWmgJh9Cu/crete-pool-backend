@@ -2,7 +2,9 @@ using System.Net;
 using System.Net.Http.Json;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.CreateTournament;
 using HellenicAmericanPoolHistory.Domain.Identifiers;
+using HellenicAmericanPoolHistory.Domain.Organization;
 using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.ValueObjects;
 using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
@@ -38,7 +40,16 @@ public sealed class CreateTournamentEndpointTests
                 "Heraklion",
                 "API Create Tournament Test Address"));
 
+        var organization = Organization.Create(
+            $"API Create Tournament Organization {Guid.NewGuid():N}");
+
+        var tournamentSeries = TournamentSeries.Create(
+            organization.Id,
+            $"API Create Tournament Series {Guid.NewGuid():N}");
+
         dbContext.Venues.Add(venue);
+        dbContext.Organizations.Add(organization);
+        dbContext.TournamentSeries.Add(tournamentSeries);
 
         await dbContext.SaveChangesAsync();
 
@@ -49,7 +60,8 @@ public sealed class CreateTournamentEndpointTests
             GameSet.RaceTo5,
             new DateOnly(2026, 8, 20),
             new DateOnly(2026, 8, 21),
-            venue.Id.Value);
+            venue.Id.Value,
+            tournamentSeries.Id.Value);
 
         var client = _factory.CreateClient();
 
@@ -111,6 +123,10 @@ public sealed class CreateTournamentEndpointTests
             tournament.VenueId.Value);
 
         Assert.Equal(
+            command.TournamentSeriesId,
+            tournament.TournamentSeriesId?.Value);
+
+        Assert.Equal(
             TournamentStatus.Draft,
             tournament.TournamentStatus);
     }
@@ -125,7 +141,8 @@ public sealed class CreateTournamentEndpointTests
             GameSet.RaceTo5,
             new DateOnly(2026, 8, 20),
             new DateOnly(2026, 8, 21),
-            Guid.NewGuid());
+            Guid.NewGuid(),
+            null);
 
         var client = _factory.CreateClient();
 

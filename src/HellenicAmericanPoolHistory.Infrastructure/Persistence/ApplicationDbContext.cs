@@ -1,5 +1,6 @@
 using HellenicAmericanPoolHistory.Domain.Organization;
-using HellenicAmericanPoolHistory.Domain.TournamentSeries;
+using TournamentSeriesEntity =
+    HellenicAmericanPoolHistory.Domain.TournamentSeries.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Entities;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.Venue;
@@ -28,8 +29,8 @@ public sealed class ApplicationDbContext : DbContext
 
     public DbSet<Tournament> Tournaments => Set<Tournament>();
 
-    public DbSet<TournamentSeries> TournamentSeries => Set<TournamentSeries>();
-
+    public DbSet<TournamentSeriesEntity> TournamentSeries =>
+        Set<TournamentSeriesEntity>();
     public DbSet<Participation> Participations => Set<Participation>();
 
     public DbSet<Match> Matches => Set<Match>();

@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.CreateTournament;
+using HellenicAmericanPoolHistory.Application.Features.TournamentSeries.CreateTournamentSeries;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.TournamentSeries.CreateTournamentSeries;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.CreateTournament;
 using HellenicAmericanPoolHistory.Application.Features.Venues.CreateVenue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Venues.CreateVenue;
@@ -66,6 +68,8 @@ using HellenicAmericanPoolHistory.Application.Features.Matches.RecordMatchResult
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.RecordMatchResult;
 using HellenicAmericanPoolHistory.Application.Features.Tournaments.GetTournamentBracket;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Tournaments.GetTournamentBracket;
+using HellenicAmericanPoolHistory.Application.Features.Organizations.CreateOrganization;
+using HellenicAmericanPoolHistory.Infrastructure.Persistence.Organizations.CreateOrganization;
 
 namespace HellenicAmericanPoolHistory.Infrastructure;
 
@@ -82,7 +86,13 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString));
 
         services.AddScoped<ICreatePlayerPort, CreatePlayerPort>();
+        services.AddScoped<
+            ICreateTournamentSeriesPort,
+            CreateTournamentSeriesPort>();
         services.AddScoped<IRecordMatchResultPort, RecordMatchResultPort>();
+        services.AddScoped<
+            ICreateOrganizationPort,
+            CreateOrganizationPort>();
         services.AddScoped<ICreateParticipationPort, CreateParticipationPort>();
         services.AddScoped<IDeleteParticipationPort, DeleteParticipationPort>();
         services.AddScoped<IGetParticipationPort, GetParticipationPort>();

@@ -2,6 +2,8 @@ using HellenicAmericanPoolHistory.Domain.Identifiers;
 using HellenicAmericanPoolHistory.Domain.Tournament;
 using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Venue;
+using TournamentSeriesEntity =
+    HellenicAmericanPoolHistory.Domain.TournamentSeries.TournamentSeries;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -88,7 +90,7 @@ public sealed class TournamentConfiguration
             .HasForeignKey(tournament => tournament.VenueId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<TournamentSeries>()
+        builder.HasOne<TournamentSeriesEntity>()
             .WithMany()
             .HasForeignKey(tournament => tournament.TournamentSeriesId)
             .OnDelete(DeleteBehavior.Restrict);

@@ -27,8 +27,8 @@ public sealed class UpdateTournamentHandlerTests
 
         var handler = new UpdateTournamentHandler(port);
 
-        await handler.Handle(
-            tournamentId.Value,
+        await handler.HandleAsync(
+            tournamentId,
             command,
             CancellationToken.None);
 
@@ -77,8 +77,8 @@ public sealed class UpdateTournamentHandlerTests
         var command = CreateCommand();
 
         var exception = await Record.ExceptionAsync(
-            () => handler.Handle(
-                TournamentId.New().Value,
+            () => handler.HandleAsync(
+                TournamentId.New(),
                 command,
                 CancellationToken.None));
 
@@ -98,8 +98,8 @@ public sealed class UpdateTournamentHandlerTests
         var handler = new UpdateTournamentHandler(port);
 
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => handler.Handle(
-                TournamentId.New().Value,
+            () => handler.HandleAsync(
+                TournamentId.New(),
                 CreateCommand(),
                 CancellationToken.None));
 

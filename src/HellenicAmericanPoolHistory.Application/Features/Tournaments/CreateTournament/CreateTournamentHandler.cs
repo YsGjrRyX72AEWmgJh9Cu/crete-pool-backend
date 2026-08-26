@@ -1,4 +1,5 @@
 using HellenicAmericanPoolHistory.Domain.Tournament;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Domain.Venue;
 
 namespace HellenicAmericanPoolHistory.Application.Features.Tournaments.CreateTournament;
@@ -31,7 +32,10 @@ public sealed class CreateTournamentHandler
             command.StartDate,
             command.EndDate,
             new VenueId(command.VenueId),
-            null);
+            command.TournamentSeriesId is null
+                ? null
+                : new TournamentSeriesId(
+                    command.TournamentSeriesId.Value));
 
         var tournament = Tournament.Create(tournamentData);
 
@@ -39,6 +43,7 @@ public sealed class CreateTournamentHandler
             tournament,
             cancellationToken);
 
-        return new CreateTournamentResponse(tournament.Id.Value);
+        return new CreateTournamentResponse(
+            tournament.Id.Value);
     }
 }

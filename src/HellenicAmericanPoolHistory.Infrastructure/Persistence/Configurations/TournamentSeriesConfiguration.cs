@@ -1,20 +1,22 @@
 using HellenicAmericanPoolHistory.Domain.Organization;
-using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TournamentSeriesEntity =
+    HellenicAmericanPoolHistory.Domain.TournamentSeries.TournamentSeries;
+using HellenicAmericanPoolHistory.Domain.TournamentSeries;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Persistence.Configurations;
 
 /// <summary>
-/// Configures the persistence mapping for <see cref="TournamentSeries"/>.
+/// Configures the persistence mapping for <see cref="TournamentSeriesEntity"/>.
 /// </summary>
 public sealed class TournamentSeriesConfiguration
-    : IEntityTypeConfiguration<TournamentSeries>
+    : IEntityTypeConfiguration<TournamentSeriesEntity>
 {
     /// <inheritdoc />
     public void Configure(
-        EntityTypeBuilder<TournamentSeries> builder)
+        EntityTypeBuilder<TournamentSeriesEntity> builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 
@@ -25,13 +27,13 @@ public sealed class TournamentSeriesConfiguration
     }
 
     private static void ConfigureTable(
-        EntityTypeBuilder<TournamentSeries> builder)
+        EntityTypeBuilder<TournamentSeriesEntity> builder)
     {
         builder.ToTable("TournamentSeries");
     }
 
     private static void ConfigureKey(
-        EntityTypeBuilder<TournamentSeries> builder)
+        EntityTypeBuilder<TournamentSeriesEntity> builder)
     {
         builder.HasKey(series => series.Id);
 
@@ -42,7 +44,7 @@ public sealed class TournamentSeriesConfiguration
     }
 
     private static void ConfigureProperties(
-        EntityTypeBuilder<TournamentSeries> builder)
+        EntityTypeBuilder<TournamentSeriesEntity> builder)
     {
         builder.Property(series => series.Name)
             .IsRequired()
@@ -55,7 +57,7 @@ public sealed class TournamentSeriesConfiguration
     }
 
     private static void ConfigureRelationships(
-        EntityTypeBuilder<TournamentSeries> builder)
+        EntityTypeBuilder<TournamentSeriesEntity> builder)
     {
         builder.HasOne<Organization>()
             .WithMany()

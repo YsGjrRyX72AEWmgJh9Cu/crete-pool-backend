@@ -12,4 +12,5 @@ public sealed record CreateTournamentCommand(
     GameSet GameSet,
     DateOnly StartDate,
     DateOnly EndDate,
-    Guid VenueId);
+    Guid VenueId,
+    Guid? TournamentSeriesId);
