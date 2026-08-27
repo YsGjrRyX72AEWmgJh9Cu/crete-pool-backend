@@ -46,6 +46,8 @@ using HellenicAmericanPoolHistory.Api.Endpoints.TournamentSeries.GetTournamentSe
 using HellenicAmericanPoolHistory.Api.Endpoints.TournamentSeries;
 using HellenicAmericanPoolHistory.Application.Features.Organizations.CreateOrganization;
 using HellenicAmericanPoolHistory.Api.Endpoints.Organizations;
+using HellenicAmericanPoolHistory.Application.Features.Organizations.GetOrganization;
+using HellenicAmericanPoolHistory.Api.Endpoints.Organizations.GetOrganization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +95,7 @@ builder.Services.AddScoped<UpdateParticipationHandler>();
 builder.Services.AddScoped<GenerateTournamentBracketHandler>();
 builder.Services.AddScoped<GetTournamentBracketHandler>();
 builder.Services.AddScoped<AdvanceTournamentBracketHandler>();
+builder.Services.AddScoped<GetOrganizationHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -185,6 +188,8 @@ app.MapGetParticipationEndpoint();
 app.MapGetParticipationsEndpoint();
 
 app.MapUpdateParticipationEndpoint();
+
+app.MapGetOrganizationEndpoint();
 
 app.Run();
 
