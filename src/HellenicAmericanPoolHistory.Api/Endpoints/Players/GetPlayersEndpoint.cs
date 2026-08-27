@@ -12,20 +12,22 @@ public static class GetPlayersEndpoint
     {
         endpoints.MapGet(
             "/players",
-            async Task<Ok<IReadOnlyList<GetPlayersResponse>>> (
+            async Task<Ok<IReadOnlyList<GetPlayersResponse>>>(
                 GetPlayersHandler handler,
                 CancellationToken cancellationToken) =>
             {
-                var players = await handler.HandleAsync(
-                    new GetPlayersQuery(),
-                    cancellationToken);
+                var response =
+                    await handler.HandleAsync(
+                        new GetPlayersQuery(),
+                        cancellationToken);
 
-                return TypedResults.Ok(players);
+                return TypedResults.Ok(response);
             })
             .WithName("GetPlayers")
             .WithSummary("Gets all players.")
-            .WithDescription("Gets all players.")
-            .Produces<IReadOnlyList<GetPlayersResponse>>(StatusCodes.Status200OK);
+            .WithDescription("Returns all players.")
+            .Produces<IReadOnlyList<GetPlayersResponse>>(
+                StatusCodes.Status200OK);
 
         return endpoints;
     }

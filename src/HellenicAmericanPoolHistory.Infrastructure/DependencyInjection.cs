@@ -113,6 +113,9 @@ public static class DependencyInjection
         services.AddScoped<
             IGetOrganizationPort,
             GetOrganizationPort>();
+        services.AddScoped<
+            IGetPlayersPort,
+            GetPlayersPort>();
         services.AddScoped<ICreateParticipationPort, CreateParticipationPort>();
         services.AddScoped<IDeleteParticipationPort, DeleteParticipationPort>();
         services.AddScoped<IGetParticipationPort, GetParticipationPort>();
