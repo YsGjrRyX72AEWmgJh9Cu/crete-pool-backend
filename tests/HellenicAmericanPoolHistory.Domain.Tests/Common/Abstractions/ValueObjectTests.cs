@@ -22,6 +22,21 @@ public class ValueObjectTests
         }
     }
 
+    private sealed class DifferentTestValueObject : ValueObject
+    {
+        public DifferentTestValueObject(string value)
+        {
+            Value = value;
+        }
+
+        public string Value { get; }
+
+        protected override IEnumerable<object?> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+    }
+
     /// <summary>
     /// Verifies that two value objects with the same components are equal.
     /// </summary>
@@ -72,5 +87,61 @@ public class ValueObjectTests
 
         // Assert
         Assert.Equal(firstHash, secondHash);
+    }
+
+    [Fact]
+    public void ValueObject_Should_Not_Be_Equal_To_Null()
+    {
+        // Arrange
+        var valueObject = new TestValueObject("Greece");
+
+        // Act
+        var result = valueObject.Equals(null);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void ValueObject_Should_Be_Equal_To_Same_Reference()
+    {
+        // Arrange
+        var valueObject = new TestValueObject("Greece");
+
+        // Act
+        var result = valueObject.Equals(valueObject);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void ValueObject_Should_Not_Be_Equal_To_Different_Type()
+    {
+        // Arrange
+        var valueObject = new TestValueObject("Greece");
+        var other = new DifferentTestValueObject("Greece");
+
+        // Act
+        var result = valueObject.Equals(other);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void Equality_Operators_Should_Match_Equals()
+    {
+        // Arrange
+        var first = new TestValueObject("Greece");
+        var second = new TestValueObject("Greece");
+
+        // Act
+        var equalityResult = first == second;
+        var inequalityResult = first != second;
+
+        // Assert
+        Assert.True(equalityResult);
+        Assert.False(inequalityResult);
     }
 }

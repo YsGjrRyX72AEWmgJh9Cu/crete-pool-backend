@@ -70,4 +70,47 @@ public class EntityTests
         // Assert
         Assert.True(result);
     }
+
+    [Fact]
+    public void Entity_Should_Not_Be_Equal_To_NonEntity()
+    {
+        // Arrange
+        var entity = new TestEntity(Guid.NewGuid());
+
+        // Act
+        var result = entity.Equals(new object());
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void Entity_Should_Be_Equal_To_Same_Reference()
+    {
+        // Arrange
+        var entity = new TestEntity(Guid.NewGuid());
+
+        // Act
+        var result = entity.Equals(entity);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void Entities_With_Same_Id_Should_Have_Same_HashCode()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+
+        var first = new TestEntity(id);
+        var second = new TestEntity(id);
+
+        // Act
+        var firstHash = first.GetHashCode();
+        var secondHash = second.GetHashCode();
+
+        // Assert
+        Assert.Equal(firstHash, secondHash);
+    }
 }
