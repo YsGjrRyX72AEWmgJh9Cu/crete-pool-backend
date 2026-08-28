@@ -336,6 +336,29 @@ public class ParticipationTests
                 (ParticipationStatus)999));
     }
 
+    [Fact]
+    public void Update_With_Same_Seed_And_Status_Should_Be_NoOp()
+    {
+        // Arrange
+        var participation = CreateParticipation();
+
+        participation.Update(
+            1,
+            ParticipationStatus.CheckedIn);
+
+        var originalSeed = participation.Seed;
+        var originalStatus = participation.Status;
+
+        // Act
+        participation.Update(
+            originalSeed,
+            originalStatus);
+
+        // Assert
+        Assert.Equal(originalSeed, participation.Seed);
+        Assert.Equal(originalStatus, participation.Status);
+    }
+
     private static Participation CreateParticipation()
     {
         return Participation.Create(

@@ -169,6 +169,27 @@ public class MatchTests
     }
 
     [Fact]
+    public void RecordResult_With_Participant2_As_Winner_Should_Record_Result()
+    {
+        // Arrange
+        var match = CreateMatch();
+
+        // Act
+        match.RecordResult(
+            match.Participant2Id,
+            5,
+            9);
+
+        // Assert
+        Assert.Equal(
+            match.Participant2Id,
+            match.WinnerParticipationId);
+
+        Assert.Equal(5, match.Participant1Score);
+        Assert.Equal(9, match.Participant2Score);
+    }
+
+    [Fact]
     public void RecordResult_With_Winner_Not_In_Match_Should_Throw()
     {
         // Arrange
