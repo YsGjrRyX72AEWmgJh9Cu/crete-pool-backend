@@ -48,8 +48,8 @@ public sealed class GetParticipationsEndpointTests
         Assert.NotNull(result);
 
         var participation1 = Assert.Single(
-            result!.Where(
-                x => x.Id == data.Participation1.Id.Value));
+            result!,
+            x => x.Id == data.Participation1.Id.Value);
 
         Assert.Equal(
             "Get Participations API Player One",
@@ -72,8 +72,8 @@ public sealed class GetParticipationsEndpointTests
             participation1.Status);
 
         var participation2 = Assert.Single(
-            result.Where(
-                x => x.Id == data.Participation2.Id.Value));
+            result,
+            x => x.Id == data.Participation2.Id.Value);
 
         Assert.Equal(
             "Get Participations API Player Two",
