@@ -122,7 +122,6 @@ public static class DependencyInjection
         services.AddScoped<IUpdateParticipationPort, UpdateParticipationPort>();
         services.AddScoped<IGetParticipationsPort, GetParticipationsPort>();
         services.AddScoped<IGetPlayerPort, GetPlayerPort>();
-        services.AddScoped<IGetPlayersPort, GetPlayersPort>();
         services.AddScoped<IUpdatePlayerPort, UpdatePlayerPort>();
         services.AddScoped<IDeletePlayerPort, DeletePlayerPort>();
 
