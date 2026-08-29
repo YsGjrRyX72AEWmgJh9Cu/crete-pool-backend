@@ -20,6 +20,7 @@ public sealed class MatchConfiguration
         ConfigureTable(builder);
         ConfigureKey(builder);
         ConfigureProperties(builder);
+        ConfigureIndexes(builder);
         ConfigureRelationships(builder);
     }
 
@@ -66,6 +67,18 @@ public sealed class MatchConfiguration
 
         builder.Property(match => match.Participant2Score)
             .IsRequired(false);
+    }
+
+    private static void ConfigureIndexes(EntityTypeBuilder<Match> builder)
+    {
+        builder.HasIndex(
+            match => new
+            {
+                match.TournamentId,
+                match.Round,
+                match.BracketPosition
+            })
+            .IsUnique();
     }
 
     private static void ConfigureRelationships(

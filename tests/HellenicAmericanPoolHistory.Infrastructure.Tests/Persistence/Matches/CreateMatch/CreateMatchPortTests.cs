@@ -7,6 +7,7 @@ using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence.Matches.CreateMatch;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace HellenicAmericanPoolHistory.Infrastructure.Tests.Persistence.Matches.CreateMatch;
 
@@ -47,6 +48,53 @@ public sealed class CreateMatchPortTests
         Assert.Null(persistedMatch.WinnerParticipationId);
         Assert.Null(persistedMatch.Participant1Score);
         Assert.Null(persistedMatch.Participant2Score);
+    }
+
+    [Fact]
+    public async Task CreateAsync_Should_Reject_Duplicate_Tournament_Round_And_BracketPosition()
+    {
+        await using var dbContext = CreateDbContext();
+
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true);
+
+        var firstMatch = new Match(
+            MatchId.New(),
+            data.Tournament.Id,
+            1,
+            1,
+            data.Participant1.Id,
+            data.Participant2.Id);
+
+        var port = new CreateMatchPort(dbContext);
+
+        await port.CreateAsync(firstMatch);
+
+        var duplicateMatch = new Match(
+            MatchId.New(),
+            data.Tournament.Id,
+            1,
+            1,
+            data.Participant3.Id,
+            data.Participant4.Id);
+
+        dbContext.Matches.Add(duplicateMatch);
+
+        var exception = await Assert.ThrowsAsync<DbUpdateException>(
+            () => dbContext.SaveChangesAsync());
+
+        var postgresException =
+            Assert.IsType<Npgsql.PostgresException>(
+                exception.InnerException);
+
+        Assert.Equal(
+            "23505",
+            postgresException.SqlState);
+
+        Assert.Equal(
+            "IX_Matches_TournamentId_Round_BracketPosition",
+            postgresException.ConstraintName);
     }
 
     [Fact]
@@ -229,6 +277,11 @@ public sealed class CreateMatchPortTests
             "Player Three",
             new Country("Greece"));
 
+        var player4 = Player.Create(
+            "Test",
+            "Player Four",
+            new Country("Greece"));
+
         var participant1 = Participation.Create(
             player1.Id,
             tournament.Id,
@@ -241,8 +294,20 @@ public sealed class CreateMatchPortTests
             DateOnly.FromDateTime(DateTime.UtcNow),
             2);
 
-        var otherTournamentParticipant = Participation.Create(
+        var participant3 = Participation.Create(
             player3.Id,
+            tournament.Id,
+            DateOnly.FromDateTime(DateTime.UtcNow),
+            3);
+
+        var participant4 = Participation.Create(
+            player4.Id,
+            tournament.Id,
+            DateOnly.FromDateTime(DateTime.UtcNow),
+            4);
+
+        var otherTournamentParticipant = Participation.Create(
+            player4.Id,
             otherTournament.Id,
             DateOnly.FromDateTime(DateTime.UtcNow),
             1);
@@ -258,11 +323,14 @@ public sealed class CreateMatchPortTests
         dbContext.Players.AddRange(
             player1,
             player2,
-            player3);
+            player3,
+            player4);
 
         dbContext.Participations.AddRange(
             participant1,
             participant2,
+            participant3,
+            participant4,
             otherTournamentParticipant);
 
         await dbContext.SaveChangesAsync();
@@ -271,6 +339,8 @@ public sealed class CreateMatchPortTests
             tournament,
             participant1,
             participant2,
+            participant3,
+            participant4,
             otherTournamentParticipant);
     }
 
@@ -278,5 +348,7 @@ public sealed class CreateMatchPortTests
         Tournament Tournament,
         Participation Participant1,
         Participation Participant2,
+        Participation Participant3,
+        Participation Participant4,
         Participation OtherTournamentParticipant);
 }
