@@ -9,6 +9,7 @@ using HellenicAmericanPoolHistory.Domain.Venue;
 using HellenicAmericanPoolHistory.Domain.Enums;
 using HellenicAmericanPoolHistory.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HellenicAmericanPoolHistory.Api.Tests.Endpoints.Matches.RecordMatchResult;
@@ -44,26 +45,94 @@ public sealed class RecordMatchResultEndpointTests
             3);
 
         var response = await client.PostAsJsonAsync(
-            $"/matches/{data.Match.Id.Value}/result",
+            $"/matches/{data.Match1.Id.Value}/result",
             request);
 
         Assert.Equal(
             HttpStatusCode.NoContent,
             response.StatusCode);
 
-        await dbContext.Entry(data.Match).ReloadAsync();
+        await dbContext.Entry(data.Match1).ReloadAsync();
 
         Assert.Equal(
             data.Participant1.Id,
-            data.Match.WinnerParticipationId);
+            data.Match1.WinnerParticipationId);
 
         Assert.Equal(
             5,
-            data.Match.Participant1Score);
+            data.Match1.Participant1Score);
 
         Assert.Equal(
             3,
-            data.Match.Participant2Score);
+            data.Match1.Participant2Score);
+    }
+
+    [Fact]
+    public async Task RecordMatchResult_Should_Create_Next_Round_When_Current_Round_Is_Complete()
+    {
+        using var scope = _factory.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
+
+        var data = await CreateTestDataAsync(
+            dbContext,
+            startTournament: true,
+            createSecondMatch: true);
+
+        var client = _factory.CreateClient();
+
+        var firstMatchRequest = new RecordMatchResultRequest(
+            data.Participant1.Id.Value,
+            5,
+            3);
+
+        var firstMatchResponse = await client.PostAsJsonAsync(
+            $"/matches/{data.Match1.Id.Value}/result",
+            firstMatchRequest);
+
+        Assert.Equal(
+            HttpStatusCode.NoContent,
+            firstMatchResponse.StatusCode);
+
+        var secondMatchRequest = new RecordMatchResultRequest(
+            data.Participant3.Id.Value,
+            5,
+            2);
+
+        var secondMatchResponse = await client.PostAsJsonAsync(
+            $"/matches/{data.Match2!.Id.Value}/result",
+            secondMatchRequest);
+
+        Assert.Equal(
+            HttpStatusCode.NoContent,
+            secondMatchResponse.StatusCode);
+
+        var nextRoundMatches = await dbContext.Matches
+            .Where(match =>
+                match.TournamentId == data.Tournament.Id &&
+                match.Round == 2)
+            .ToListAsync();
+
+        Assert.Single(nextRoundMatches);
+
+        var nextRoundMatch = nextRoundMatches[0];
+
+        Assert.Equal(
+            data.Participant1.Id,
+            nextRoundMatch.Participant1Id);
+
+        Assert.Equal(
+            data.Participant3.Id,
+            nextRoundMatch.Participant2Id);
+
+        Assert.Equal(
+            2,
+            nextRoundMatch.Round);
+
+        Assert.Equal(
+            1,
+            nextRoundMatch.BracketPosition);
     }
 
     [Fact]
@@ -124,7 +193,7 @@ public sealed class RecordMatchResultEndpointTests
             3);
 
         var response = await client.PostAsJsonAsync(
-            $"/matches/{data.Match.Id.Value}/result",
+            $"/matches/{data.Match1.Id.Value}/result",
             request);
 
         Assert.Equal(
@@ -134,7 +203,8 @@ public sealed class RecordMatchResultEndpointTests
 
     private static async Task<TestData> CreateTestDataAsync(
         ApplicationDbContext dbContext,
-        bool startTournament)
+        bool startTournament,
+        bool createSecondMatch = false)
     {
         var venue = Venue.Create(
             $"Record Match Result API Venue {Guid.NewGuid():N}",
@@ -169,6 +239,16 @@ public sealed class RecordMatchResultEndpointTests
             "Player Two",
             new Country("Greece"));
 
+        var player3 = Player.Create(
+            "Record Match Result API",
+            "Player Three",
+            new Country("Greece"));
+
+        var player4 = Player.Create(
+            "Record Match Result API",
+            "Player Four",
+            new Country("Greece"));
+
         var participant1 = Participation.Create(
             player1.Id,
             tournament.Id,
@@ -181,6 +261,18 @@ public sealed class RecordMatchResultEndpointTests
             new DateOnly(2026, 8, 18),
             2);
 
+        var participant3 = Participation.Create(
+            player3.Id,
+            tournament.Id,
+            new DateOnly(2026, 8, 18),
+            3);
+
+        var participant4 = Participation.Create(
+            player4.Id,
+            tournament.Id,
+            new DateOnly(2026, 8, 18),
+            4);
+
         participant1.Update(
             1,
             ParticipationStatus.CheckedIn);
@@ -189,7 +281,15 @@ public sealed class RecordMatchResultEndpointTests
             2,
             ParticipationStatus.CheckedIn);
 
-        var match = new Match(
+        participant3.Update(
+            3,
+            ParticipationStatus.CheckedIn);
+
+        participant4.Update(
+            4,
+            ParticipationStatus.CheckedIn);
+
+        var match1 = new Match(
             MatchId.New(),
             tournament.Id,
             1,
@@ -197,19 +297,41 @@ public sealed class RecordMatchResultEndpointTests
             participant1.Id,
             participant2.Id);
 
+        Match? match2 = null;
+
+        if (createSecondMatch)
+        {
+            match2 = new Match(
+                MatchId.New(),
+                tournament.Id,
+                1,
+                2,
+                participant3.Id,
+                participant4.Id);
+        }
+
         dbContext.Venues.Add(venue);
 
         dbContext.Tournaments.Add(tournament);
 
         dbContext.Players.AddRange(
             player1,
-            player2);
+            player2,
+            player3,
+            player4);
 
         dbContext.Participations.AddRange(
             participant1,
-            participant2);
+            participant2,
+            participant3,
+            participant4);
 
-        dbContext.Matches.Add(match);
+        dbContext.Matches.Add(match1);
+
+        if (match2 is not null)
+        {
+            dbContext.Matches.Add(match2);
+        }
 
         await dbContext.SaveChangesAsync();
 
@@ -217,12 +339,18 @@ public sealed class RecordMatchResultEndpointTests
             tournament,
             participant1,
             participant2,
-            match);
+            participant3,
+            participant4,
+            match1,
+            match2);
     }
 
     private sealed record TestData(
         Tournament Tournament,
         Participation Participant1,
         Participation Participant2,
-        Match Match);
+        Participation Participant3,
+        Participation Participant4,
+        Match Match1,
+        Match? Match2);
 }
