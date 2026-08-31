@@ -1,0 +1,83 @@
+{
+    "matchId": 83791531,
+    "matchno": 13,
+    "roundName": "Loser round 1",
+    "roundCode": "loserRound1",
+    "round": -1,
+    "playerA": {
+        "playerId": 1076143,
+        "name": "Manos Menioudakis",
+        "firstname": "Manos",
+        "lastname": "Menioudakis",
+        "url": "https://cuescore.com/player/Manos+Menioudakis/1076143",
+        "image": "https://img.cuescore.com/image/3/4/33795101309431942f87df1ee1b12f64.png?t=1576147605",
+        "country": {
+            "name": "Greece",
+            "alpha3": "GRC",
+            "image": "https://cuescore.com/img/flags/png-country-4x2-none/res-640x480/gr.png",
+            "continent": "Europe"
+        },
+        "livesIn": {
+            "city": "",
+            "country": "Greece"
+        },
+        "represents": []
+    },
+    "playerB": {
+        "playerId": 78700051,
+        "name": "Ντράγκαν Πετρουλάκης",
+        "firstname": "Ντράγκαν",
+        "lastname": "Πετρουλάκης",
+        "url": "https://cuescore.com/player/%CE%9D%CF%84%CF%81%CE%AC%CE%B3%CE%BA%CE%B1%CE%BD+%CE%A0%CE%B5%CF%84%CF%81%CE%BF%CF%85%CE%BB%CE%AC%CE%BA%CE%B7%CF%82/78700051",
+        "image": "https://img.cuescore.com/image/4/4/4ed082911b40c7b58cfa8d91e6e3b56f.png?t=1777470037",
+        "country": {
+            "name": "Greece",
+            "alpha3": "GRC",
+            "image": "https://cuescore.com/img/flags/png-country-4x2-none/res-640x480/gr.png",
+            "continent": "Europe"
+        },
+        "livesIn": {
+            "city": "",
+            "country": "Greece"
+        },
+        "represents": []
+    },
+    "scoreA": 3,
+    "scoreB": 5,
+    "raceTo": 5,
+    "discipline": "9-Ball",
+    "disciplineId": 3,
+    "branch": 1,
+    "penalty": 0,
+    "groupNo": 0,
+    "inningsPlayerA": 0,
+    "inningsPlayerB": 0,
+    "highBreaksA": "",
+    "highBreaksB": "",
+    "runoutsA": 0,
+    "runoutsB": 0,
+    "lagWinner": "",
+    "table": [],
+    "tournamentId": 83713144,
+    "challengeId": 0,
+    "starttime": "2026-06-17T16:34:00Z",
+    "stoptime": "2026-06-17T17:18:59Z",
+    "matchstatus": "finished",
+    "matchstatusCode": 2,
+    "bestOfSets": 0,
+    "useInnings": false,
+    "frames": [],
+    "properties": {
+        "penalty": []
+    },
+    "sets": [],
+    "curVersion": 197,
+    "notes": [],
+    "matchType": 0,
+    "videoLink": "",
+    "comment": "",
+    "handicapA": "A",
+    "handicapB": "C",
+    "winnerNext": 17,
+    "loserNext": ""
+}
