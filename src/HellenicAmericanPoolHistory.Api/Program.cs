@@ -75,8 +75,6 @@ builder.Services.AddScoped<GetTournamentSeriesByOrganizationHandler>();
 builder.Services.AddScoped<UpdateTournamentHandler>();
 builder.Services.AddScoped<DeleteTournamentHandler>();
 builder.Services.AddScoped<ScheduleTournamentHandler>();
-builder.Services.AddScoped<StartTournamentHandler>();
-builder.Services.AddScoped<ScheduleTournamentHandler>();
 builder.Services.AddScoped<CompleteTournamentHandler>();
 builder.Services.AddScoped<StartTournamentHandler>();
 builder.Services.AddScoped<CancelTournamentHandler>();
